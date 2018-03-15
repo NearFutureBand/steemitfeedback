@@ -1,8 +1,10 @@
 
 var form = document.getElementById("formAddNote");
-document.getElementById("butAddNote").onclick = function(){
+var buttonAddNote = document.getElementById("butAddNote");
+buttonAddNote.onclick = function(){
     form.style.display = "block";
+    buttonAddNote.style.display = "none";
 }
 document.getElementById("butFormDone").onclick = function(){
-    form.style.display = "none";
+    //form.style.display = "none";
 }
