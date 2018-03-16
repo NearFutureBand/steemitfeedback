@@ -128,6 +128,8 @@ golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, tit
 	}
 	else console.error(err);
 });
+    
+    
 /**
  * getDiscussionsByBlog() получение постов по автору и тегу
  * @param {Object} query - объект поиска включащий автора, тег, лимит
@@ -146,6 +148,8 @@ golos.api.getDiscussionsByBlog(query, function(err, result) {
 	}
 	else console.error(err);
 });
+    
+    
 /**
  * getDiscussionsByTrending() получение постов по тегам
  * @param {Object} query - объект поиска включащий теги и лимит или юзернейм автора и url-адрес поста
@@ -165,6 +169,8 @@ golos.api.getDiscussionsByTrending(query, function(err, result) {
 	}
 	else console.error(err);
 });
+    
+    
 /**
  * getContent() получение поста
  * @param {String} author - автор поста
@@ -179,6 +185,8 @@ golos.api.getContent(author, permlink, function(err, result) {
 	}
 	else console.error(err);
 });
+    
+    
 /**
  * getContentReplies() получение комментариев
  * @param {String} parent - автор поста

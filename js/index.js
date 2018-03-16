@@ -7,17 +7,17 @@ buttonAddNote.onclick = function(){
 }
 
 async function getUrls() {
-        if (wif == '') {
-            await auth();
-        } else {
-            golos.api.getContent(username, constPermlik, function(err, result) {
-                result.id == 0 ? swal({
-                    html: document.getElementById('no-records-IPFS').innerHTML
-                }) : getPostJson(username, constPermlik, result);
-                if (err) swal(err);
-            });
-        }
+    if (wif == '') {
+        await auth();
+    } else {
+        golos.api.getContent(username, constPermlik, function(err, result) {
+            result.id == 0 ? swal({
+                html: document.getElementById('no-records-IPFS').innerHTML
+            }) : getPostJson(username, constPermlik, result);
+            if (err) swal(err);
+        });
     }
+}
 document.getElementById('golos-urls').onclick = getUrls;
 
 document.getElementById('aboutGolosImagesCallBtn').addEventListener('click', () => {

@@ -42,7 +42,7 @@
                             let login = document.getElementById('input-user');
                             let pass = document.getElementById('input-pass');
                             let priv = document.getElementById('input-private'); 
-                         swal.showValidationError(
+                            swal.showValidationError(
                                 `Please enter your login and master password or only your private posting key`
                             );
                          login.setAttribute('class','form-control is-invalid');
@@ -57,6 +57,7 @@
         })
         await checker(value.login, value.pass, value.priv, value.log);
     }
+
     async function getInputsVal() {
         let login = document.getElementById('input-user').value,  
             pass = document.getElementById('input-pass').value, 
@@ -75,16 +76,17 @@
         this.user = username;
         this.pass = pass;
         this.private = priv;
+        
+        
         try {
-            this.private.length == 51 && this.private.match(/5[A-Z]/) ? wif = this.private 
-                                                                  : this.response = await golos.api.getAccounts([this.user]);
-                                                              } catch(e){
-                                                                swal({
-                                                                  type: 'error',
-                                                                  title: 'Login',
-                                                                  html: `Your login is incorrect!`,
-                                                                })
-                                                              }
+            this.private.length == 51 && this.private.match(/5[A-Z]/) ? wif = this.private : this.response = await golos.api.getAccounts([this.user]);
+        } catch(e){
+          swal({
+            type: 'error',
+            title: 'Login',
+            html: `Your login is incorrect!`,
+          })
+        }
         
         
         if(wif!=''){
