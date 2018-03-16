@@ -223,17 +223,15 @@
     <script src="https://cdn.jsdelivr.net/npm/golos-js@0.5.29/dist/golos.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/findAndReplaceDOMText/0.4.6/findAndReplaceDOMText.min.js"></script>
     <script src="https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js"></script>
-    <script src="auth.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
     <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     
     <script>
-        golos.config.set('websocket', 'wss://ws.testnet3.golos.io');
-        golos.config.set('address_prefix', 'GLS');
-        golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+        
         
         /**
         * login() авторизаций
@@ -249,26 +247,7 @@
             }
             //else console.error(err);
         });*/
-        document.getElementById("loadNotes").onclick = function(){
-            var query = {	
-                select_authors: ['vgolos4'],
-                limit: 100,
-            };
-            golos.api.getDiscussionsByCreated(query, function(err, result) {
-                //console.log(err, result);
-                if ( ! err) {
-                    result.forEach(function(item) {
-                        var note = document.createElement("div");
-                        note.className = "row note";
-                        note.setAttribute("id",item.id);
-                        note.innerHTML = "<div class='col-lg-10 col-md-10 text'>              <h1>"+item.title+"</h1><p>"+item.body+"</p><button type='button' class='btn btn-light d-flex justify-content-center'>Show comments</button></div><div class='col-lg-2 col-md-2 controls'><div class='name'><h6>"+item.author+"</h6></div><div class='date'><small>"+item.created+"</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
-                        document.getElementById("wrapper").insertBefore(note,document.getElementById("butAddNote"));
-                        console.log('getDiscussionsByCreated', item);
-                    });
-                }
-                else console.error(err);
-            });
-        }
+        
     </script>
     
   </body>
