@@ -1,0 +1,198 @@
+<!--
+	0.5.29 - для тестнета
+	0.5.30 - для текущей версии чейна
+-->
+<script src="https://cdn.jsdelivr.net/npm/golos-js@0.5.29/dist/golos.min.js"></script>
+<script>
+// переключение на тестнет
+/*golos.api.setOptions({
+	'websocket': 'wss://ws.testnet.golos.io',
+	'address_prefix': 'GLS',
+	'chain_id': '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679'
+});*/
+golos.config.set('websocket', 'wss://ws.testnet.golos.io');
+golos.config.set('address_prefix', 'GLS');
+golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+/**
+ * generateKeys() генерация новых ключей для нового аккаунта
+ * @param {String} name - юзернейм нового аккаунта
+ * @param {String} password - мастер-пароль от нового аккаунта
+*/
+var name = 'epexa4';
+var password = 'qwerty12345';
+var newKeys = golos.auth.generateKeys(name, password, ['owner', 'active', 'posting', 'memo']);
+console.log('newKeys', newKeys);
+/**
+ * accountCreate() регистрация нового аккаунта
+ * @param {Base58} wif - приватный active ключ
+ * @param {String} fee - стоимость создания аккаунта, будут перечислены в силу голоса нового аккаунта
+ * @param {String} creator - юзернейм того, кто регистрирует аккаунт
+ * @param {String} newAccountName - юзернейм нового аккаунта
+ * @param {Object} owner - объект содержащий новый owner ключ
+ * @param {Object} active - объект содержащий новый active ключ
+ * @param {Object} posting - объект содержащий новый posting ключ
+ * @param {String} memoKey - новый memo ключ
+ * @param {String} jsonMetadata - дополнительные данные нового аккаунта (аватар, местоположение, и т.д.)
+*/
+var wif = '5K...';
+var fee = '90.000 GOLOS';
+var creator = 'epexa';
+var newAccountName = name;
+var owner = {
+	weight_threshold: 1,
+	account_auths: [],
+	key_auths: [[newKeys.owner, 1]]
+};
+var active = {
+	weight_threshold: 1,
+	account_auths: [],
+	key_auths: [[newKeys.active, 1]]
+};
+var posting = {
+	weight_threshold: 1,
+	account_auths: [],
+	key_auths: [[newKeys.posting, 1]]
+};
+var memoKey = newKeys.memo;
+var jsonMetadata = '{}';
+golos.broadcast.accountCreate(wif, fee, creator, newAccountName, owner, active, posting, memoKey, jsonMetadata, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('accountCreate', result);
+	}
+	else console.error(err);
+});
+/**
+ * login() авторизаций
+ * @param {String} username - юзернейм пользователя
+ * @param {String} password - пароль пользователя
+*/
+var username = 'epexa';
+var password = 'qwerty12345';
+golos.api.login(username, password, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('login', result);
+	}
+	else console.error(err);
+});
+/**
+ * comment() добавить пост
+ * @param {Base58} wif - приватный posting ключ
+ * @param {String} parentAuthor - для создания поста, поле пустое
+ * @param {String} parentPermlink - главный тег
+ * @param {String} author - автор поста
+ * @param {String} permlink - url-адрес поста
+ * @param {String} title - заголовок поста
+ * @param {String} body - текст поста
+ * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
+*/
+var wif = '5K...';
+var parentAuthor = '';
+var parentPermlink = 'dev';
+var author = 'epexa';
+var permlink = 'test-url';
+var title = 'test';
+var body = 'test2';
+var jsonMetadata = '{}';
+golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('comment', result);
+	}
+	else console.error(err);
+});
+/**
+ * comment() добавить комментарий
+ * @param {Base58} wif - приватный posting ключ
+ * @param {String} parentAuthor - для добавления комметария, автор поста
+ * @param {String} parentPermlink - для добавления комметария, url-адрес поста
+ * @param {String} author - автор комментария
+ * @param {String} permlink - уникальный url-адрес комментария
+ * @param {String} title - для добавления комментария, поле пустое
+ * @param {String} body - текст комментария
+ * @param {String} jsonMetadata - мета-данные комментария (изображения, и т.д.)
+*/
+var wif = '5K...';
+var parentAuthor = 'epexa';
+var parentPermlink = 'test-url';
+var author = 'epexa';
+var permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now(); // re-epexa-test-url-1517333064308
+var title = '';
+var body = 'hi!';
+var jsonMetadata = '{}';
+golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('comment', result);
+	}
+	else console.error(err);
+});
+/**
+ * getDiscussionsByBlog() получение постов по автору и тегу
+ * @param {Object} query - объект поиска включащий автора, тег, лимит
+*/
+var query = {
+	select_authors: ['epexa'],
+	select_tags: ['dev'],
+	limit: 100
+};
+golos.api.getDiscussionsByBlog(query, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		result.forEach(function(item) {
+			console.log('getDiscussionsByBlog', item.title);
+		});
+	}
+	else console.error(err);
+});
+/**
+ * getDiscussionsByTrending() получение постов по тегам
+ * @param {Object} query - объект поиска включащий теги и лимит или юзернейм автора и url-адрес поста
+*/
+var query = {
+	select_tags: ['dev', 'test'],
+	limit: 100,
+	//start_author: 'epexa',
+	//start_permlink: 'test-url'
+};
+golos.api.getDiscussionsByTrending(query, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		result.forEach(function(item) {
+			console.log('getDiscussionsByTrending', item.title);
+		});
+	}
+	else console.error(err);
+});
+/**
+ * getContent() получение поста
+ * @param {String} author - автор поста
+ * @param {String} permlink - url-адрес поста
+*/
+var author = 'epexa';
+var permlink = 'test-url';
+golos.api.getContent(author, permlink, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('getContent', result.title);
+	}
+	else console.error(err);
+});
+/**
+ * getContentReplies() получение комментариев
+ * @param {String} parent - автор поста
+ * @param {String} parentPermlink - url-адрес поста
+*/
+var parent = 'epexa';
+var parentPermlink = 'test-url';
+golos.api.getContentReplies(parent, parentPermlink, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		result.forEach(function(item) {
+			console.log('getContentReplies', item.body);
+		});
+	}
+	else console.error(err);
+});
+</script>

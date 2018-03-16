@@ -1,0 +1,48 @@
+<!--
+	0.5.29 - для тестнета
+	0.5.30 - для текущей версии чейна
+-->
+<script src="auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/golos-js@0.5.29/dist/golos.min.js"></script>
+<script>
+// переключение на тестнет
+/*golos.api.setOptions({
+	'websocket': 'wss://ws.testnet.golos.io',
+	'address_prefix': 'GLS',
+	'chain_id': '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679'
+});*/
+golos.config.set('websocket', 'wss://ws.testnet.golos.io');
+golos.config.set('address_prefix', 'GLS');
+golos.config.set('chain_id', '5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU');
+
+/**
+ * login() авторизаций
+ * @param {String} username - юзернейм пользователя
+ * @param {String} password - пароль пользователя
+*/
+/*var username = 'golos-test';
+var password = '5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU';
+golos.api.login(username, password, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('login', result);
+	}
+	//else console.error(err);
+});*/
+/**
+ * getContent() получение поста
+ * @param {String} author - автор поста
+ * @param {String} permlink - url-адрес поста
+*/
+var author = 'golos-test';
+var permlink = 'test-url';
+golos.api.getContent(author, permlink, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		console.log('getContent', result.title);
+	}
+	else console.error(err);
+});
+
+    
+</script>
