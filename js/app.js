@@ -11,8 +11,8 @@ golos.config.set('websocket', 'wss://ws.testnet3.golos.io');
 golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
-/*Loading some existing notes - only one author yet*/
-document.getElementById("loadNotes").onclick = function(){
+/*Loading some existing notes - prototype with searching with author*/
+function loadNotes(){
     var query = {	
         select_authors: ['vgolos4'],
         limit: 100,
@@ -32,6 +32,71 @@ document.getElementById("loadNotes").onclick = function(){
         else console.error(err);
     });
 }
+document.addEventListener("DOMContentLoaded", loadNotes);
+
+/*Case when user tries to add note without authorization*/
+/*getting data from the form*/
+document.getElementById("butFormDone").onclick = function(){
+    if (wif) {
+        var title = document.getElementById("formHeader").value;
+        var body = document.getElementById("formText").value;
+        var type = getIndexFromName(findCheckedRadio("formRadio",4));
+        console.log("title: "+title+" body: "+body+" type: "+type);
+        
+        /**
+        * comment() добавить пост
+        * @param {Base58} wif - приватный posting ключ
+        * @param {String} parentAuthor - для создания поста, поле пустое
+        * @param {String} parentPermlink - главный тег
+        * @param {String} author - автор поста
+        * @param {String} permlink - url-адрес поста
+        * @param {String} title - заголовок поста
+        * @param {String} body - текст поста
+        * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
+        */
+        //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdUs";
+        //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
+        var parentAuthor = '';
+        var parentPermlink = 'tag';
+        var author = 'golos-test';
+        var permlink = 'test-url';
+        //var title = 'titleTest';
+        //var body = 'bodyTest';
+        var jsonMetadata = '{}';
+        golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+            //console.log(err, result);
+            if ( ! err) {
+                console.log('comment', result);
+            }
+            else console.error(err);
+        });
+    
+    } else {
+        auth();
+    }
+    
+};
+
+
+
+
+/*other functions*/
+
+function findCheckedRadio(name,count){
+    for(var i=0;i<count;i++){
+        var radioButton = document.getElementById(name+i);
+        if(radioButton.checked == true){
+            return radioButton.getAttribute("id");  
+        }
+    }
+    return null;
+}
+
+/*cuts an index from the given id*/
+function getIndexFromName(name){
+    var indexLength = name.length - 9;
+    return name.slice(-indexLength);
+}
 
 
 /*copied scripts for buttons in nav*/
@@ -48,7 +113,7 @@ async function getUrls() {
     }
 }
 document.getElementById('golos-urls').onclick = getUrls;
-document.getElementById('aboutGolosImagesCallBtn').addEventListener('click', () => {
+document.getElementById('aboutGolosFeddbackCallBtn').addEventListener('click', () => {
         swal({
             title: document.getElementById('about-html-title').innerHTML,
             html: document.getElementById('about-html').innerHTML,
@@ -72,3 +137,4 @@ document.getElementById('integration').addEventListener('click', function(e) {
             showCloseButton: true
         })
     })
+

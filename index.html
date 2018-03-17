@@ -24,7 +24,7 @@
                         <button class="btn btn-success my-2 my-sm-0" id="golos-urls"><span class="icon-link"></span> Get my files</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-primary my-2 my-sm-0" id="aboutGolosImagesCallBtn"><span class="icon-info"></span> About</button>
+                        <button class="btn btn-primary my-2 my-sm-0" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
                     </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0" id="rigth">
@@ -51,11 +51,11 @@
     </nav>
 </header>
     <div class="container wrapper" id="wrapper">
-       <div class="row">
+       <!--<div class="row">
            <div class="col-lg-12 col-md-12">
                <button class="btn btn-primary d-flex justify-content-center" id="loadNotes">Load notes</button>
            </div>
-       </div>
+       </div>-->
         <!--<div class="row note" id="2">
             <div class="col-lg-10 col-md-10 text">
                 <h1>Lorem ipsum dolor sit.</h1>
@@ -169,42 +169,33 @@
             <div class="col-lg-12">
                 <form>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Header</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <label for="formHeader">Header</label>
+                        <input type="text" class="form-control" id="formHeader" aria-describedby="formHeader">
                     </div>
                     <div class="form-group">
-                        
                         <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Enter your text here</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="formText">Enter your text here</label>
+                            <textarea class="form-control" id="formText" rows="3"></textarea>
                         </div>
                     </div>
                     
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                      <label class="form-check-label" for="exampleRadios1">
-                        Idea
-                      </label>
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="formRadio0" value="option1" checked>
+                        <label class="form-check-label" for="formRadio0">Idea</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                      <label class="form-check-label" for="exampleRadios2">
-                        Question
-                      </label>
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="formRadio1" value="option2">
+                        <label class="form-check-label" for="formRadio1">Question</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
-                      <label class="form-check-label" for="exampleRadios3">
-                        Problem
-                      </label>
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="formRadio2" value="option3">
+                        <label class="form-check-label" for="formRadio2">Problem</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
-                      <label class="form-check-label" for="exampleRadios3">
-                        Offer
-                      </label>
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="formRadio3" value="option3">
+                        <label class="form-check-label" for="formRadio3">Offer</label>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="butFormDone">Done</button>
+                    <button type="button" class="btn btn-primary" id="butFormDone">Done</button>
                 </form>
             </div>
             
