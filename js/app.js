@@ -42,7 +42,7 @@ document.getElementById("butFormDone").onclick = function(){
         var body = document.getElementById("formText").value;
         var type = getIndexFromName(findCheckedRadio("formRadio",4));
         console.log("title: "+title+" body: "+body+" type: "+type);
-        
+        console.log(window.wif);
         /**
         * comment() добавить пост
         * @param {Base58} wif - приватный posting ключ
@@ -54,7 +54,8 @@ document.getElementById("butFormDone").onclick = function(){
         * @param {String} body - текст поста
         * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
         */
-        //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdUs";
+        //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
+        //      5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU
         //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
         var parentAuthor = '';
         var parentPermlink = 'tag';
