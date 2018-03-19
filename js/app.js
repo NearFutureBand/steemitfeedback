@@ -13,27 +13,43 @@ golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099
 
 /*Loading some existing notes - prototype with searching with author*/
 function loadNotes(){
-    var query = {	
-        select_authors: ['vgolos4'],
+    console.log("here1");
+var query = {
+	select_authors: ['golos-test'],
+	select_tags: ['test'],
+	limit: 100
+};
+golos.api.getDiscussionsByBlog(query, function(err, result) {
+	//console.log(err, result);
+	if ( ! err) {
+		result.forEach(function(item) {
+			console.log('getDiscussionsByBlog', item.title);
+		});
+	}
+	else console.error(err);
+});
+    /*var query = {	
+        select_authors: ['golos-test'],
         limit: 100,
     };
     golos.api.getDiscussionsByCreated(query, function(err, result) {
+        console.log("here2");
         //console.log(err, result);
         if ( ! err) {
             result.forEach(function(item) {
-                var note = document.createElement("div");
+                /*var note = document.createElement("div");
                 note.className = "row note";
                 note.setAttribute("id",item.id);
                 note.innerHTML = "<div class='col-lg-10 col-md-10 text'>              <h1>"+item.title+"</h1><p>"+item.body+"</p><button type='button' class='btn btn-light d-flex justify-content-center'>Show comments</button></div><div class='col-lg-2 col-md-2 controls'><div class='name'><h6>"+item.author+"</h6></div><div class='date'><small>"+item.created+"</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
                 document.getElementById("wrapper").insertBefore(note,document.getElementById("butAddNote"));
-                console.log('getDiscussionsByCreated', item);
+                console.log('getDiscussionsByCreated', item.title);
             });
         }
         else console.error(err);
-    });
+    });*/
 }
-document.addEventListener("DOMContentLoaded", loadNotes);
-
+//document.addEventListener("DOMContentLoaded", loadNotes);
+document.getElementById("loadNotes").onclick = loadNotes;
 /*Case when user tries to add note without authorization*/
 /*getting data from the form*/
 document.getElementById("butFormDone").onclick = function(){
@@ -114,7 +130,7 @@ async function getUrls() {
     }
 }
 document.getElementById('golos-urls').onclick = getUrls;
-document.getElementById('aboutGolosFeddbackCallBtn').addEventListener('click', () => {
+document.getElementById('aboutGolosFeedbackCallBtn').addEventListener('click', () => {
         swal({
             title: document.getElementById('about-html-title').innerHTML,
             html: document.getElementById('about-html').innerHTML,
