@@ -14,20 +14,24 @@ golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099
 /*Loading some existing notes - prototype with searching with author*/
 function loadNotes(){
     console.log("here1");
-var query = {
+var query = {	
 	select_authors: ['golos-test'],
-	select_tags: ['test'],
-	limit: 100
+    limit: 100,
 };
-golos.api.getDiscussionsByBlog(query, function(err, result) {
+    console.log("here2");
+golos.api.getDiscussionsByCreated(query, function(err, result) {
 	//console.log(err, result);
 	if ( ! err) {
+        console.log("here3");
 		result.forEach(function(item) {
-			console.log('getDiscussionsByBlog', item.title);
+			console.log('getDiscussionsByCreated', item.title);
 		});
 	}
+    
 	else console.error(err);
+    console.log("here4");
 });
+    console.log("here5");
     /*var query = {	
         select_authors: ['golos-test'],
         limit: 100,
