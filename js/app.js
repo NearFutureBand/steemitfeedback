@@ -62,7 +62,7 @@ document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click'
     closeAddNoteForm();
 });
 
-/*Loading some existing notes - prototype with searching with author*/
+/*Loading notes*/
 function loadNotes(){
     /*console.log("here1");
     var query = {	
@@ -90,9 +90,22 @@ function loadNotes(){
     note.setAttribute('id',10);
     note.innerHTML = "<div class='col-lg-10 col-md-10 text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons d-flex justify-content-center'><button type='button' class='btn btn-light btn-show-comments'>Show comments (12)</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
     document.getElementsByClassName('wrapper')[0].insertBefore(note,document.getElementsByClassName("btn-add-note")[0]);
+    
+    //event for btn-add-comment
+    note.children[0].children[2].children[1].addEventListener('click', function(){
+        openCommentForm(note.getAttribute('id'));
+        note.children[0].children[2].children[1].style.display = 'none';
+    });
+    //event for btn-show-comments HERE
+    note.children[0].children[2].children[0].addEventListener('click', function(){
+        loadComments(note.getAttribute('id'));
+        //HERE
+        console.log(note.children[0].children[0].children[1].textContent);
+    });
     console.log('added note, id = '+note.getAttribute('id'));
 }
 document.getElementsByClassName('btn-load-notes')[0].addEventListener('click', loadNotes);
+
 
 /*COMMENTS*/
 /*Loading comments from database - IN PROGRESS*/
