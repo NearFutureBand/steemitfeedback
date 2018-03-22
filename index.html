@@ -50,16 +50,19 @@
         </div>
     </nav>
 </header>
-    <div class="container wrapper" id="wrapper">
-        <button class="btn btn-primary d-flex justify-content-center" id="loadNotes">Load notes</button>
+    <div class="container wrapper">
+        <div class="row control">
+            <button class="btn btn-primary btn-load-notes">Load notes</button>
+        </div>
+        
         
         <div class="row note" id="2">
             <div class="col-lg-10 col-md-10 text">
                 <h1>Lorem ipsum dolor sit.</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p>
                 <div class="buttons d-flex justify-content-center">
-                    <button type="button" class="btn btn-light" id="showComments">Show comments</button>
-                    <button type="button" class="btn btn-light" id="addComment">Add comment</button>
+                    <button type="button" class="btn btn-light btn-show-comments">Show comments (12)</button>
+                    <button type="button" class="btn btn-light btn-add-comment">Add comment</button>
                 </div>
             </div>
             <div class="col-lg-2 col-md-2 controls">
@@ -71,10 +74,10 @@
                 </div>
                 <div class="likes">
                     <span>14</span>
-                    <button type="button" class="btn btn-success">
+                    <button type="button" class="btn btn-success btn-like">
                         <i class="fas fa-thumbs-up"></i>
                     </button>
-                    <button type="button" class="btn btn-danger">
+                    <button type="button" class="btn btn-danger btn-dislike">
                         <i class="fas fa-thumbs-down"></i>
                     </button>
                     <span>90</span>
@@ -178,9 +181,9 @@
             </div>
         </div>-->
         
-        <button type="button" class="btn btn-primary" id="butAddNote">Add note</button>
+        <button type="button" class="btn btn-primary btn-add-note">Add note</button>
         
-        <div class="row form" id="formAddNote">
+        <div class="row form frm-add-note">
             <div class="col-lg-12">
                 <form>
                     <div class="form-group">
@@ -210,7 +213,7 @@
                         <input class="form-check-input" type="radio" name="exampleRadios" id="formRadio3" value="option3">
                         <label class="form-check-label" for="formRadio3">Offer</label>
                     </div>
-                    <button type="button" class="btn btn-primary" id="butFormDone">Done</button>
+                    <button type="button" class="btn btn-primary btn-add-note-done">Done</button>
                 </form>
             </div>
             
