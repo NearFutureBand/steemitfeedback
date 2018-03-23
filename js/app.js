@@ -11,17 +11,17 @@ function openAddNoteForm(){
 
 /*closing form for adding new note*/
 function closeAddNoteForm(){
-    document.getElementsByClassNameById('frm-add-note')[0].style.display = 'none';
-    document.getElementsByClassNameById('btn-add-note')[0].style.display = 'block';
+    document.getElementsByClassName('frm-add-note')[0].style.display = 'none';
+    document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
 }
 
 /*opening form for add new note*/
 document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
-    if (wif) {
+    //if (wif) {
         openAddNoteForm();
-    }else{
-        auth(openAddNoteForm());
-    }
+    //}else{
+        //auth(openAddNoteForm());
+    //}
 });
 
 /*sending note to the database*/
@@ -30,7 +30,7 @@ document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click'
     var body = document.getElementById('formText').value;
     var type = getIndexFromName(findCheckedRadio('formRadio',4));
     console.log('title: '+title+' body: '+body+' type: '+type);
-    console.log(window.wif);
+    //console.log(window.wif);
     /**
     * comment() добавить пост
     * @param {Base58} wif - приватный posting ключ
@@ -60,6 +60,7 @@ document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click'
         else console.error(err);
     });    */
     closeAddNoteForm();
+    //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 });
 
 /*Loading notes*/
@@ -132,6 +133,35 @@ function openCommentForm(noteId){
     commentForm.className = 'row form frm-add-comment';
     commentForm.innerHTML = "<div class='col-lg-12'><form><div class='form-group'><div class='form-group'><textarea class='form-control' id='formCommentText' rows='3' placeholder='Type your comment here'></textarea></div></div><button type='button' class='btn btn-primary btn-add-comment-done'>Comment</button></form></div>";
    document.getElementsByClassName('wrapper')[0].insertBefore(commentForm,document.getElementById(noteId).nextElementSibling);
+    
+    /*event for button 'Comment' (btn-add-comment-done)*/
+    commentForm.children[0].children[0].children[1].addEventListener('click',function(){
+        var body = document.getElementById('formCommentText').value;
+        console.log("comment has been added. Body: "+body);
+        removeAddCommentForm(2);
+        Array.from(document.getElementsByClassName('btn-add-comment-done')).forEach(function(item){
+            if(item.style.display == 'none'){
+                item.style.display = 'block';
+            }
+        });
+    });
+}
+
+/*sending data from the form for adding comment*/
+document.getElementsByClassName('btn-add-comment-done')[0].onclick = function(){
+    var body = document.getElementById('formCommentText').value;
+    console.log("comment has been added. Body: "+body);
+    removeAddCommentForm(2);
+}
+
+/*removing form for adding a comment*/
+function removeAddCommentForm(noteId){
+    var form = document.getElementsByClass('frm-add-comment')[0];
+    
+    console.log(form.getAttribute('data-for-note'));
+    form.remove();
+    
+    document.getElementById(noteId).children[0].children[2].children[1].style.display.block;
 }
 
 /*giveaway of events to buttons for adding comment */
@@ -142,12 +172,6 @@ Array.from(document.getElementsByClassName('btn-add-comment')).forEach(function(
     });
 });
 
-/*sending data from the form for adding comment*/
-document.getElementsByClassName('btn-add-comment-done')[0].onclick = function(){
-    var body = document.getElementById('formCommentText').value;
-    console.log("comment has been added. Body: "+body);
-    /*hide form and show button AddForm*/
-}
 
 
 /*other functions*/
