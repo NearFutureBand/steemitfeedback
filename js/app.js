@@ -15,16 +15,16 @@ function closeAddNoteForm(){
     document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
 }
 
-/*opening form for add new note*/
+/*opening form for add new note DONE*/
 document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
-    //if (wif) {
+    if (wif) {
         openAddNoteForm();
-    //}else{
-        //auth(openAddNoteForm());
-    //}
+    }else{
+        auth(openAddNoteForm());
+    }
 });
 
-/*sending note to the database*/
+/*sending note to the database DONE*/
 document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click', function(){
     var title = document.getElementById('formHeader').value;
     var body = document.getElementById('formText').value;
@@ -86,54 +86,67 @@ function loadNotes(){
         }
         else console.error(err);
         console.log("here4");*/
+    
     var note = document.createElement('div');
     note.className = 'row note';
     note.setAttribute('id',10);
-    note.innerHTML = "<div class='col-lg-10 col-md-10 text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons d-flex justify-content-center'><button type='button' class='btn btn-light btn-show-comments'>Show comments (12)</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
+    note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons d-flex justify-content-center'><button type='button' class='btn btn-light btn-show-comments'>Show comments</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
     document.getElementsByClassName('wrapper')[0].insertBefore(note,document.getElementsByClassName("btn-add-note")[0]);
     
-    //event for btn-add-comment
-    note.children[0].children[2].children[1].addEventListener('click', function(){
+    //event for btn-show-comments DONE
+    var btnShowCom = note.children[0].children[2].children[0];
+    btnShowCom.addEventListener('click', function(){
+        if(btnShowCom.innerHTML == 'Show comments'){
+            loadComments(note.getAttribute('id'));
+            btnShowCom.innerHTML = 'Hide comments';    
+        }else{
+            hideComments(note.getAttribute('id'));
+            btnShowCom.innerHTML = 'Show comments';
+        }
+    });
+    
+    //event for btn-add-comment DONE
+    var btnAddCom = note.children[0].children[2].children[1];
+    btnAddCom.addEventListener('click', function(){
         openCommentForm(note.getAttribute('id'));
-        note.children[0].children[2].children[1].style.display = 'none';
+        btnAddCom.style.display = 'none';
     });
-    //event for btn-show-comments HERE
-    note.children[0].children[2].children[0].addEventListener('click', function(){
-        loadComments(note.getAttribute('id'));
-        //HERE
-        console.log(note.children[0].children[0].children[1].textContent);
-    });
-    console.log('added note, id = '+note.getAttribute('id'));
 }
 document.getElementsByClassName('btn-load-notes')[0].addEventListener('click', loadNotes);
 
 
 /*COMMENTS*/
-/*Loading comments from database - IN PROGRESS*/
+/*Loading comments from database - DONE*/
 function loadComments(noteId){
     //заглушка - тут цикл по всем найденным комментам
     console.log('comments for'+noteId);
     var comment = document.createElement('div');
-    comment.className = 'row comment';
-    comment.setAttribute('id','comment'+noteId);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 offset-md-1 col-md-10'><div class='row'><div class='col-lg-10 col-md-10 text'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-2 col-md-2 controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div></div></div>";
-    document.getElementsByClassName('wrapper')[0].insertBefore(comment,document.getElementById(noteId).nextElementSibling);
+    comment.className = 'col-lg-12 col-md-12 comments';
+    comment.innerHTML = "<div class='row comment'><div class='col-lg-8 offset-lg-1 col-md-8 offset-md-1 text tile'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-2 col-md-2 controls tile'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div></div>";
+    
+    //if the form is aldeady opened - insert before it. Else insert to the end of the note.
+    var thisNote = document.getElementById(noteId);
+    if(thisNote.children[thisNote.childElementCount-1].classList.contains('frm-add-com')){
+        thisNote.insertBefore(comment,thisNote.children[thisNote.childElementCount-1]);
+    }else{
+        thisNote.appendChild(comment);
+    }
 }
 
-/*printing all comments (or some if we add it like parameter)*/
-document.getElementsByClassName('btn-show-comments')[0].addEventListener('click',function(){
-    console.log('butShowComments, id='+this.parentElement.parentElement.parentElement.getAttribute('id'));
-    loadComments(this.parentElement.parentElement.parentElement.getAttribute('id'));
-});
+/*Removing all the comments from note width given ID*/
+function hideComments(noteId){
+    console.log('removing comments from'+noteId);
+}
 
-/*Inserting form for adding a comment*/
+/*Inserting form for adding a comment  DONE1/2*/
 function openCommentForm(noteId){
     console.log('openCommentForm for noteId = '+noteId);
     var commentForm = document.createElement('div');
-    commentForm.className = 'row form frm-add-comment';
-    commentForm.innerHTML = "<div class='col-lg-12'><form><div class='form-group'><div class='form-group'><textarea class='form-control' id='formCommentText' rows='3' placeholder='Type your comment here'></textarea></div></div><button type='button' class='btn btn-primary btn-add-comment-done'>Comment</button></form></div>";
-   document.getElementsByClassName('wrapper')[0].insertBefore(commentForm,document.getElementById(noteId).nextElementSibling);
+    commentForm.className = 'col-lg-12 col-md-12 frm frm-add-com';
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><div class='form-group'><textarea class='form-control' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div></div><button type='button' class='btn btn-primary btn-add-com-done'>Done</button></form></div></div>";
+   document.getElementById(noteId).appendChild(commentForm);
     
+    //HERE
     /*event for button 'Comment' (btn-add-comment-done)*/
     commentForm.children[0].children[0].children[1].addEventListener('click',function(){
         var body = document.getElementById('formCommentText').value;
