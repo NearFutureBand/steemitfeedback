@@ -96,6 +96,7 @@ function loadNotes(){
         console.log('new note id = '+note.getAttribute('id'));
     }
     addEventsForCommentButtons();
+    addEventsForNoteLikes();
 }
 
 document.addEventListener('DOMContentLoaded', loadNotes);
@@ -132,6 +133,7 @@ function loadComments(noteId){
     for(var i=0;i<2;i++){
         var comment = document.createElement('div');
         comment.className = 'row comment';
+        comment.setAttribute('id','c'+i);
         comment.innerHTML = "<div class='col-lg-8 offset-lg-1 col-md-8 offset-md-1 text tile'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-2 col-md-2 controls tile'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
         document.getElementById(noteId).children[2].appendChild(comment);
         console.log('comments for id = '+noteId);
@@ -171,8 +173,36 @@ function removeAddCommentForm(){
 }
 
 /*LIKES & DISLIKES*/
+/*Events for buttons in notes (DONE)*/
+function addEventsForNoteLikes(){
+    Array.from(document.getElementsByClassName('btn-like')).forEach(function(item){
+        item.addEventListener('click',function(){
+            var noteId = item.parentElement.parentElement.parentElement.getAttribute('id');
+            var likes = Number(item.previousElementSibling.innerHTML);
+            item.previousElementSibling.innerHTML = ++likes;
+            console.log('like to note '+noteId);
+        });
+    });
+    
+    Array.from(document.getElementsByClassName('btn-dislike')).forEach(function(item){
+        item.addEventListener('click',function(){
+            var noteId = item.parentElement.parentElement.parentElement.getAttribute('id');
+            var dislikes = Number(item.nextElementSibling.innerHTML);
+            item.nextElementSibling.innerHTML = ++dislikes;
+            console.log('dislike to note '+noteId)
+        });
+    });
+}
 
-
+/*Events for buttons in comments (HERE)*/
+/*function addEventsForComLikes(){
+    Array.from(document.getElementsByClassName('btn-com-like')).forEach(function(item){
+        item.addEventListener('click',function(){
+            var noteId = ;
+            var comId = item.parentElement.parentElement.parentElement.getAttribute('id');
+        });
+    });
+}*/
 
 
 /*other functions*/
