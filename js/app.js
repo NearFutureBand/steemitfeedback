@@ -3,19 +3,19 @@ golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
 /*FORM FOR ADDING NEW NOTE*/
-/*show form for adding new note*/
+/*DONE*/
 function openAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'block';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'none';
 }
 
-/*closing form for adding new note*/
+/*DONE*/
 function closeAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'none';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
 }
 
-/*opening form for add new note DONE*/
+/*opening form for adding new note (DONE)*/
 document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
     if (wif) {
         openAddNoteForm();
@@ -24,7 +24,7 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
     }
 });
 
-/*sending note to the database DONE*/
+/*sending note to the database (DONE 0.8)*/
 document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click', function(){
     var title = document.getElementById('formHeader').value;
     var body = document.getElementById('formText').value;
@@ -63,7 +63,7 @@ document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click'
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 });
 
-/*Loading notes*/
+/*Loading notes (DONE)*/
 function loadNotes(){
     /*console.log("here1");
     var query = {	
@@ -87,103 +87,91 @@ function loadNotes(){
         else console.error(err);
         console.log("here4");*/
     
-    var note = document.createElement('div');
-    note.className = 'row note';
-    note.setAttribute('id',10);
-    note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons d-flex justify-content-center'><button type='button' class='btn btn-light btn-show-comments'>Show comments</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
-    document.getElementsByClassName('wrapper')[0].insertBefore(note,document.getElementsByClassName("btn-add-note")[0]);
-    
-    //event for btn-show-comments DONE
-    var btnShowCom = note.children[0].children[2].children[0];
-    btnShowCom.addEventListener('click', function(){
-        if(btnShowCom.innerHTML == 'Show comments'){
-            loadComments(note.getAttribute('id'));
-            btnShowCom.innerHTML = 'Hide comments';    
-        }else{
-            hideComments(note.getAttribute('id'));
-            btnShowCom.innerHTML = 'Show comments';
-        }
-    });
-    
-    //event for btn-add-comment DONE
-    var btnAddCom = note.children[0].children[2].children[1];
-    btnAddCom.addEventListener('click', function(){
-        openCommentForm(note.getAttribute('id'));
-        btnAddCom.style.display = 'none';
-    });
+    for(var i=0;i<2;i++){
+        var note = document.createElement('div');
+        note.className = 'row note';
+        note.setAttribute('id',10+i);
+        note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons d-flex justify-content-center'><button type='button' class='btn btn-light btn-show-comments'>Show comments</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>";
+        document.getElementsByClassName('wrapper')[0].insertBefore(note,document.getElementsByClassName("btn-add-note")[0]);
+        console.log('new note id = '+note.getAttribute('id'));
+    }
+    addEventsForCommentButtons();
 }
-document.getElementsByClassName('btn-load-notes')[0].addEventListener('click', loadNotes);
+
+document.addEventListener('DOMContentLoaded', loadNotes);
+//document.getElementsByClassName('btn-load-notes')[0].addEventListener('click', loadNotes);
+
+function addEventsForCommentButtons(){
+    Array.from(document.getElementsByClassName('note')).forEach(function(item){
+        
+        //event for btn-show-comments (DONE)
+        var btnShowCom = item.children[0].children[2].children[0];
+        btnShowCom.addEventListener('click', function(){
+            if(btnShowCom.innerHTML == 'Show comments'){
+                loadComments(item.getAttribute('id'));
+                btnShowCom.innerHTML = 'Hide comments';    
+            }else{
+                hideComments(item.getAttribute('id'));
+                btnShowCom.innerHTML = 'Show comments';
+            }
+        });
+        
+        //event for btn-add-comment (DONE)
+        var btnAddCom = item.children[0].children[2].children[1];
+        btnAddCom.addEventListener('click', function(){
+            openCommentForm(item.getAttribute('id'));
+            btnAddCom.style.display = 'none';
+        });
+    });//end of forEach
+}
 
 
 /*COMMENTS*/
-/*Loading comments from database - DONE*/
+/*Loading comments from database - (DONE 0.5)*/
 function loadComments(noteId){
-    //заглушка - тут цикл по всем найденным комментам
-    console.log('comments for'+noteId);
-    var comment = document.createElement('div');
-    comment.className = 'col-lg-12 col-md-12 comments';
-    comment.innerHTML = "<div class='row comment'><div class='col-lg-8 offset-lg-1 col-md-8 offset-md-1 text tile'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-2 col-md-2 controls tile'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div></div>";
-    
-    //if the form is aldeady opened - insert before it. Else insert to the end of the note.
-    var thisNote = document.getElementById(noteId);
-    if(thisNote.children[thisNote.childElementCount-1].classList.contains('frm-add-com')){
-        thisNote.insertBefore(comment,thisNote.children[thisNote.childElementCount-1]);
-    }else{
-        thisNote.appendChild(comment);
+    for(var i=0;i<2;i++){
+        var comment = document.createElement('div');
+        comment.className = 'row comment';
+        comment.innerHTML = "<div class='col-lg-8 offset-lg-1 col-md-8 offset-md-1 text tile'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-2 col-md-2 controls tile'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
+        document.getElementById(noteId).children[2].appendChild(comment);
+        console.log('comments for id = '+noteId);
+        //добавить события для кнопок лайка/дизлайка коммента внешней функцией
     }
 }
 
-/*Removing all the comments from note width given ID*/
+/*Removing all existing comments from note width given ID (DONE)*/
 function hideComments(noteId){
-    console.log('removing comments from'+noteId);
+    Array.from(document.getElementById(noteId).children[2].children).forEach(function(item){
+        item.remove();    
+    });
 }
 
 /*Inserting form for adding a comment  DONE1/2*/
 function openCommentForm(noteId){
-    console.log('openCommentForm for noteId = '+noteId);
     var commentForm = document.createElement('div');
     commentForm.className = 'col-lg-12 col-md-12 frm frm-add-com';
     commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><div class='form-group'><textarea class='form-control' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div></div><button type='button' class='btn btn-primary btn-add-com-done'>Done</button></form></div></div>";
    document.getElementById(noteId).appendChild(commentForm);
     
-    //HERE
-    /*event for button 'Comment' (btn-add-comment-done)*/
-    commentForm.children[0].children[0].children[1].addEventListener('click',function(){
-        var body = document.getElementById('formCommentText').value;
+    /*event for button 'Comment' (btn-add-comment-done) - sending comment to the database*/
+    commentForm.children[0].children[0].children[0].children[1].addEventListener('click',function(){
+        var body = document.getElementById('commentBody').value;
         console.log("comment has been added. Body: "+body);
-        removeAddCommentForm(2);
-        Array.from(document.getElementsByClassName('btn-add-comment-done')).forEach(function(item){
-            if(item.style.display == 'none'){
-                item.style.display = 'block';
-            }
-        });
+        removeAddCommentForm();
     });
-}
-
-/*sending data from the form for adding comment*/
-document.getElementsByClassName('btn-add-comment-done')[0].onclick = function(){
-    var body = document.getElementById('formCommentText').value;
-    console.log("comment has been added. Body: "+body);
-    removeAddCommentForm(2);
 }
 
 /*removing form for adding a comment*/
-function removeAddCommentForm(noteId){
-    var form = document.getElementsByClass('frm-add-comment')[0];
-    
-    console.log(form.getAttribute('data-for-note'));
+function removeAddCommentForm(){
+    var form = document.getElementsByClassName('frm-add-com')[0];
+    var noteId = form.parentElement.getAttribute('id');
     form.remove();
-    
-    document.getElementById(noteId).children[0].children[2].children[1].style.display.block;
+    //Show message about successful comment
+    document.getElementById(noteId).children[0].children[2].children[1].style.display = 'block';
 }
 
-/*giveaway of events to buttons for adding comment */
-Array.from(document.getElementsByClassName('btn-add-comment')).forEach(function(item){
-    item.addEventListener('click', function(){
-        openCommentForm(item.parentElement.parentElement.parentElement.getAttribute('id'));
-        item.style.display = 'none';
-    });
-});
+/*LIKES & DISLIKES*/
+
 
 
 
