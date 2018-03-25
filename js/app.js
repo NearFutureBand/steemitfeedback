@@ -100,8 +100,8 @@ function loadNotes(){
         var noteId = note.getAttribute('id');
         console.log('new note id = '+noteId);
         addEventsForCommentButtons(noteId);
+        addEventsForNoteLikes(noteId);
     }
-    addEventsForNoteLikes();//заменить на безцикловый
 }
 
 
@@ -130,8 +130,9 @@ function loadComments(noteId){
     for(var i=0;i<2;i++){
         var comment = createComment('c'+i, noteId);//здесь будем передавать все параметры для заполнения коммента
         getBlockComments(noteId).appendChild(comment);
+        console.log(comment);
+        addEventsForComLikes(noteId,comment.getAttribute('id'));
     }
-    addEventsForComLikes();
 }
 
 /*Removing all existing comments from note width given ID (done)*/
@@ -166,59 +167,32 @@ function removeAddCommentForm(noteId){
 }
 
 
-/*LIKES & DISLIKES - НЕ ОПТИМИЗИРОВАНО -- HERE*/
+/*LIKES & DISLIKES*/
 /*Events for these buttons in notes */
-function addEventsForNoteLikes(){
-    Array.from(document.getElementsByClassName('btn-like')).forEach(function(item){
-        item.addEventListener('click',function(){
-            var noteId = item.parentElement.parentElement.parentElement.getAttribute('id');
-            var likes = Number(item.previousElementSibling.innerHTML);
-            item.previousElementSibling.innerHTML = ++likes;
-            console.log('like to note '+noteId);
-        });
+function addEventsForNoteLikes(noteId){
+    getBtnLikeNote(noteId).addEventListener('click',function(){
+        var likes = Number(this.previousElementSibling.innerHTML);
+        this.previousElementSibling.innerHTML = ++likes;
+        console.log('like to note '+noteId);
     });
-    
-    Array.from(document.getElementsByClassName('btn-dislike')).forEach(function(item){
-        item.addEventListener('click',function(){
-            var noteId = item.parentElement.parentElement.parentElement.getAttribute('id');
-            var dislikes = Number(item.nextElementSibling.innerHTML);
-            item.nextElementSibling.innerHTML = ++dislikes;
-            console.log('dislike to note '+noteId)
-        });
+    getBtnDislikeNote(noteId).addEventListener('click',function(){
+        var dislikes = Number(this.nextElementSibling.innerHTML);
+        this.nextElementSibling.innerHTML = ++dislikes;
+        console.log('like to note '+noteId);
     });
 }
 
-/*Events for these buttons in comments */
-function addEventsForComLikes(){
-    
-    Array.from(document.getElementsByClassName('btn-com-like')).forEach(function(item){
-        item.addEventListener('click',function(){
-            
-            //находим id поста - 5 уровней вверх
-            var noteId = item.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute('id');
-            
-            //находим id коммента - 3 уровня вверх
-            var comId = item.parentElement.parentElement.parentElement.getAttribute('id');
-            
-            var likes = Number(item.previousElementSibling.innerHTML);
-            item.previousElementSibling.innerHTML = ++likes;
-            console.log('like to note '+noteId+' comment '+comId);
-        });
+/*Events for these buttons in comments HERE*/
+function addEventsForComLikes(noteId, comId){
+    getBtnLikeCom(noteId,comId).addEventListener('click',function(){
+        var likes = Number(this.previousElementSibling.innerHTML);
+        this.previousElementSibling.innerHTML = ++likes;
+        console.log('like to note '+noteId+' comment '+comId);
     });
-    
-    Array.from(document.getElementsByClassName('btn-com-dislike')).forEach(function(item){
-        item.addEventListener('click',function(){
-            
-            //находим id поста - 5 уровней вверх
-            var noteId = item.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute('id');
-            
-            //находим id коммента - 3 уровня вверх
-            var comId = item.parentElement.parentElement.parentElement.getAttribute('id');
-            
-            var likes = Number(item.nextElementSibling.innerHTML);
-            item.nextElementSibling.innerHTML = ++likes;
-            console.log('dislike to note '+noteId+' comment '+comId);
-        });
+    getBtnDislikeCom(noteId,comId).addEventListener('click',function(){
+        var dislikes = Number(this.nextElementSibling.innerHTML);
+        this.nextElementSibling.innerHTML = ++dislikes;
+        console.log('dislike to note '+noteId+' comment '+comId);
     });
 }
 
@@ -256,6 +230,27 @@ function getBtnAddComment(noteId){
 }
 function getBtnAddComDone(noteId){
     return getBlockFormAddComment(noteId).children[0].children[0].children[0].children[1];
+}
+function getBtnLikeNote(noteId){
+    return document.getElementById(noteId).children[1].children[2].children[1];
+}
+function getBtnDislikeNote(noteId){
+    return document.getElementById(noteId).children[1].children[2].children[2];
+}
+function getComment(noteId, comId){
+    var comment = null;
+    Array.from(getBlockComments(noteId).children).forEach(function(item){
+        if(item.getAttribute('id')==comId){
+            comment = item;
+        }
+    });
+    return comment;
+}
+function getBtnLikeCom(noteId, comId){
+    return getComment(noteId,comId).children[1].children[2].children[1];
+}
+function getBtnDislikeCom(noteId, comId){
+    return getComment(noteId,comId).children[1].children[2].children[2];
 }
 function getTxtareaCom(noteId){
     return getBlockFormAddComment(noteId).children[0].children[0].children[0].children[0].children[0];
