@@ -102,49 +102,77 @@ function loadNotes(){
         console.log("here4");*/
     
     for(var i=0;i<2;i++){
-        var note = createNote(i+1);//сюда будем передавать все параметры для заполнения поста
-        document.getElementsByClassName('wrapper')[0].insertBefore(note,document.getElementsByClassName('bottom-line')[0]);
-        var noteId = note.getAttribute('id');
-        console.log('new note id = '+noteId);
-        addEventsForCommentButtons(noteId);
-        addEventsForNoteLikes(noteId);
+        loadNote(i+1);
     }
 }
 
-/*removing all the notes to open the form for adding new feedback*/
+/*Load only one note - may be applied with parameters (?)*/
+function loadNote(noteId){
+    var note = createNote(noteId);//сюда будем передавать все параметры для заполнения поста
+    document.getElementsByClassName('wrapper')[0].appendChild(note);
+    console.log('new note id = '+noteId);
+    addEventsForCommentButtons(noteId);
+    addEventsForNoteLikes(noteId);
+    addEventForNoteHeader(noteId);
+}
+
+/*Remove one note with the given noteId*/
+function removeNote(noteId){
+    document.getElementById(noteId).remove();
+}
+
+/*Removing all the notes to open the form for adding new feedback*/
 function removeNotes(){
     Array.from(document.getElementsByClassName('note')).forEach(function(item){
         item.remove();
     });
 }
 
+/*Opening all the comments and the form, removing all the rest*/
+function expandNote(noteId){
+    removeNotesExceptOne(noteId);
+    loadComments(noteId);
+    openCommentForm(noteId);
+}
+
+/*Event of expanding note - action like a button 'Comments'*/
+function addEventForNoteHeader(noteId){
+    var thisHeader = getNoteHeader(noteId);
+    thisHeader.addEventListener('click',function(){
+        if(thisHeader.getAttribute('data-permission')=='true'){
+            expandNote(noteId);
+            thisHeader.setAttribute('data-permission','false');
+            getBtnShowComment(noteId).innerHTML = 'Hide comments';
+        }
+    });
+    
+} 
+
 /*COMMENTS*/
 /*Events for buttons inside note to manipulate comments (done)*/
 function addEventsForCommentButtons(noteId){
     
     getBtnShowComment(noteId).addEventListener('click',function(){
-        if(this.innerHTML == 'Show comments'){
-            loadComments(noteId);
-            this.innerHTML = 'Hide comments';   
+        if(this.innerHTML == 'Comments'){
+            expandNote(noteId);
+            this.innerHTML = 'Hide comments'; 
+            getNoteHeader(noteId).setAttribute('data-permission','false');
         }else{
-            hideComments(noteId);
-            this.innerHTML = 'Show comments';
+            removeNote(noteId);
+            loadNotes();
         }
     });
     
-    getBtnAddComment(noteId).addEventListener('click',function(){
+    /*getBtnAddComment(noteId).addEventListener('click',function(){
         openCommentForm(noteId);
         this.style.display = 'none';
-    });
+    });*/
 }
 
 /*Loading comments from database - (done 0.5)*/
 function loadComments(noteId){
     for(var i=0;i<2;i++){
-        var comment = createComment('c'+i, noteId);//здесь будем передавать все параметры для заполнения коммента
-        getBlockComments(noteId).appendChild(comment);
-        console.log(comment);
-        addEventsForComLikes(noteId,comment.getAttribute('id'));
+        createComment('c'+i, noteId);//здесь будем передавать все параметры для заполнения коммента
     }
 }
 
@@ -168,7 +196,11 @@ function addEventsForComDone(noteId){
     getBtnAddComDone(noteId).addEventListener('click',function(){
         var body = getTxtareaCom(noteId).value;
         console.log('comment to note '+noteId+'. Body: '+body);
-        removeAddCommentForm(noteId);
+        createComment(findUniqueIdForComment(noteId),noteId);
+        
+        var commentCount = Number(getLblCommentCount(noteId).innerHTML);
+        getLblCommentCount(noteId).innerHTML = ++commentCount;
+        getTxtareaCom(noteId).value = '';
     });
 }
 
@@ -211,6 +243,27 @@ function addEventsForComLikes(noteId, comId){
 
 
 /*other functions*/
+function findUniqueIdForComment(noteId){
+    var blockComments = getBlockComments(noteId);
+    var flag = false;
+    var newId = Number(blockComments.children[blockComments.childElementCount-1].getAttribute('id').substr(1));
+    while(flag==false){
+        flag=true;
+        for(var i=0; i<blockComments.childElementCount; i++){
+            if(Number(blockComments.children[i].getAttribute('id').substr(1)) == newId){
+                flag = false;
+                newId = (Number(newId)+1);
+            }
+        }    
+    }
+    return 'c'+newId;
+}
+
+function removeNotesExceptOne(noteId){
+    Array.from(document.getElementsByClassName('note')).forEach(function(item){
+        if(item.getAttribute('id')!=noteId) item.remove();
+    });
+}
 
 function findCheckedRadio(name,count){
     for(var i=0;i<count;i++){
@@ -236,10 +289,13 @@ function getBlockComments(noteId){
 }
 function getBtnShowComment(noteId){
     //row.note#noteId -> ...
-    return document.getElementById(noteId).children[0].children[2].children[0];
-}
-function getBtnAddComment(noteId){
     return document.getElementById(noteId).children[0].children[2].children[1];
+}
+/*function getBtnAddComment(noteId){
+    return document.getElementById(noteId).children[0].children[2].children[2];
+}*/
+function getNoteHeader(noteId){
+    return document.getElementById(noteId).children[0].children[0];
 }
 function getBtnAddComDone(noteId){
     return getBlockFormAddComment(noteId).children[0].children[0].children[0].children[1];
@@ -268,12 +324,18 @@ function getBtnDislikeCom(noteId, comId){
 function getTxtareaCom(noteId){
     return getBlockFormAddComment(noteId).children[0].children[0].children[0].children[0].children[0];
 }
+function getLblCommentCount(noteId){
+    return getBtnShowComment(noteId).previousElementSibling;
+}
 
 function createNote(noteId){
     var note = document.createElement('div');
     note.className = 'row note';
     note.setAttribute('id',noteId);
-    note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons d-flex justify-content-center'><button type='button' class='btn btn-light btn-show-comments'>Show comments</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>";
+    note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1 data-permission='true'>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons'><span>24</span><button type='button' class='btn btn-light btn-show-comments'>Comments</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>";
+    
+    /*note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons'><span>24</span><button type='button' class='btn btn-light btn-show-comments'>Comments</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>"; - с кнопкой AddComment*/
+    
     return note;
 }
 function createComment(comId, noteId){
@@ -281,7 +343,8 @@ function createComment(comId, noteId){
     comment.className = 'row comment';
     comment.setAttribute('id',comId);
     comment.innerHTML = "<div class='col-lg-8 offset-lg-1 col-md-8 offset-md-1 text tile'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-2 col-md-2 controls tile'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div>";
-    return comment;
+    getBlockComments(noteId).appendChild(comment);
+    addEventsForComLikes(noteId,comId);
 }
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
