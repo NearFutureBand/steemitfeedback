@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
         <link rel="icon" href="graphics/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="stylesheet" type="text/css" href="css/custom.css">
@@ -21,10 +20,10 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <button class="btn btn-success my-2 my-sm-0" id="golos-urls"><span class="icon-link"></span> Get my feedbacks</button>
+                        <button class="btn btn-success my-2 my-sm-0" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-primary btn-add-note">Add feedback</button>
+                        <button class="btn btn-primary btn-add-note"><span class="icon-forward"></span> Add feedback</button>
                     </li>
                     
                     <li class="nav-item">
@@ -50,29 +49,35 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light tabs">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     
       <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link tab active" href="#" data-target="-1">All</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link tab" href="#" data-target="0">Ideas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link tab" href="#" data-target="1">Problems</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link tab" href="#" data-target="2">Questions</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link tab" href="#" data-target="3">Offers</a>
-          </li>
-        </ul>
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 tabs">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item">
+                            <a class="nav-link tab active" href="#" data-target="-1">All</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link tab" href="#" data-target="0">Ideas</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link tab" href="#" data-target="1">Problems</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link tab" href="#" data-target="2">Questions</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link tab" href="#" data-target="3">Offers</a>
+                          </li>
+                        </ul>
+                  </div>
+              </div>
+          </div>
       </div>
     </nav>
 </header>
@@ -110,8 +115,8 @@
                         <input class="form-check-input" type="radio" name="exampleRadios" id="formRadio3" value="option3">
                         <label class="form-check-label" for="formRadio3">Offer</label>
                     </div>
-                    <button type="button" class="btn btn-primary btn-add-note-done">Done</button>
-                    <button type="button" class="btn btn-primary btn-add-note-cancel">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-add-note-done mr-2"><span class="icon-checkmark"></span> Submit</button>
+                    <button type="button" class="btn btn-primary btn-add-note-cancel ml-2"><span class="icon-cross"></span> Cancel</button>
                 </form>
             </div>
             
@@ -125,44 +130,16 @@
     </footer>
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/golos-js@0.6.0/dist/golos.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.13.1/dist/sweetalert2.all.min.js"></script>
     <script src="https://unpkg.com/ipfs-api@9.0.0/dist/index.min.js"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/findAndReplaceDOMText/0.4.6/findAndReplaceDOMText.min.js"></script>
-    
-    <!-- 
-    <script src="https://golosimages.com/auth.js"></script> -->
     <script src="https://golosimages.com/auth.js"></script>
     <script src="js/app.js"></script>
     <script src="https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    
-    
-    <script>
-        
-        
-        /**
-        * login() авторизаций
-        * @param {String} username - юзернейм пользователя
-        * @param {String} password - пароль пользователя
-        */
-        /*var username = 'golos-test';
-        var password = '5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU';
-        golos.api.login(username, password, function(err, result) {
-            //console.log(err, result);
-            if ( ! err) {
-                console.log('login', result);
-            }
-            //else console.error(err);
-        });*/
-        
-    </script>
     
   </body>
     <div id="check-table-for-records" hidden="true">

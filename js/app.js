@@ -142,7 +142,7 @@ function addEventForNoteHeader(noteId){
         if(thisHeader.getAttribute('data-permission')=='true'){
             expandNote(noteId);
             thisHeader.setAttribute('data-permission','false');
-            getBtnShowComment(noteId).innerHTML = 'Hide comments';
+            getBtnShowComment(noteId).setAttribute('data-state','hide');
         }
     });
     
@@ -153,20 +153,15 @@ function addEventForNoteHeader(noteId){
 function addEventsForCommentButtons(noteId){
     
     getBtnShowComment(noteId).addEventListener('click',function(){
-        if(this.innerHTML == 'Comments'){
+        if(this.getAttribute('data-state') == 'show'){
             expandNote(noteId);
-            this.innerHTML = 'Hide comments'; 
+            this.setAttribute('data-state','hide'); 
             getNoteHeader(noteId).setAttribute('data-permission','false');
         }else{
             removeNote(noteId);
             loadNotes();
         }
     });
-    
-    /*getBtnAddComment(noteId).addEventListener('click',function(){
-        openCommentForm(noteId);
-        this.style.display = 'none';
-    });*/
 }
 
 /*Loading comments from database - (done 0.5)*/
@@ -280,7 +275,6 @@ function getIndexFromName(name){
     var indexLength = name.length - 9;
     return name.slice(-indexLength);
 }
-
 function getBlockFormAddComment(noteId){
     return document.getElementById(noteId).children[document.getElementById(noteId).childElementCount-1];
 }
@@ -289,7 +283,7 @@ function getBlockComments(noteId){
 }
 function getBtnShowComment(noteId){
     //row.note#noteId -> ...
-    return document.getElementById(noteId).children[0].children[2].children[1];
+    return document.getElementById(noteId).children[0].children[2].children[0];
 }
 /*function getBtnAddComment(noteId){
     return document.getElementById(noteId).children[0].children[2].children[2];
@@ -325,14 +319,14 @@ function getTxtareaCom(noteId){
     return getBlockFormAddComment(noteId).children[0].children[0].children[0].children[0].children[0];
 }
 function getLblCommentCount(noteId){
-    return getBtnShowComment(noteId).previousElementSibling;
+    return getBtnShowComment(noteId).children[0];
 }
 
 function createNote(noteId){
     var note = document.createElement('div');
     note.className = 'row note';
     note.setAttribute('id',noteId);
-    note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1 data-permission='true'>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons'><span>24</span><button type='button' class='btn btn-light btn-show-comments'>Comments</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>";
+    note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h3 data-permission='true'>Lorem ipsum dolor sit.</h3><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments' data-state='show'><span class='badge badge-light'>4</span><span class='icon-message-square'</span></button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>";
     
     /*note.innerHTML = "<div class='col-lg-10 col-md-10 tile text'><h1>Lorem ipsum dolor sit.</h1><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p><div class='buttons'><span>24</span><button type='button' class='btn btn-light btn-show-comments'>Comments</button><button type='button' class='btn btn-light btn-add-comment'>Add comment</button></div></div><div class='col-lg-2 col-md-2 tile controls'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div><div class='col-lg-12 col-md-12 comments'></div>"; - с кнопкой AddComment*/
     
@@ -349,7 +343,7 @@ function createComment(comId, noteId){
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
     commentForm.className = 'col-lg-12 col-md-12 frm frm-add-com';
-    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><button type='button' class='btn btn-primary btn-add-com-done'>Done</button></form></div></div>";
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><button type='button' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     return commentForm;
 }
 
