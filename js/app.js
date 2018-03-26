@@ -8,17 +8,19 @@ golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099
 function openAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'block';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'none';
+    removeNotes();
 }
 
 /*(done)*/
 function closeAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'none';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
+    loadNotes();
 }
 
 /*opening form for adding new note (done)*/
 document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
-    if (wif) {
+    if(wif){
         openAddNoteForm();
     }else{
         auth(openAddNoteForm());
@@ -64,6 +66,11 @@ document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click'
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 });
 
+/*cancelling of adding form for creating feedback (done)*/
+document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
+    closeAddNoteForm();
+});
+
 
 /*NOTES*/
 document.addEventListener('DOMContentLoaded', loadNotes);
@@ -104,6 +111,12 @@ function loadNotes(){
     }
 }
 
+/*removing all the notes to open the form for adding new feedback*/
+function removeNotes(){
+    Array.from(document.getElementsByClassName('note')).forEach(function(item){
+        item.remove();
+    });
+}
 
 /*COMMENTS*/
 /*Events for buttons inside note to manipulate comments (done)*/

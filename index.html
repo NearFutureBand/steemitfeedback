@@ -21,16 +21,17 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <button class="btn btn-success my-2 my-sm-0" id="golos-urls"><span class="icon-link"></span> Get my files</button>
+                        <button class="btn btn-success my-2 my-sm-0" id="golos-urls"><span class="icon-link"></span> Get my feedbacks</button>
                     </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary btn-add-note">Add feedback</button>
+                    </li>
+                    
                     <li class="nav-item">
                         <button class="btn btn-primary my-2 my-sm-0" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
                     </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0" id="rigth">
-                    <li class="nav-item d-flex align-items-center">
-                        <span id="node" class="icon-sphere mx-1"></span> IPFS<span id="node-status" class="badge badge-danger  mx-1"> offline</span>
-                    </li>
                     <li class="nav-item d-flex align-items-center">
                         <button class="btn btn-primary my-2 my-sm-0" id="integration"><span class="icon-new-tab"></span> Integration</button>
                     </li>
@@ -48,6 +49,31 @@
                 </div>
             </div>
         </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link tab active" href="#" data-target="-1">All</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link tab" href="#" data-target="0">Ideas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link tab" href="#" data-target="1">Problems</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link tab" href="#" data-target="2">Questions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link tab" href="#" data-target="3">Offers</a>
+          </li>
+        </ul>
+      </div>
     </nav>
 </header>
     <div class="container wrapper">
@@ -121,7 +147,7 @@
             </div>
         </div>-->
         <div class="bottom-line"></div>
-        <button type="button" class="btn btn-primary btn-add-note">Add note</button>
+        <!-- <button type="button" class="btn btn-primary btn-add-note">Add note</button> -->
         
         <div class="row form frm-add-note">
             <div class="col-lg-12 tile">
@@ -154,6 +180,7 @@
                         <label class="form-check-label" for="formRadio3">Offer</label>
                     </div>
                     <button type="button" class="btn btn-primary btn-add-note-done">Done</button>
+                    <button type="button" class="btn btn-primary btn-add-note-cancel">Cancel</button>
                 </form>
             </div>
             
