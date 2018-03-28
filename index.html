@@ -169,12 +169,12 @@
                 <form>
                     <div class="form-group">
                         <label for="formHeader">Header</label>
-                        <input type="text" class="form-control" id="formHeader" aria-describedby="formHeader">
+                        <input type="text" class="form-control" id="formHeader" aria-describedby="formHeader" required>
                     </div>
                     <div class="form-group">
                         <div class="form-group">
                             <label for="formText">Enter your text here</label>
-                            <textarea class="form-control" id="formText" rows="3"></textarea>
+                            <textarea class="form-control" id="formText" rows="3" required></textarea>
                         </div>
                     </div>
                     
@@ -195,7 +195,7 @@
                         <label class="form-check-label" for="formRadio3">Offer</label>
                     </div>
                     <button type="button" class="btn btn-primary btn-add-note-done mr-2"><span class="icon-checkmark"></span> Submit</button>
-                    <button type="button" class="btn btn-primary btn-add-note-cancel ml-2"><span class="icon-cross"></span> Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-add-note-cancel ml-2"><span class="icon-cross"></span> Cancel</button>
                 </form>
             </div>
             
@@ -220,6 +220,16 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     
   </body>
+    <div class="lding">
+		<div class="lds-css ng-scope">
+			<div class="lds-cube">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
     <div id="check-table-for-records" hidden="true">
     	Check table for records
     </div>

@@ -25,53 +25,58 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
 
 /*sending note to the database (done 0.8)*/
 /*HERE не работает событие submit, тупит auth(callback)*/
-document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click', function(e){
+document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
     if(wif){
         //e.preventDefault();
-        var title = document.getElementById('formHeader').value;
-        var body = document.getElementById('formText').value;
-        var type = getIndexFromName(findCheckedRadio('formRadio',4));
-        console.log('title: '+title+' body: '+body+' type: '+type);
-        //console.log(window.wif);
-        /**
-        * comment() добавить пост
-        * @param {Base58} wif - приватный posting ключ
-        * @param {String} parentAuthor - для создания поста, поле пустое
-        * @param {String} parentPermlink - главный тег
-        * @param {String} author - автор поста
-        * @param {String} permlink - url-адрес поста
-        * @param {String} title - заголовок поста
-        * @param {String} body - текст поста
-        * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
-        */
-        //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
-        //      5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU
-        //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
-        /*var parentAuthor = '';
-        var parentPermlink = 'tag';
-        var author = 'golos-test';
-        var permlink = 'test-url';
-        //var title = 'titleTest';
-        //var body = 'bodyTest';
-        var jsonMetadata = '{}';
-        golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
-            //console.log(err, result);
-            if ( ! err) {
-                console.log('comment', result);
-            }
-            else console.error(err);
-        });    */
-        closeAddNoteForm();
-        //return false;
+        sendAddNoteForm()
+        return false;
     }else{
-        auth(this.dispatchEvent(new Event('click')));
+        auth(sendAddNoteForm);
     }
     
+    
+});
+
+function sendAddNoteForm(){
+    var title = document.getElementById('formHeader').value;
+    var body = document.getElementById('formText').value;
+    var type = getIndexFromName(findCheckedRadio('formRadio',4));
+    console.log('title: '+title+' body: '+body+' type: '+type);
+    //console.log(window.wif);
+    /**
+    * comment() добавить пост
+    * @param {Base58} wif - приватный posting ключ
+    * @param {String} parentAuthor - для создания поста, поле пустое
+    * @param {String} parentPermlink - главный тег
+    * @param {String} author - автор поста
+    * @param {String} permlink - url-адрес поста
+    * @param {String} title - заголовок поста
+    * @param {String} body - текст поста
+    * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
+    */
+    //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
+    //      5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU
+    //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
+    /*var parentAuthor = '';
+    var parentPermlink = 'tag';
+    var author = 'golos-test';
+    var permlink = 'test-url';
+    //var title = 'titleTest';
+    //var body = 'bodyTest';
+    var jsonMetadata = '{}';
+    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+        //console.log(err, result);
+        if ( ! err) {
+            console.log('comment', result);
+        }
+        else console.error(err);
+    });    */
     //TODO добавление записи на страницу
     
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
-});
+    closeAddNoteForm();
+}
 
 /*cancelling of adding form for creating feedback (done)*/
 document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
@@ -105,6 +110,7 @@ function loadNotes(){
                 data.push(item.created);
                 data.push(3);//likes
                 data.push(10);//dislikes
+                data.push(item.permlink);
                 
                 createNote(data);
                 data = [];
@@ -355,6 +361,7 @@ function createNote(data){
     var note = document.createElement('div');
     note.className = 'row note';
     note.setAttribute('id',data[0]);
+    note.setAttribute('data-permlink',data[8]);
     note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3 data-permission='true'>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments' data-state='show'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
     document.getElementsByClassName('wrapper')[0].appendChild(note);
     console.log('note has been created: id = '+data[0]);
@@ -376,7 +383,7 @@ function createComment(data){
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
     commentForm.className = 'container frm-add-com';
-    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><button type='button' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='submit' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     document.getElementById(noteId).appendChild(commentForm);
     addEventsForComDone(noteId);
 }//вставлять целиком в конец .note
