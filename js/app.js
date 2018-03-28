@@ -20,14 +20,11 @@ function closeAddNoteForm(){
 
 /*opening form for adding new note ПЕРЕДЕЛАТЬ*/
 document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
-    //if(wif){
     openAddNoteForm();
-    //}else{
-        //auth(openAddNoteForm());
-    //}
 });
 
-/*sending note to the database (done 0.8) HERE*/
+/*sending note to the database (done 0.8)*/
+/*HERE не работает событие submit, тупит auth(callback)*/
 document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click', function(e){
     if(wif){
         //e.preventDefault();
@@ -70,6 +67,7 @@ document.getElementsByClassName('btn-add-note-done')[0].addEventListener('click'
         auth(this.dispatchEvent(new Event('click')));
     }
     
+    //TODO добавление записи на страницу
     
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
@@ -87,6 +85,7 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 
 /*Loading notes (DONE)*/
 //gathering notes from the database - from branch 'recently added' - searching with 'author'
+//TODO добавить permlink в атрибут записи
 function loadNotes(){
     var data = [];
     var query = {
@@ -114,7 +113,7 @@ function loadNotes(){
         else console.error(err);
     });
     
-    //пример создания записей через массив с данными
+    //создание записей через массив с данными (для работы без интернета)
     /*for(var i=0;i<2;i++){
         data.push(i+1);
         data.push('Lorem ipsum dolor sit amet, consectetur');
@@ -161,6 +160,7 @@ function addEventForNoteHeader(noteId){
     
 } 
 
+
 /*COMMENTS*/
 /*Events for buttons inside note to manipulate comments (done)*/
 function addEventsForCommentButtons(noteId){
@@ -179,8 +179,20 @@ function addEventsForCommentButtons(noteId){
 
 /*Loading comments from database - (done 0.5)*/
 function loadComments(noteId){
+    var data = [];
+    //запрос в базу
+    
+    //цикл для работы без интернета
     for(var i=0;i<2;i++){
-        createComment('c'+i, noteId);//здесь будем передавать все параметры для заполнения коммента
+        data.push('c'+(i+1));
+        data.push(noteId);
+        data.push('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, praesentium, animi! Cumque ipsam corporis unde a laboriosam sequi accusamus natus doloremque aliquid.');
+        data.push('Name Surname');//author
+        data.push('may-28-2018');//created
+        data.push(3);//likes
+        data.push(10);//dislikes
+        createComment(data);
+        data = [];
     }
 }
 
@@ -196,8 +208,19 @@ function addEventsForComDone(noteId){
     getBtnAddComDone(noteId).addEventListener('click',function(){
         var body = getTxtareaCom(noteId).value;
         console.log('comment to note '+noteId+'. Body: '+body);
-        createComment(findUniqueIdForComment(noteId),noteId);
         
+        var data = [];
+        data.push(findUniqueIdForComment(noteId));
+        data.push(noteId);
+        data.push(body);
+        data.push('Name Surname');//author
+        data.push('may-28-2018');//created
+        data.push(0);//likes
+        data.push(0);//dislikes
+        createComment(data);
+        data = [];
+        
+        //updating a count of comments
         var commentCount = Number(getLblCommentCount(noteId).innerHTML);
         getLblCommentCount(noteId).innerHTML = ++commentCount;
         getTxtareaCom(noteId).value = '';
@@ -280,7 +303,9 @@ function getBlockFormAddComment(noteId){
     return document.getElementById(noteId).children[document.getElementById(noteId).childElementCount-1];
 }
 function getBlockComments(noteId){
-    return document.getElementById(noteId).children[1];
+    console.log(document.getElementById(noteId));
+    console.log(document.getElementById(noteId).getElementsByClassName('comments')[0]);
+    return document.getElementById(noteId).getElementsByClassName('comments')[0];
 }
 function getBtnShowComment(noteId){
     return document.getElementById(noteId).getElementsByClassName('btn-show-comments')[0];
@@ -339,14 +364,14 @@ function createNote(data){
 }
 
 /*forming comment, filling it up, placing inside of the note*/
-function createComment(comId, noteId){
+function createComment(data){
     var comment = document.createElement('div');
     comment.className = 'row comment';
-    comment.setAttribute('id',comId);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus sit soluta</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>Name Lastname</h6></div><div class='date'><small>13 марта 2018</small></div><div class='likes'><span>14</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>90</span></div></div></div></div></div>";
-    getBlockComments(noteId).appendChild(comment);
-    console.log("comment has been created: "+noteId+" "+comId);
-    addEventsForComLikes(noteId,comId);
+    comment.setAttribute('id',data[0]);
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
+    getBlockComments(data[1]).appendChild(comment);
+    console.log("comment has been created: "+data[1]+" "+data[0]);
+    addEventsForComLikes(data[1],data[0]);
 }
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
