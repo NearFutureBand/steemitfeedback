@@ -24,16 +24,14 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
 });
 
 /*sending note to the database (done 0.8)*/
-/*HERE не работает событие submit, тупит auth(callback)*/
 document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
+    e.preventDefault();
     if(wif){
-        //e.preventDefault();
         sendAddNoteForm()
-        return false;
     }else{
         auth(sendAddNoteForm);
     }
-    
+    return false;
     
 });
 
