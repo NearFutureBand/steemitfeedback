@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 //gathering notes from the database - from branch 'recently added' - searching with 'author'
 //TODO добавить permlink в атрибут записи
 function loadNotes(){
+    changeTheme();
     var data = [];
     var query = {
         select_authors: ['vgolos4'],
