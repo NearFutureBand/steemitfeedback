@@ -18,7 +18,7 @@ function closeAddNoteForm(){
     loadNotes();
 }
 
-/*opening form for adding new note ПЕРЕДЕЛАТЬ*/
+/*opening form for adding new note*/
 document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
     openAddNoteForm();
 });
@@ -94,14 +94,14 @@ function loadNotes(){
     changeTheme();
     var data = [];
     var query = {
-        select_authors: ['vgolos4'],
+        select_authors: ['test2'],
         limit: 100,
     };
     golos.api.getDiscussionsByCreated(query, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             result.forEach(function(item) {
-                //console.log(item);
+                console.log(item);
                 data.push(item.id);
                 data.push(item.title);
                 data.push(item.body);
