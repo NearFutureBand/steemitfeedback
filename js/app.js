@@ -1,4 +1,4 @@
-golos.config.set('websocket', 'wss://ws.testnet3.golos.io');
+golos.config.set('websocket', 'wss://ws.testnet.golos.io');
 golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
@@ -32,7 +32,6 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
         auth(sendAddNoteForm);
     }
     return false;
-    
 });
 
 function sendAddNoteForm(){
@@ -40,7 +39,7 @@ function sendAddNoteForm(){
     var body = document.getElementById('formText').value;
     var type = getIndexFromName(findCheckedRadio('formRadio',4));
     console.log('title: '+title+' body: '+body+' type: '+type);
-    //console.log(window.wif);
+    console.log(window.wif);
     /**
     * comment() добавить пост
     * @param {Base58} wif - приватный posting ключ
@@ -55,7 +54,7 @@ function sendAddNoteForm(){
     //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
     //      5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU
     //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
-    /*var parentAuthor = '';
+    var parentAuthor = '';
     var parentPermlink = 'tag';
     var author = 'golos-test';
     var permlink = 'test-url';
@@ -68,11 +67,13 @@ function sendAddNoteForm(){
             console.log('comment', result);
         }
         else console.error(err);
-    });    */
+    });
     //TODO добавление записи на страницу
     
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
+    document.getElementById('formHeader').value = '';
+    document.getElementById('formText').value = '';
     closeAddNoteForm();
 }
 
@@ -210,26 +211,37 @@ function hideComments(noteId){
 
 /*event for button 'Comment' (btn-add-comment-done) - sending comment to the database (done)*/
 function addEventsForComDone(noteId){    
-    getBtnAddComDone(noteId).addEventListener('click',function(){
-        var body = getTxtareaCom(noteId).value;
-        console.log('comment to note '+noteId+'. Body: '+body);
-        
-        var data = [];
-        data.push(findUniqueIdForComment(noteId));
-        data.push(noteId);
-        data.push(body);
-        data.push('Name Surname');//author
-        data.push('may-28-2018');//created
-        data.push(0);//likes
-        data.push(0);//dislikes
-        createComment(data);
-        data = [];
-        
-        //updating a count of comments
-        var commentCount = Number(getLblCommentCount(noteId).innerHTML);
-        getLblCommentCount(noteId).innerHTML = ++commentCount;
-        getTxtareaCom(noteId).value = '';
+    getBtnAddComDone(noteId).addEventListener('submit',function(e){
+        e.preventDefault();
+        if(wif){
+            sendAddComForm();
+        }else{
+            auth(sendAddComForm);
+        }
+        return false;
     });
+}
+
+function sendAddComForm(){
+    var body = getTxtareaCom(noteId).value;
+    console.log('comment to note '+noteId+'. Body: '+body);
+    
+    //тут метод comment()
+    /*var data = [];
+    data.push(findUniqueIdForComment(noteId));
+    data.push(noteId);
+    data.push(body);
+    data.push('Name Surname');//author
+    data.push('may-28-2018');//created
+    data.push(0);//likes
+    data.push(0);//dislikes
+    createComment(data);
+    data = [];*/
+    
+    //updating a count of comments
+    //var commentCount = Number(getLblCommentCount(noteId).innerHTML);
+    //getLblCommentCount(noteId).innerHTML = ++commentCount;
+    getTxtareaCom(noteId).value = '';
 }
 
 
