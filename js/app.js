@@ -52,7 +52,7 @@ function sendAddNoteForm(){
     * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
     */
     //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
-    //      5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU
+    //      5KhaJfuMqaaA8j3NSfJFig8z9UKYGHbFPKdsXc3kC3zzXZGsa5h
     //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
     var parentAuthor = '';
     var parentPermlink = 'tag';
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 function loadNotes(){
     changeTheme();
     var data = [];
-    var query = {
+    /*var query = {
         select_authors: ['test2'],
         limit: 100,
     };
@@ -117,10 +117,10 @@ function loadNotes(){
             });
         }
         else console.error(err);
-    });
+    });*/
     
     //создание записей через массив с данными (для работы без интернета)
-    /*for(var i=0;i<2;i++){
+    for(var i=0;i<2;i++){
         data.push(i+1);
         data.push('Lorem ipsum dolor sit amet, consectetur');
         data.push('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, praesentium, animi! Cumque ipsam corporis unde a laboriosam sequi accusamus natus doloremque aliquid, suscipit delectus, sint recusandae fugit quasi, expedita velit.');
@@ -131,7 +131,7 @@ function loadNotes(){
         data.push(10);//dislikes
         createNote(data);
         data = [];
-    }*/
+    }
 }
 
 /*Remove one note with the given noteId*/
