@@ -23,7 +23,7 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
     openAddNoteForm();
 });
 
-/*sending note to the database (done 0.8)*/
+/*sending note to the database*/
 document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
     e.preventDefault();
     if(wif){
@@ -38,13 +38,13 @@ function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     var parentAuthor = '';
     var parentPermlink = 'tag';
-    var author = 'golos-test';
-    var permlink = 'post-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
+    var author = username;
+    var permlink = 'post-' + parentPermlink + '-' + Date.now();
     var title = document.getElementById('formHeader').value;
     var body = document.getElementById('formText').value;
-    //var type = getIndexFromName(findCheckedRadio('formRadio',4));
-    var jsonMetadata = '{type: '+getIndexFromName(findCheckedRadio('formRadio',4))+'}';
-    console.log('title: '+title+' body: '+body+' '+jsonMetadata);
+    var type = getIndexFromName(findCheckedRadio('formRadio',4));
+    var jsonMetadata = '';
+    console.log('title: '+title+' body: '+body);
     console.log(window.wif);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
@@ -73,13 +73,14 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 
 /*Loading notes (DONE)*/
 //gathering notes from the database - from branch 'recently added' - searching with 'author'
-//TODO добавить permlink в атрибут записи
 function loadNotes(){
-    changeTheme();
+    //changeTheme();
+    document.querySelector('.lding').style.display = 'block';
     var data = [];
-    /*var query = {
-        select_authors: ['test2'],
-        limit: 100,
+    var query = {
+        select_tags: ['auto', 'tag'],
+        select_authors: ['test3'],
+        limit: 100
     };
     golos.api.getDiscussionsByCreated(query, function(err, result) {
         //console.log(err, result);
@@ -101,7 +102,7 @@ function loadNotes(){
             });
         }
         else console.error(err);
-    });*/
+    });
     
     //создание записей через массив с данными (для работы без интернета)
     /*for(var i=0;i<2;i++){
@@ -117,26 +118,8 @@ function loadNotes(){
         createNote(data);
         data = [];
     }*/
-    var author = 'test3';
-    var permlink = 'pochemu-bogatye-belorusy-ne-berut-udivlyaemsya-na-test-draive-samykh-krutykh-maserati';
-    golos.api.getContent(author, permlink, function(err, result) {
-        //console.log(err, result);
-        if (!err) {
-            console.log(result);
-            data.push(result.id);//0 id
-            data.push(result.title);//1 title
-            data.push(result.body);//2 body
-            data.push(result.children);// 3 count of comments (?)
-            data.push(result.author);//4 author
-            data.push(result.created);//5 created
-            data.push(5);//6 likes
-            data.push(8);//7 dislikes
-            data.push(result.permlink);
-            createNote(data);
-            data = [];
-        }
-        else console.error(err);
-    });
+    
+    document.querySelector('.lding').style.display = 'none';
 }
 
 /*Remove one note with the given noteId*/
@@ -153,9 +136,35 @@ function removeNotes(){
 
 /*Opening all the comments and the form, removing all the rest*/
 function expandNote(noteId){
-    removeNotesExceptOne(noteId);
-    loadComments(noteId);
-    createCommentForm(noteId);
+    document.querySelector('.lding').style.display = 'block';
+    var data = [];
+    //getContent
+    var author = getNoteAuthor(noteId);
+    var permlink = document.getElementById(noteId).getAttribute('data-permlink');
+    console.log(document.getElementById(noteId).getAttribute('data-permlink'));
+    removeNotes();
+    golos.api.getContent(author, permlink, function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            console.log(result);
+            data.push(result.id);//0 id
+            data.push(result.title);//1 title
+            data.push(result.body);//2 body
+            data.push(result.children);// 3 count of comments (?)
+            data.push(result.author);//4 author
+            data.push(result.created);//5 created
+            data.push(5);//6 likes
+            data.push(8);//7 dislikes
+            data.push(result.permlink);
+            createNote(data);
+            data = [];
+            loadComments(noteId);
+            createCommentForm(noteId);
+        }
+        else console.error(err);
+    });
+    
+    document.querySelector('.lding').style.display = 'none';
 }
 
 /*Event of expanding note - action like a button 'Comments'*/
@@ -356,8 +365,6 @@ function getBlockFormAddComment(noteId){
     return document.getElementById(noteId).children[document.getElementById(noteId).childElementCount-1];
 }
 function getBlockComments(noteId){
-    console.log(document.getElementById(noteId));
-    console.log(document.getElementById(noteId).getElementsByClassName('comments')[0]);
     return document.getElementById(noteId).getElementsByClassName('comments')[0];
 }
 function getBtnShowComment(noteId){
@@ -401,6 +408,9 @@ function getTxtareaCom(noteId){
 function getLblCommentCount(noteId){
     return getBtnShowComment(noteId).children[0];
 }
+function getNoteAuthor(noteId){
+    return getNoteControls(noteId).getElementsByClassName('name')[0].children[0].innerHTML;
+}
 
 /*forming the note, filling it up and placing into the wrapper to the bottom*/
 function createNote(data){
@@ -410,10 +420,11 @@ function createNote(data){
     note.setAttribute('data-permlink',data[8]);
     note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3 data-permission='true'>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments' data-state='show'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-dislike'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
     document.getElementsByClassName('wrapper')[0].appendChild(note);
-    console.log('note has been created: id = '+data[0]);
+    
     addEventsForCommentButtons(data[0]);
     addEventsForNoteLikes(data[0]);
     addEventForNoteHeader(data[0]);
+    console.log('note has been created: id = '+data[0]);
 }
 
 /*forming comment, filling it up, placing inside of the note*/
@@ -474,3 +485,10 @@ document.getElementById('integration').addEventListener('click', function(e) {
         })
     })
 
+/*script for loading VFX*/
+document.onreadystatechange = function () { // loading animation switch-off
+	console.log('<f> doc ready');
+	if (document.readyState === "complete") {
+		document.querySelector('.lding').style.display = 'none';
+	}
+}
