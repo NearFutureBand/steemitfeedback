@@ -35,32 +35,17 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
 });
 
 function sendAddNoteForm(){
-    var title = document.getElementById('formHeader').value;
-    var body = document.getElementById('formText').value;
-    var type = getIndexFromName(findCheckedRadio('formRadio',4));
-    console.log('title: '+title+' body: '+body+' type: '+type);
-    console.log(window.wif);
-    /**
-    * comment() добавить пост
-    * @param {Base58} wif - приватный posting ключ
-    * @param {String} parentAuthor - для создания поста, поле пустое
-    * @param {String} parentPermlink - главный тег
-    * @param {String} author - автор поста
-    * @param {String} permlink - url-адрес поста
-    * @param {String} title - заголовок поста
-    * @param {String} body - текст поста
-    * @param {String} jsonMetadata - мета-данные поста (изображения, и т.д.)
-    */
-    //wif - 5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
-    //      5KhaJfuMqaaA8j3NSfJFig8z9UKYGHbFPKdsXc3kC3zzXZGsa5h
-    //var wif = "5JCwo8Psq8vn6qBhkEPCbSV3TPVTWXkSVJxHK2LfwWfteUm3wdU";
+    //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     var parentAuthor = '';
     var parentPermlink = 'tag';
     var author = 'golos-test';
-    var permlink = 'test-url';
-    //var title = 'titleTest';
-    //var body = 'bodyTest';
-    var jsonMetadata = '{}';
+    var permlink = 'post-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
+    var title = document.getElementById('formHeader').value;
+    var body = document.getElementById('formText').value;
+    //var type = getIndexFromName(findCheckedRadio('formRadio',4));
+    var jsonMetadata = '{type: '+getIndexFromName(findCheckedRadio('formRadio',4))+'}';
+    console.log('title: '+title+' body: '+body+' '+jsonMetadata);
+    console.log(window.wif);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
@@ -68,7 +53,6 @@ function sendAddNoteForm(){
         }
         else console.error(err);
     });
-    //TODO добавление записи на страницу
     
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
@@ -120,18 +104,39 @@ function loadNotes(){
     });*/
     
     //создание записей через массив с данными (для работы без интернета)
-    for(var i=0;i<2;i++){
-        data.push(i+1);
-        data.push('Lorem ipsum dolor sit amet, consectetur');
-        data.push('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, praesentium, animi! Cumque ipsam corporis unde a laboriosam sequi accusamus natus doloremque aliquid, suscipit delectus, sint recusandae fugit quasi, expedita velit.');
-        data.push(2);//count of comments
-        data.push('Name Surname');//author
-        data.push('may-28-2018');//created
-        data.push(3);//likes
-        data.push(10);//dislikes
+    /*for(var i=0;i<2;i++){
+        data.push(i+1);//0
+        data.push('Lorem ipsum dolor sit amet, consectetur');//1
+        data.push('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, praesentium, animi! Cumque ipsam corporis unde a laboriosam sequi accusamus natus doloremque aliquid, suscipit delectus, sint recusandae fugit quasi, expedita velit.');//2
+        data.push(2);// 3 count of comments
+        data.push('Name Surname');//4 author
+        data.push('may-28-2018');//5 created
+        data.push(3);//6 likes
+        data.push(10);//7 dislikes
+        data.push('permlink');
         createNote(data);
         data = [];
-    }
+    }*/
+    var author = 'test3';
+    var permlink = 'pochemu-bogatye-belorusy-ne-berut-udivlyaemsya-na-test-draive-samykh-krutykh-maserati';
+    golos.api.getContent(author, permlink, function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            console.log(result);
+            data.push(result.id);//0 id
+            data.push(result.title);//1 title
+            data.push(result.body);//2 body
+            data.push(result.children);// 3 count of comments (?)
+            data.push(result.author);//4 author
+            data.push(result.created);//5 created
+            data.push(5);//6 likes
+            data.push(8);//7 dislikes
+            data.push(result.permlink);
+            createNote(data);
+            data = [];
+        }
+        else console.error(err);
+    });
 }
 
 /*Remove one note with the given noteId*/
@@ -163,7 +168,6 @@ function addEventForNoteHeader(noteId){
             expandNote(noteId);
         }
     });
-    
 } 
 
 
@@ -227,7 +231,35 @@ function sendAddComForm(){
     console.log('comment to note '+noteId+'. Body: '+body);
     
     //тут метод comment()
-    /*var data = [];
+    /**
+    * comment() add a comment
+    * @param {Base58} wif - private posting key
+    * @param {String} parentAuthor - for add a comment, author of the post
+    * @param {String} parentPermlink - for add a comment, url-address of the post
+    * @param {String} author - author of the comment
+    * @param {String} permlink - unique url-address of the comment
+    * @param {String} title - for create a comment, empty field
+    * @param {String} body - text of the comment
+    * @param {String} jsonMetadata - meta-data of the post (images etc.)
+    */
+    /*var wif = '5K...';
+    var parentAuthor = 'epexa';
+    var parentPermlink = 'test-url';
+    var author = 'epexa';
+    var permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now(); // re-epexa-test-url-1517333064308
+    var title = '';
+    var body = 'hi!';
+    var jsonMetadata = '{}';
+    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+  //console.log(err, result);
+  if (!err) {
+    console.log('comment', result);
+  }
+  else console.error(err);
+});
+    */
+    
+    var data = [];
     data.push(findUniqueIdForComment(noteId));
     data.push(noteId);
     data.push(body);
@@ -236,7 +268,8 @@ function sendAddComForm(){
     data.push(0);//likes
     data.push(0);//dislikes
     createComment(data);
-    data = [];*/
+    data = [];
+    
     
     //updating a count of comments
     //var commentCount = Number(getLblCommentCount(noteId).innerHTML);
@@ -281,7 +314,10 @@ function addEventsForComLikes(noteId, comId){
 function findUniqueIdForComment(noteId){
     var blockComments = getBlockComments(noteId);
     var flag = false;
-    var newId = Number(blockComments.children[blockComments.childElementCount-1].getAttribute('id').substr(1));
+    var newId = 0;
+    if(blockComments.childElementCount()!=0){
+        newId = Number(blockComments.children[blockComments.childElementCount-1].getAttribute('id').substr(1));
+    }
     while(flag==false){
         flag=true;
         for(var i=0; i<blockComments.childElementCount; i++){
@@ -335,7 +371,6 @@ function getBtnAddComDone(noteId){
 }
 function getNoteControls(noteId){
     return document.getElementById(noteId).getElementsByClassName('controls')[0];
-    //.children[0].children[0].children[1]   ;
 }
 function getBtnLikeNote(noteId){
     return getNoteControls(noteId).getElementsByClassName('btn-like')[0];
