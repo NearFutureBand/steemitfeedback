@@ -33,7 +33,6 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
     }
     return false;
 });
-
 function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     var parentAuthor = '';
@@ -100,6 +99,25 @@ function loadNotes(){
                 createNote(data);
                 data = [];
             });
+        }
+        else console.error(err);
+    });
+    //загрузка тестового поста через permlink
+    golos.api.getContent('test3', 'post-tag-1522697270456', function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            console.log(result);
+            data.push(result.id);//0 id
+            data.push(result.title);//1 title
+            data.push(result.body);//2 body
+            data.push(result.children);// 3 count of comments (?)
+            data.push(result.author);//4 author
+            data.push(result.created);//5 created
+            data.push(5);//6 likes
+            data.push(8);//7 dislikes
+            data.push(result.permlink);
+            createNote(data);
+            data = [];
         }
         else console.error(err);
     });
@@ -223,52 +241,38 @@ function hideComments(noteId){
 }
 
 /*event for button 'Comment' (btn-add-comment-done) - sending comment to the database (done)*/
-function addEventsForComDone(noteId){    
-    getBtnAddComDone(noteId).addEventListener('submit',function(e){
+//HERE
+function addEventsForComDone(noteId){
+    getAddComForm(noteId).addEventListener('submit',function(e){
         e.preventDefault();
+        auth();
         if(wif){
-            sendAddComForm();
+            sendAddComForm(noteId);
         }else{
-            auth(sendAddComForm);
+            auth(sendAddComForm.bind(this, noteId));
         }
         return false;
     });
 }
-
-function sendAddComForm(){
-    var body = getTxtareaCom(noteId).value;
-    console.log('comment to note '+noteId+'. Body: '+body);
-    
-    //тут метод comment()
-    /**
-    * comment() add a comment
-    * @param {Base58} wif - private posting key
-    * @param {String} parentAuthor - for add a comment, author of the post
-    * @param {String} parentPermlink - for add a comment, url-address of the post
-    * @param {String} author - author of the comment
-    * @param {String} permlink - unique url-address of the comment
-    * @param {String} title - for create a comment, empty field
-    * @param {String} body - text of the comment
-    * @param {String} jsonMetadata - meta-data of the post (images etc.)
-    */
-    /*var wif = '5K...';
-    var parentAuthor = 'epexa';
-    var parentPermlink = 'test-url';
-    var author = 'epexa';
-    var permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now(); // re-epexa-test-url-1517333064308
+var sendAddComForm = function(noteId){
+    var parentAuthor = getNoteAuthor(noteId);
+    var parentPermlink = document.getElementById(noteId).getAttribute('data-permlink');
+    var author = username;
+    var permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     var title = '';
-    var body = 'hi!';
+    var body = getTxtareaCom(noteId).value;
     var jsonMetadata = '{}';
+    console.log('comment to note '+noteId+'. Body: '+body);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
-  //console.log(err, result);
-  if (!err) {
-    console.log('comment', result);
-  }
-  else console.error(err);
-});
-    */
+        //console.log(err, result);
+        if (!err) {
+            console.log('comment', result);
+        }
+        else console.error(err);
+    });
     
-    var data = [];
+    
+    /*var data = [];
     data.push(findUniqueIdForComment(noteId));
     data.push(noteId);
     data.push(body);
@@ -281,8 +285,9 @@ function sendAddComForm(){
     
     
     //updating a count of comments
-    //var commentCount = Number(getLblCommentCount(noteId).innerHTML);
-    //getLblCommentCount(noteId).innerHTML = ++commentCount;
+    var commentCount = Number(getLblCommentCount(noteId).innerHTML);
+    getLblCommentCount(noteId).innerHTML = ++commentCount;
+    */
     getTxtareaCom(noteId).value = '';
 }
 
@@ -376,6 +381,9 @@ function getNoteHeader(noteId){
 function getBtnAddComDone(noteId){
     return getBlockFormAddComment(noteId).getElementsByClassName('btn-add-com-done')[0];
 }
+function getAddComForm(noteId){
+    return getBlockFormAddComment(noteId).children[0].children[0].children[0];
+}
 function getNoteControls(noteId){
     return document.getElementById(noteId).getElementsByClassName('controls')[0];
 }
@@ -440,7 +448,7 @@ function createComment(data){
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
     commentForm.className = 'container frm-add-com';
-    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='submit' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     document.getElementById(noteId).appendChild(commentForm);
     addEventsForComDone(noteId);
 }//вставлять целиком в конец .note
