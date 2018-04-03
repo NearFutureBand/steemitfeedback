@@ -89,11 +89,11 @@ function loadNotes(){
                 data.push(item.id);
                 data.push(item.title);
                 data.push(item.body);
-                data.push(2);//count of comments
+                data.push(item.children);//count of comments
                 data.push(item.author);
                 data.push(item.created);
-                data.push(3);//likes
-                data.push(10);//dislikes
+                data.push(0);//likes
+                data.push(0);//dislikes
                 data.push(item.permlink);
                 
                 createNote(data);
@@ -103,7 +103,7 @@ function loadNotes(){
         else console.error(err);
     });
     //загрузка тестового поста через permlink
-    golos.api.getContent('test3', 'post-tag-1522697270456', function(err, result) {
+    golos.api.getContent('test3', 'post-tag-1522706681091', function(err, result) {
         //console.log(err, result);
         if (!err) {
             console.log(result);
@@ -113,8 +113,8 @@ function loadNotes(){
             data.push(result.children);// 3 count of comments (?)
             data.push(result.author);//4 author
             data.push(result.created);//5 created
-            data.push(5);//6 likes
-            data.push(8);//7 dislikes
+            data.push(0);//6 likes
+            data.push(0);//7 dislikes
             data.push(result.permlink);
             createNote(data);
             data = [];
@@ -219,8 +219,34 @@ function loadComments(noteId){
     var data = [];
     //запрос в базу
     
+    
+    /**
+    * getContentReplies() receiving a comments
+    * @param {String} parent - author of the post
+    * @param {String} parentPermlink - url-address of the post
+    */
+    var parent = getNoteAuthor(noteId);
+    var parentPermlink = document.getElementById(noteId).getAttribute('data-permlink');
+    golos.api.getContentReplies(parent, parentPermlink, function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            result.forEach(function(item) {
+                console.log('getContentReplies', item);
+                data.push(item.id);
+                data.push(noteId);
+                data.push(item.body);
+                data.push(item.author);//author
+                data.push(item.created);//created
+                data.push(0);//likes
+                data.push(0);//dislikes
+                createComment(data);
+                data = [];
+            });
+        }
+        else console.error(err);
+    });
     //цикл для работы без интернета
-    for(var i=0;i<2;i++){
+    /*for(var i=0;i<2;i++){
         data.push('c'+(i+1));
         data.push(noteId);
         data.push('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, praesentium, animi! Cumque ipsam corporis unde a laboriosam sequi accusamus natus doloremque aliquid.');
@@ -230,7 +256,7 @@ function loadComments(noteId){
         data.push(10);//dislikes
         createComment(data);
         data = [];
-    }
+    }*/
 }
 
 /*Removing all existing comments from note width given ID (done)*/
@@ -241,7 +267,6 @@ function hideComments(noteId){
 }
 
 /*event for button 'Comment' (btn-add-comment-done) - sending comment to the database (done)*/
-//HERE
 function addEventsForComDone(noteId){
     getAddComForm(noteId).addEventListener('submit',function(e){
         e.preventDefault();
