@@ -86,15 +86,21 @@ function loadNotes(){
         if ( ! err) {
             result.forEach(function(item) {
                 console.log(item);
-                data.push(item.id);
-                data.push(item.title);
-                data.push(item.body);
-                data.push(item.children);//count of comments
-                data.push(item.author);
-                data.push(item.created);
-                data.push(0);//likes
-                data.push(0);//dislikes
-                data.push(item.permlink);
+                data.push(item.id);//0 id
+                data.push(item.title);//1 title
+                data.push(item.body);//2 body
+                data.push(item.children);//3 count of comments
+                data.push(item.author);//4 author
+                data.push(item.created);// 5 date
+                var likes = 0;
+                var dislikes = 0;
+                item.active_votes.forEach(function(item){
+                    if(item.percent>0) likes++;
+                    else dislikes++;
+                });
+                data.push(likes);//6 likes
+                data.push(dislikes);//7 dislikes
+                data.push(item.permlink);//8 permlink
                 
                 createNote(data);
                 data = [];
@@ -110,12 +116,18 @@ function loadNotes(){
             data.push(result.id);//0 id
             data.push(result.title);//1 title
             data.push(result.body);//2 body
-            data.push(result.children);// 3 count of comments (?)
+            data.push(result.children);//3 count of comments
             data.push(result.author);//4 author
-            data.push(result.created);//5 created
-            data.push(0);//6 likes
-            data.push(0);//7 dislikes
-            data.push(result.permlink);
+            data.push(result.created);// 5 date
+            var likes = 0;
+            var dislikes = 0;
+            result.active_votes.forEach(function(item){
+                if(item.percent>0) likes++;
+                else dislikes++;
+            });
+            data.push(likes);//6 likes
+            data.push(dislikes);//7 dislikes
+            data.push(result.permlink);//8 permlink
             createNote(data);
             data = [];
         }
@@ -320,7 +332,7 @@ var sendAddComForm = function(noteId){
 /*LIKES & DISLIKES*/
 /*Events for these buttons in notes */
 function addEventsForNoteLikes(noteId){
-    getBtnLikeNote(noteId).addEventListener('click',function(){
+    /*getBtnLikeNote(noteId).addEventListener('click',function(){
         var likes = Number(this.previousElementSibling.innerHTML);
         this.previousElementSibling.innerHTML = ++likes;
         console.log('like to note '+noteId);
@@ -329,12 +341,12 @@ function addEventsForNoteLikes(noteId){
         var dislikes = Number(this.nextElementSibling.innerHTML);
         this.nextElementSibling.innerHTML = ++dislikes;
         console.log('like to note '+noteId);
-    });
+    });*/
 }
 
 /*Events for these buttons in comments HERE*/
 function addEventsForComLikes(noteId, comId){
-    getBtnLikeCom(noteId,comId).addEventListener('click',function(){
+    /*getBtnLikeCom(noteId,comId).addEventListener('click',function(){
         
         var likes = Number(this.previousElementSibling.innerHTML);
         this.previousElementSibling.innerHTML = ++likes;
@@ -346,6 +358,7 @@ function addEventsForComLikes(noteId, comId){
         this.nextElementSibling.innerHTML = ++dislikes;
         console.log('dislike to note '+noteId+' comment '+comId);
     });
+    */
 }
 
 
