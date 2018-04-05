@@ -35,6 +35,7 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
 });
 function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
+    document.querySelector('.lding').style.display = 'block';
     var parentAuthor = '';
     var parentPermlink = 'tag';
     var author = username;
@@ -53,11 +54,11 @@ function sendAddNoteForm(){
         else console.error(err);
     });
     
-    
-    //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
     document.getElementById('formHeader').value = '';
     document.getElementById('formText').value = '';
     closeAddNoteForm();
+    document.querySelector('.lding').style.display = 'none';
+    //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
 
 /*cancelling of adding form for creating feedback (done)*/
@@ -68,14 +69,11 @@ document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('clic
 
 /*NOTES*/
 document.addEventListener('DOMContentLoaded', loadNotes);
-//document.getElementsByClassName('btn-load-notes')[0].addEventListener('click', loadNotes);
 
 /*Loading notes (DONE)*/
 //gathering notes from the database - from branch 'recently added' - searching with 'author'
 function loadNotes(){
-    //changeTheme();
     document.querySelector('.lding').style.display = 'block';
-    var data = [];
     var query = {
         select_tags: ['auto', 'tag'],
         select_authors: ['test3'],
@@ -83,27 +81,11 @@ function loadNotes(){
     };
     golos.api.getDiscussionsByCreated(query, function(err, result) {
         //console.log(err, result);
-        if ( ! err) {
+        
+        if ( ! err){
             result.forEach(function(item) {
                 console.log(item);
-                data.push(item.id);//0 id
-                data.push(item.title);//1 title
-                data.push(item.body);//2 body
-                data.push(item.children);//3 count of comments
-                data.push(item.author);//4 author
-                data.push(item.created);// 5 date
-                var likes = 0;
-                var dislikes = 0;
-                item.active_votes.forEach(function(item){
-                    if(item.percent>0) likes++;
-                    else dislikes++;
-                });
-                data.push(likes);//6 likes
-                data.push(dislikes);//7 dislikes
-                data.push(item.permlink);//8 permlink
-                
-                createNote(data);
-                data = [];
+                createNote(formData(item));
             });
         }
         else console.error(err);
@@ -111,25 +93,9 @@ function loadNotes(){
     //загрузка тестового поста через permlink
     golos.api.getContent('test3', 'post-tag-1522706681091', function(err, result) {
         //console.log(err, result);
-        if (!err) {
+        if (!err){
             console.log(result);
-            data.push(result.id);//0 id
-            data.push(result.title);//1 title
-            data.push(result.body);//2 body
-            data.push(result.children);//3 count of comments
-            data.push(result.author);//4 author
-            data.push(result.created);// 5 date
-            var likes = 0;
-            var dislikes = 0;
-            result.active_votes.forEach(function(item){
-                if(item.percent>0) likes++;
-                else dislikes++;
-            });
-            data.push(likes);//6 likes
-            data.push(dislikes);//7 dislikes
-            data.push(result.permlink);//8 permlink
-            createNote(data);
-            data = [];
+            createNote(formData(result));
         }
         else console.error(err);
     });
@@ -157,44 +123,49 @@ function removeNote(noteId){
     document.getElementById(noteId).remove();
 }
 
-/*Removing all the notes to open the form for adding new feedback*/
-function removeNotes(){
-    Array.from(document.getElementsByClassName('note')).forEach(function(item){
-        item.remove();
-    });
-}
-
-/*Opening all the comments and the form, removing all the rest*/
-function expandNote(noteId){
-    document.querySelector('.lding').style.display = 'block';
-    var data = [];
-    //getContent
+/*reload or expand note*/
+function reloadNote(noteId,expanded,loading,removeAll){
+    
+    // on/off loading animation
+    if(loading==true){
+        document.querySelector('.lding').style.display = 'block';
+    }
+    
+    var permlink = getNotePermlink(noteId);
     var author = getNoteAuthor(noteId);
-    var permlink = document.getElementById(noteId).getAttribute('data-permlink');
-    console.log(document.getElementById(noteId).getAttribute('data-permlink'));
-    removeNotes();
+    
+    //remove all - for the expanding mode, remove one - for the reloading mode
+    if(removeAll==true){
+        removeNotes();
+    }else{
+        removeNote(noteId);
+    }
+    
     golos.api.getContent(author, permlink, function(err, result) {
         //console.log(err, result);
         if (!err) {
             console.log(result);
-            data.push(result.id);//0 id
-            data.push(result.title);//1 title
-            data.push(result.body);//2 body
-            data.push(result.children);// 3 count of comments (?)
-            data.push(result.author);//4 author
-            data.push(result.created);//5 created
-            data.push(5);//6 likes
-            data.push(8);//7 dislikes
-            data.push(result.permlink);
-            createNote(data);
-            data = [];
-            loadComments(noteId);
-            createCommentForm(noteId);
+            createNote(formData(result));
+            
+            //if the note was expanded
+            if(expanded==true){
+                loadComments(noteId);
+                createCommentForm(noteId);
+            }
         }
         else console.error(err);
     });
     
-    document.querySelector('.lding').style.display = 'none';
+    if(loading==true){
+        document.querySelector('.lding').style.display = 'none';
+    }
+}
+
+/*Removing all the notes in the wrapper*/
+function removeNotes(){
+    Array.from(document.getElementsByClassName('note')).forEach(function(item){
+        item.remove();
+    });
 }
 
 /*Event of expanding note - action like a button 'Comments'*/
@@ -204,7 +175,7 @@ function addEventForNoteHeader(noteId){
         if(thisHeader.getAttribute('data-permission')=='true'){
             thisHeader.setAttribute('data-permission','false');
             getBtnShowComment(noteId).setAttribute('data-state','hide');
-            expandNote(noteId);
+            reloadNote(noteId,false,true,true);
         }
     });
 } 
@@ -218,7 +189,7 @@ function addEventsForCommentButtons(noteId){
         if(this.getAttribute('data-state') == 'show'){
             this.setAttribute('data-state','hide');
             getNoteHeader(noteId).setAttribute('data-permission','false');
-            expandNote(noteId);            
+            reloadNote(noteId,false,true,true);            
         }else{
             removeNote(noteId);
             loadNotes();
@@ -238,7 +209,7 @@ function loadComments(noteId){
     * @param {String} parentPermlink - url-address of the post
     */
     var parent = getNoteAuthor(noteId);
-    var parentPermlink = document.getElementById(noteId).getAttribute('data-permlink');
+    var parentPermlink = getNotePermlink(noteId);
     golos.api.getContentReplies(parent, parentPermlink, function(err, result) {
         //console.log(err, result);
         if (!err) {
@@ -282,7 +253,7 @@ function hideComments(noteId){
 function addEventsForComDone(noteId){
     getAddComForm(noteId).addEventListener('submit',function(e){
         e.preventDefault();
-        auth();
+        //auth();
         if(wif){
             sendAddComForm(noteId);
         }else{
@@ -292,8 +263,9 @@ function addEventsForComDone(noteId){
     });
 }
 var sendAddComForm = function(noteId){
+    document.querySelector('.lding').style.display = 'block';
     var parentAuthor = getNoteAuthor(noteId);
-    var parentPermlink = document.getElementById(noteId).getAttribute('data-permlink');
+    var parentPermlink = getNotePermlink(noteId);
     var author = username;
     var permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     var title = '';
@@ -307,46 +279,49 @@ var sendAddComForm = function(noteId){
         }
         else console.error(err);
     });
-    
-    
-    /*var data = [];
-    data.push(findUniqueIdForComment(noteId));
-    data.push(noteId);
-    data.push(body);
-    data.push('Name Surname');//author
-    data.push('may-28-2018');//created
-    data.push(0);//likes
-    data.push(0);//dislikes
-    createComment(data);
-    data = [];
-    
-    
-    //updating a count of comments
-    var commentCount = Number(getLblCommentCount(noteId).innerHTML);
-    getLblCommentCount(noteId).innerHTML = ++commentCount;
-    */
     getTxtareaCom(noteId).value = '';
+    document.querySelector('.lding').style.display = 'none';
 }
 
 
 /*LIKES & DISLIKES*/
-/*Events for these buttons in notes */
+/*Events for these buttons in notes (old)*/
+
+//var dislikes = Number(this.nextElementSibling.innerHTML);
+//this.nextElementSibling.innerHTML = ++dislikes;
+    
+/*Events for these buttons in comments (new)*/
+/*обобщить на обе кнопки*/
 function addEventsForNoteLikes(noteId){
-    /*getBtnLikeNote(noteId).addEventListener('click',function(){
-        var likes = Number(this.previousElementSibling.innerHTML);
-        this.previousElementSibling.innerHTML = ++likes;
-        console.log('like to note '+noteId);
+    getBtnLikeNote(noteId).addEventListener('click',function(){
+        if(wif){
+            voteForNote(noteId,true);
+        }else{
+            auth(voteForNote.bind(this, noteId,true));
+        }
     });
     getBtnDislikeNote(noteId).addEventListener('click',function(){
-        var dislikes = Number(this.nextElementSibling.innerHTML);
-        this.nextElementSibling.innerHTML = ++dislikes;
-        console.log('like to note '+noteId);
-    });*/
+        if(wif){
+            voteForNote(noteId,true);
+        }else{
+            auth(voteForNote.bind(this, noteId,true));
+        }
+    });
+}
+var voteForNote = function(noteId,like){
+    if(like==true){
+        weight = 10000;
+    }else{
+        weight = -10000;
+    }
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
+        console.log(err, result);
+    });
 }
 
-/*Events for these buttons in comments HERE*/
-function addEventsForComLikes(noteId, comId){
-    /*getBtnLikeCom(noteId,comId).addEventListener('click',function(){
+
+/*function addEventsForComLikes(noteId, comId){
+    getBtnLikeCom(noteId,comId).addEventListener('click',function(){
         
         var likes = Number(this.previousElementSibling.innerHTML);
         this.previousElementSibling.innerHTML = ++likes;
@@ -358,9 +333,8 @@ function addEventsForComLikes(noteId, comId){
         this.nextElementSibling.innerHTML = ++dislikes;
         console.log('dislike to note '+noteId+' comment '+comId);
     });
-    */
-}
-
+    
+}*/
 
 /*other functions*/
 function findUniqueIdForComment(noteId){
@@ -457,6 +431,30 @@ function getLblCommentCount(noteId){
 function getNoteAuthor(noteId){
     return getNoteControls(noteId).getElementsByClassName('name')[0].children[0].innerHTML;
 }
+function getNotePermlink(noteId){
+    return document.getElementById(noteId).getAttribute('data-permlink');
+}
+
+/*transform info about a note to data for a feedback block*/
+function formData(item){
+    var data = [];
+    data.push(item.id);//0 id
+    data.push(item.title);//1 title
+    data.push(item.body);//2 body
+    data.push(item.children);//3 count of comments
+    data.push(item.author);//4 author
+    data.push(item.created);// 5 date
+    var likes = 0;
+    var dislikes = 0;
+    item.active_votes.forEach(function(item){
+        if(item.percent>0) likes++;
+        else dislikes++;
+    });
+    data.push(likes);//6 likes
+    data.push(dislikes);//7 dislikes
+    data.push(item.permlink);//8 permlink
+    return data;
+}
 
 /*forming the note, filling it up and placing into the wrapper to the bottom*/
 function createNote(data){
@@ -481,7 +479,7 @@ function createComment(data){
     comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     console.log("comment has been created: "+data[1]+" "+data[0]);
-    addEventsForComLikes(data[1],data[0]);
+    //addEventsForComLikes(data[1],data[0]);
 }
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
