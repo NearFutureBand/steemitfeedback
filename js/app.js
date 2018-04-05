@@ -175,7 +175,7 @@ function addEventForNoteHeader(noteId){
         if(thisHeader.getAttribute('data-permission')=='true'){
             thisHeader.setAttribute('data-permission','false');
             getBtnShowComment(noteId).setAttribute('data-state','hide');
-            reloadNote(noteId,false,true,true);
+            reloadNote(noteId,true,true,true);
         }
     });
 } 
@@ -189,7 +189,7 @@ function addEventsForCommentButtons(noteId){
         if(this.getAttribute('data-state') == 'show'){
             this.setAttribute('data-state','hide');
             getNoteHeader(noteId).setAttribute('data-permission','false');
-            reloadNote(noteId,false,true,true);            
+            reloadNote(noteId,true,true,true);            
         }else{
             removeNote(noteId);
             loadNotes();
@@ -222,6 +222,7 @@ function loadComments(noteId){
                 data.push(item.created);//created
                 data.push(0);//likes
                 data.push(0);//dislikes
+                data.push(item.permlink);//7
                 createComment(data);
                 data = [];
             });
@@ -302,9 +303,9 @@ function addEventsForNoteLikes(noteId){
     });
     getBtnDislikeNote(noteId).addEventListener('click',function(){
         if(wif){
-            voteForNote(noteId,true);
+            voteForNote(noteId,false);
         }else{
-            auth(voteForNote.bind(this, noteId,true));
+            auth(voteForNote.bind(this, noteId,false));
         }
     });
 }
@@ -319,23 +320,32 @@ var voteForNote = function(noteId,like){
     });
 }
 
-
-/*function addEventsForComLikes(noteId, comId){
+function addEventsForComLikes(noteId, comId){
     getBtnLikeCom(noteId,comId).addEventListener('click',function(){
-        
-        var likes = Number(this.previousElementSibling.innerHTML);
-        this.previousElementSibling.innerHTML = ++likes;
-        console.log('like to note '+noteId+' comment '+comId);
-        
+        if(wif){
+            voteForCom(noteId,comId,true);
+        }else{
+            auth(voteForCom.bind(this, noteId,comId,true));
+        }
     });
     getBtnDislikeCom(noteId,comId).addEventListener('click',function(){
-        var dislikes = Number(this.nextElementSibling.innerHTML);
-        this.nextElementSibling.innerHTML = ++dislikes;
-        console.log('dislike to note '+noteId+' comment '+comId);
+        if(wif){
+            voteForCom(noteId,comId,false);
+        }else{
+            auth(voteForCom.bind(this, noteId,comId,false));
+        }
     });
-    
-}*/
-
+}
+var voteForCom = function(noteId,comId,like){
+    if(like==true){
+        weight = 10000;
+    }else{
+        weight = -10000;
+    }
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPemlink(noteId,comId), weight, function(err, result) {
+        console.log(err, result);
+    });
+}
 /*other functions*/
 function findUniqueIdForComment(noteId){
     var blockComments = getBlockComments(noteId);
@@ -434,6 +444,9 @@ function getNoteAuthor(noteId){
 function getNotePermlink(noteId){
     return document.getElementById(noteId).getAttribute('data-permlink');
 }
+function getComPemlink(noteId,comId){
+    return getComment(noteId,comId).getAttribute('data-permlink');
+}
 
 /*transform info about a note to data for a feedback block*/
 function formData(item){
@@ -476,10 +489,11 @@ function createComment(data){
     var comment = document.createElement('div');
     comment.className = 'row comment';
     comment.setAttribute('id',data[0]);
+    comment.setAttribute('data-permlink',data[7]);
     comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-success btn-com-like'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-dislike'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     console.log("comment has been created: "+data[1]+" "+data[0]);
-    //addEventsForComLikes(data[1],data[0]);
+    addEventsForComLikes(data[1],data[0]);
 }
 function createCommentForm(noteId){
     var commentForm = document.createElement('div');
