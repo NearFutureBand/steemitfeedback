@@ -150,6 +150,7 @@ function reloadNote(noteId,expanded,loading,removeAll){
             
             //if the note was expanded
             if(expanded==true){
+                document.getElementById(noteId).setAttribute('data-opened',1);
                 loadComments(noteId);
                 createCommentForm(noteId);
             }
@@ -160,6 +161,7 @@ function reloadNote(noteId,expanded,loading,removeAll){
     if(loading==true){
         document.querySelector('.lding').style.display = 'none';
     }
+    
 }
 
 /*Removing all the notes in the wrapper*/
@@ -170,13 +172,14 @@ function removeNotes(){
 }
 
 /*Event of expanding note - action like a button 'Comments'*/
+/*here*/
 function addEventForNoteHeader(noteId){
-    var thisHeader = getNoteHeader(noteId);
-    thisHeader.addEventListener('click',function(){
-        if(thisHeader.getAttribute('data-permission')=='true'){
-            thisHeader.setAttribute('data-permission','false');
-            getBtnShowComment(noteId).setAttribute('data-state','hide');
+    getNoteHeader(noteId).addEventListener('click',function(){
+        if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
             reloadNote(noteId,true,true,true);
+        }else{
+            removeNotes();
+            loadNotes();
         }
     });
 } 
@@ -187,12 +190,10 @@ function addEventForNoteHeader(noteId){
 function addEventsForCommentButtons(noteId){
     
     getBtnShowComment(noteId).addEventListener('click',function(){
-        if(this.getAttribute('data-state') == 'show'){
-            this.setAttribute('data-state','hide');
-            getNoteHeader(noteId).setAttribute('data-permission','false');
-            reloadNote(noteId,true,true,true);            
+        if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
+            reloadNote(noteId,true,true,true);
         }else{
-            removeNote(noteId);
+            removeNotes();
             loadNotes();
         }
     });
@@ -375,7 +376,7 @@ function getBtnShowComment(noteId){
     return document.getElementById(noteId).getElementsByClassName('btn-show-comments')[0];
 }
 function getNoteHeader(noteId){
-    return document.getElementById(noteId).getElementsByTagName('h3')[0];
+    return document.getElementById(noteId).getElementsByClassName('text')[0].children[0];
 }
 function getBtnAddComDone(noteId){
     return getBlockFormAddComment(noteId).getElementsByClassName('btn-add-com-done')[0];
@@ -467,7 +468,8 @@ function createNote(data){
     note.className = 'row note';
     note.setAttribute('id',data[0]);
     note.setAttribute('data-permlink',data[8]);
-    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3 data-permission='true'>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments' data-state='show'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
+    note.setAttribute('data-opened',0);
+    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
     document.getElementsByClassName('wrapper')[0].appendChild(note);
     
     addEventsForCommentButtons(data[0]);
