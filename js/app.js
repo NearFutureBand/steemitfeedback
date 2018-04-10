@@ -27,24 +27,24 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
 document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
     e.preventDefault();
     if(wif){
-        sendAddNoteForm()
+        sendAddNoteForm();
     }else{
         auth(sendAddNoteForm);
     }
+    sendAddNoteForm();
     return false;
 });
 function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     document.querySelector('.lding').style.display = 'block';
     var parentAuthor = '';
-    var parentPermlink = 'tag';
+    var parentPermlink = 'fb '+findCheckedRadio();
     var author = username;
     var permlink = 'post-' + parentPermlink + '-' + Date.now();
     var title = document.getElementById('formHeader').value;
     var body = document.getElementById('formText').value;
-    var type = getIndexFromName(findCheckedRadio('formRadio',4));
     var jsonMetadata = '';
-    console.log('title: '+title+' body: '+body);
+    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink);
     console.log(window.wif);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
@@ -266,17 +266,12 @@ var sendAddComForm = function(noteId){
 
 
 /*LIKES & DISLIKES*/
-/*Events for these buttons in notes (old)*/
-
-//var dislikes = Number(this.nextElementSibling.innerHTML);
-//this.nextElementSibling.innerHTML = ++dislikes;
-    
 /*Events for these buttons in comments (new)*/
-/*обобщить на обе кнопки*/
 function addEventsForNoteLikes(noteId){
     getBtnVoteNote(noteId).forEach(function(item){
         item.addEventListener('click', function(){
             var isLike = Number(item.getAttribute('data-like'));
+            voteForNote(noteId,isLike);
             if(wif){
                 voteForNote(noteId,isLike);
             }else{
@@ -291,6 +286,7 @@ var voteForNote = function(noteId,like){
     }else{
         weight = -10000;
     }
+    setLikeLblNote(noteId,weight/10000);
     golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
         console.log(err, result);
     });
@@ -348,14 +344,16 @@ function removeNotesExceptOne(noteId){
     });
 }
 
-function findCheckedRadio(name,count){
-    for(var i=0;i<count;i++){
-        var radioButton = document.getElementById(name+i);
-        if(radioButton.checked == true){
-            return radioButton.getAttribute("id");  
+function findCheckedRadio(){
+    let res = '';
+    Array.from(getBlockAddNote().getElementsByClassName('form-check-input')).forEach(function(item){
+        console.log(item);
+        if(item.checked==true){
+            console.log(item);
+            res = item.getAttribute('id').split('-')[1].toString();
         }
-    }
-    return null;
+    });
+    return res;
 }
 
 /*cuts an index from the given id*/
@@ -398,6 +396,9 @@ function getComment(noteId, comId){
     });
     return comment;
 }
+function getBlockAddNote(){
+    return document.getElementsByClassName('frm-add-note')[0];
+}
 
 function getBtnVoteCom(noteId,comId){
     return Array.from(getComment(noteId,comId).getElementsByClassName('btn-com-vote'));
@@ -419,6 +420,52 @@ function getComPermlink(noteId,comId){
     console.log(getComment(noteId,comId));
     return getComment(noteId,comId).getAttribute('data-permlink');
 }
+function getNoteLikes(noteId,isLike){
+    if (isLike==true){
+        return getNoteControls(noteId).getElementsByClassName('btn-vote')[0];
+    }
+    else return getNoteControls(noteId).getElementsByClassName('btn-vote')[1];
+    
+}
+
+//Lighting up buttons for voting (note)
+function setLikeLblNote(noteId,add){
+    let votes;
+    //жмём на лайк - работает только если лайк уже не стоит
+    if(add>0){
+        if(document.getElementById(noteId).getAttribute('data-like')!=1){
+            
+            //если стоял дизлайк - его убрать
+            if(document.getElementById(noteId).getAttribute('data-like')==-1){
+                votes = Number(getNoteLikes(noteId,false).nextElementSibling.innerHTML);
+                getNoteLikes(noteId,false).nextElementSibling.innerHTML = --votes;
+                getNoteLikes(noteId,false).classList.remove('btn-danger');
+            }
+            votes = Number(getNoteLikes(noteId,true).previousElementSibling.innerHTML);
+            getNoteLikes(noteId,true).previousElementSibling.innerHTML = ++votes;
+            getNoteLikes(noteId,true).classList.add('btn-success');
+            document.getElementById(noteId).setAttribute('data-like',1);
+        }
+        
+    }else{//ставим дизлайк
+        if(document.getElementById(noteId).getAttribute('data-like')!=-1){
+            
+            //если стоял лайк - его убрать
+            if(document.getElementById(noteId).getAttribute('data-like')==1){
+                votes = Number(getNoteLikes(noteId,true).previousElementSibling.innerHTML);
+                getNoteLikes(noteId,true).previousElementSibling.innerHTML = --votes;
+                getNoteLikes(noteId,true).classList.remove('btn-success');
+            }
+            votes = Number(getNoteLikes(noteId,false).nextElementSibling.innerHTML);
+            getNoteLikes(noteId,false).nextElementSibling.innerHTML = ++votes;
+            getNoteLikes(noteId,false).classList.add('btn-danger');
+            document.getElementById(noteId).setAttribute('data-like',-1);
+        }
+        
+    }
+}
+
+//
 
 /*transform info about a note to data for a feedback block*/
 function formData(item){
@@ -467,7 +514,8 @@ function createNote(data){
     note.setAttribute('id',data[0]);
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
-    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
+    note.setAttribute('data-like',0);
+    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
     document.getElementsByClassName('wrapper')[0].appendChild(note);
     
     addEventsForCommentButtons(data[0]);
