@@ -172,7 +172,6 @@ function removeNotes(){
 }
 
 /*Event of expanding note - action like a button 'Comments'*/
-/*here*/
 function addEventForNoteHeader(noteId){
     getNoteHeader(noteId).addEventListener('click',function(){
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
@@ -188,7 +187,6 @@ function addEventForNoteHeader(noteId){
 /*COMMENTS*/
 /*Events for buttons inside note to manipulate comments (done)*/
 function addEventsForCommentButtons(noteId){
-    
     getBtnShowComment(noteId).addEventListener('click',function(){
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
             reloadNote(noteId,true,true,true);
@@ -469,7 +467,7 @@ function createNote(data){
     note.setAttribute('id',data[0]);
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
-    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
+    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-success btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
     document.getElementsByClassName('wrapper')[0].appendChild(note);
     
     addEventsForCommentButtons(data[0]);
