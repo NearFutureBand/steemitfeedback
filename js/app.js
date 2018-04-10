@@ -147,6 +147,7 @@ function reloadNote(noteId,expanded,loading,removeAll){
         if (!err) {
             console.log(result);
             createNote(formData(result));
+            toggleBtnCom(noteId);
             
             //if the note was expanded
             if(expanded==true){
@@ -174,6 +175,7 @@ function removeNotes(){
 /*Event of expanding note - action like a button 'Comments'*/
 function addEventForNoteHeader(noteId){
     getNoteHeader(noteId).addEventListener('click',function(){
+        toggleBtnCom(noteId);
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
             reloadNote(noteId,true,true,true);
         }else{
@@ -188,6 +190,7 @@ function addEventForNoteHeader(noteId){
 /*Events for buttons inside note to manipulate comments (done)*/
 function addEventsForCommentButtons(noteId){
     getBtnShowComment(noteId).addEventListener('click',function(){
+        
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
             reloadNote(noteId,true,true,true);
         }else{
@@ -347,9 +350,7 @@ function removeNotesExceptOne(noteId){
 function findCheckedRadio(){
     let res = '';
     Array.from(getBlockAddNote().getElementsByClassName('form-check-input')).forEach(function(item){
-        console.log(item);
         if(item.checked==true){
-            console.log(item);
             res = item.getAttribute('id').split('-')[1].toString();
         }
     });
@@ -466,6 +467,22 @@ function setLikeLblNote(noteId,add){
 }
 
 //
+
+/*changing button's label*/
+function toggleBtnCom(noteId){
+    let thisBtn = getBtnShowComment(noteId);
+    if(thisBtn.children[2].classList.contains('hidden')){
+        thisBtn.children[0].classList.add('hidden');
+        thisBtn.children[1].classList.add('hidden');
+        thisBtn.children[2].classList.remove('hidden');
+        thisBtn.children[3].classList.remove('hidden');
+    }else{
+        thisBtn.children[2].classList.add('hidden');
+        thisBtn.children[3].classList.add('hidden');
+        thisBtn.children[0].classList.remove('hidden');
+        thisBtn.children[1].classList.remove('hidden');
+    }
+}
 
 /*transform info about a note to data for a feedback block*/
 function formData(item){
