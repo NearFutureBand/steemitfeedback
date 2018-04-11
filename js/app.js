@@ -31,7 +31,6 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
     }else{
         auth(sendAddNoteForm);
     }
-    sendAddNoteForm();
     return false;
 });
 function sendAddNoteForm(){
@@ -303,8 +302,6 @@ function addEventsForComLikes(noteId, comId){
                 voteForCom(noteId,comId,isLike);
             }else{
                 auth(voteForCom.bind(this, noteId,comId,isLike));
-                //auth();
-                //voteForCom(noteId,comId,isLike);
             }
         });
     });
@@ -432,7 +429,7 @@ function getNoteLikes(noteId,isLike){
 //Lighting up buttons for voting (note)
 function setLikeLblNote(noteId,add){
     let votes;
-    //жмём на лайк - работает только если лайк уже не стоит
+    //жмём на лайк - работает только если лайк еще не стоит
     if(add>0){
         if(document.getElementById(noteId).getAttribute('data-like')!=1){
             
@@ -446,6 +443,14 @@ function setLikeLblNote(noteId,add){
             getNoteLikes(noteId,true).previousElementSibling.innerHTML = ++votes;
             getNoteLikes(noteId,true).classList.add('btn-success');
             document.getElementById(noteId).setAttribute('data-like',1);
+            
+        }else{
+            
+            //нажатие на уже поставленный лайк = отмена лайка
+            votes = Number(getNoteLikes(noteId,true).previousElementSibling.innerHTML);
+            getNoteLikes(noteId,true).previousElementSibling.innerHTML = --votes;
+            getNoteLikes(noteId,true).classList.remove('btn-success');
+            document.getElementById(noteId).setAttribute('data-like',0);
         }
         
     }else{//ставим дизлайк
@@ -461,8 +466,14 @@ function setLikeLblNote(noteId,add){
             getNoteLikes(noteId,false).nextElementSibling.innerHTML = ++votes;
             getNoteLikes(noteId,false).classList.add('btn-danger');
             document.getElementById(noteId).setAttribute('data-like',-1);
+        }else{
+            
+            //нажатие на уже поставленный дизлайк = отмена дизлайка
+            votes = Number(getNoteLikes(noteId,false).nextElementSibling.innerHTML);
+            getNoteLikes(noteId,false).nextElementSibling.innerHTML = --votes;
+            getNoteLikes(noteId,false).classList.remove('btn-danger');
+            document.getElementById(noteId).setAttribute('data-like',0);
         }
-        
     }
 }
 
@@ -538,6 +549,7 @@ function createNote(data){
     addEventsForCommentButtons(data[0]);
     addEventsForNoteLikes(data[0]);
     addEventForNoteHeader(data[0]);
+    //setLikeGlow();
     console.log('note has been created: id = '+data[0]);
 }
 
