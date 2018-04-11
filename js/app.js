@@ -302,9 +302,9 @@ function addEventsForComLikes(noteId, comId){
             if(wif){
                 voteForCom(noteId,comId,isLike);
             }else{
-                //auth(voteForCom.bind(this, noteId,comId,isLike));
-                auth();
-                voteForCom(noteId,comId,isLike);
+                auth(voteForCom.bind(this, noteId,comId,isLike));
+                //auth();
+                //voteForCom(noteId,comId,isLike);
             }
         });
     });
