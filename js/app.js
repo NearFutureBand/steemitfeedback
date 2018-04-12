@@ -174,7 +174,6 @@ function removeNotes(){
 /*Event of expanding note - action like a button 'Comments'*/
 function addEventForNoteHeader(noteId){
     getNoteHeader(noteId).addEventListener('click',function(){
-        toggleBtnCom(noteId);
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
             reloadNote(noteId,true,true,true);
         }else{
@@ -268,12 +267,12 @@ var sendAddComForm = function(noteId){
 
 
 /*LIKES & DISLIKES*/
-/*Events for these buttons in comments (new)*/
+/*Events for these buttons in comments*/
+//следующие 4 функции очень похожи
 function addEventsForNoteLikes(noteId){
     getBtnVoteNote(noteId).forEach(function(item){
         item.addEventListener('click', function(){
             var isLike = Number(item.getAttribute('data-like'));
-            voteForNote(noteId,isLike);
             if(wif){
                 voteForNote(noteId,isLike);
             }else{
@@ -288,10 +287,10 @@ var voteForNote = function(noteId,like){
     }else{
         weight = -10000;
     }
-    setLikeLblNote(noteId,weight/10000);
-    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
+    setLblVote(noteId,'',weight/10000);
+    /*golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
         console.log(err, result);
-    });
+    });*/
 }
 
 function addEventsForComLikes(noteId, comId){
@@ -312,10 +311,10 @@ var voteForCom = function(noteId,comId,like){
     }else{
         weight = -10000;
     }
-    console.log(username);
-    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
+    setLblVote(noteId,comId,weight/10000);
+    /*golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
         console.log(err, result);
-    });
+    });*/
 }
 
 /*other functions*/
@@ -381,9 +380,17 @@ function getAddComForm(noteId){
 function getNoteControls(noteId){
     return document.getElementById(noteId).getElementsByClassName('controls')[0];
 }
+function getComControls(noteId,comId){
+    return getComment(noteId,comId).getElementsByClassName('controls')[0];
+}
+
 function getBtnVoteNote(noteId){
     return Array.from( getNoteControls(noteId).getElementsByClassName('btn-vote'));
 }
+function getBtnVoteCom(noteId,comId){
+    return Array.from(getComment(noteId,comId).getElementsByClassName('btn-com-vote'));
+}
+
 function getComment(noteId, comId){
     var comment;
     Array.from(getBlockComments(noteId).children).forEach(function(item){
@@ -398,9 +405,6 @@ function getBlockAddNote(){
     return document.getElementsByClassName('frm-add-note')[0];
 }
 
-function getBtnVoteCom(noteId,comId){
-    return Array.from(getComment(noteId,comId).getElementsByClassName('btn-com-vote'));
-}
 
 function getTxtareaCom(noteId){
     return getBlockFormAddComment(noteId).getElementsByClassName('txt-add-com')[0];
@@ -418,66 +422,54 @@ function getComPermlink(noteId,comId){
     console.log(getComment(noteId,comId));
     return getComment(noteId,comId).getAttribute('data-permlink');
 }
-function getNoteLikes(noteId,isLike){
-    if (isLike==true){
-        return getNoteControls(noteId).getElementsByClassName('btn-vote')[0];
+
+
+/*новые функции*/
+function getBtnVote(noteId, comId, isLike){
+    let btn;
+    if(comId){
+        btn = getComControls(noteId,comId).getElementsByClassName('btn-com-vote')[1-isLike];
+    }else{
+        btn = getNoteControls(noteId).getElementsByClassName('btn-vote')[1-isLike];
     }
-    else return getNoteControls(noteId).getElementsByClassName('btn-vote')[1];
+    return btn;
+}
+
+//доделать подсветку кнопок
+function setLblVote(noteId,comId,vote){
+    let state;
+    let res;
     
-}
-
-//Lighting up buttons for voting (note)
-function setLikeLblNote(noteId,add){
-    let votes;
-    //жмём на лайк - работает только если лайк еще не стоит
-    if(add>0){
-        if(document.getElementById(noteId).getAttribute('data-like')!=1){
-            
-            //если стоял дизлайк - его убрать
-            if(document.getElementById(noteId).getAttribute('data-like')==-1){
-                votes = Number(getNoteLikes(noteId,false).nextElementSibling.innerHTML);
-                getNoteLikes(noteId,false).nextElementSibling.innerHTML = --votes;
-                getNoteLikes(noteId,false).classList.remove('btn-danger');
-            }
-            votes = Number(getNoteLikes(noteId,true).previousElementSibling.innerHTML);
-            getNoteLikes(noteId,true).previousElementSibling.innerHTML = ++votes;
-            getNoteLikes(noteId,true).classList.add('btn-success');
-            document.getElementById(noteId).setAttribute('data-like',1);
-            
-        }else{
-            
-            //нажатие на уже поставленный лайк = отмена лайка
-            votes = Number(getNoteLikes(noteId,true).previousElementSibling.innerHTML);
-            getNoteLikes(noteId,true).previousElementSibling.innerHTML = --votes;
-            getNoteLikes(noteId,true).classList.remove('btn-success');
-            document.getElementById(noteId).setAttribute('data-like',0);
-        }
-        
-    }else{//ставим дизлайк
-        if(document.getElementById(noteId).getAttribute('data-like')!=-1){
-            
-            //если стоял лайк - его убрать
-            if(document.getElementById(noteId).getAttribute('data-like')==1){
-                votes = Number(getNoteLikes(noteId,true).previousElementSibling.innerHTML);
-                getNoteLikes(noteId,true).previousElementSibling.innerHTML = --votes;
-                getNoteLikes(noteId,true).classList.remove('btn-success');
-            }
-            votes = Number(getNoteLikes(noteId,false).nextElementSibling.innerHTML);
-            getNoteLikes(noteId,false).nextElementSibling.innerHTML = ++votes;
-            getNoteLikes(noteId,false).classList.add('btn-danger');
-            document.getElementById(noteId).setAttribute('data-like',-1);
-        }else{
-            
-            //нажатие на уже поставленный дизлайк = отмена дизлайка
-            votes = Number(getNoteLikes(noteId,false).nextElementSibling.innerHTML);
-            getNoteLikes(noteId,false).nextElementSibling.innerHTML = --votes;
-            getNoteLikes(noteId,false).classList.remove('btn-danger');
-            document.getElementById(noteId).setAttribute('data-like',0);
-        }
+    //getting current state of voting for this note or comment
+    if(comId){
+        state = Number(getComment(noteId,comId).getAttribute('data-like'));
+    }else{
+        state = Number(document.getElementById(noteId).getAttribute('data-like'));
+    }
+    
+    //setting up new state depending on the pressed button
+    if(vote == -1 && state != -1){
+        res = -1;
+    }
+    if(vote == 1 && state != 1){
+        res = 1;
+    }
+    if(vote*state>0){
+        res = 0;
+    }
+    
+    if(comId){
+        state = getComment(noteId,comId).setAttribute('data-like',res);
+    }else{
+        state = document.getElementById(noteId).setAttribute('data-like',res);
     }
 }
 
-//
+function checkVoteColor(noteId,comId){
+    let state ;
+}
+
+/*--новые функции*/
 
 /*changing button's label*/
 function toggleBtnCom(noteId){
@@ -559,7 +551,8 @@ function createComment(data){
     comment.className = 'row comment';
     comment.setAttribute('id',data[0]);
     comment.setAttribute('data-permlink',data[7]);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-success btn-com-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-danger btn-com-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
+    comment.setAttribute('data-like',0);
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     console.log("comment has been created: "+data[1]+" "+data[0]);
     addEventsForComLikes(data[1],data[0]);
