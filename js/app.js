@@ -288,9 +288,9 @@ var voteForNote = function(noteId,like){
         weight = -10000;
     }
     setLblVote(noteId,'',weight/10000);
-    /*golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
         console.log(err, result);
-    });*/
+    });
 }
 
 function addEventsForComLikes(noteId, comId){
@@ -312,10 +312,11 @@ var voteForCom = function(noteId,comId,like){
         weight = -10000;
     }
     setLblVote(noteId,comId,weight/10000);
-    /*golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
         console.log(err, result);
-    });*/
+    });
 }
+
 
 /*other functions*/
 function findUniqueIdForComment(noteId){
@@ -394,7 +395,6 @@ function getBtnVoteCom(noteId,comId){
 function getComment(noteId, comId){
     var comment;
     Array.from(getBlockComments(noteId).children).forEach(function(item){
-        console.log(comId+' '+item.getAttribute('id'));
         if(item.getAttribute('id')==comId){
             comment = item;
         }
@@ -423,6 +423,16 @@ function getComPermlink(noteId,comId){
     return getComment(noteId,comId).getAttribute('data-permlink');
 }
 
+//getting current state of voting for this note or comment
+function getVoteState(noteId,comId){
+    let state;
+    if(comId){
+        state = Number(getComment(noteId,comId).getAttribute('data-like'));
+    }else{
+        state = Number(document.getElementById(noteId).getAttribute('data-like'));
+    }
+    return state;
+}
 
 /*новые функции*/
 function getBtnVote(noteId, comId, isLike){
@@ -437,15 +447,8 @@ function getBtnVote(noteId, comId, isLike){
 
 //доделать подсветку кнопок
 function setLblVote(noteId,comId,vote){
-    let state;
+    let state = getVoteState(noteId,comId);
     let res;
-    
-    //getting current state of voting for this note or comment
-    if(comId){
-        state = Number(getComment(noteId,comId).getAttribute('data-like'));
-    }else{
-        state = Number(document.getElementById(noteId).getAttribute('data-like'));
-    }
     
     //setting up new state depending on the pressed button
     if(vote == -1 && state != -1){
@@ -463,10 +466,32 @@ function setLblVote(noteId,comId,vote){
     }else{
         state = document.getElementById(noteId).setAttribute('data-like',res);
     }
+    checkVoteColor(noteId,comId);
 }
 
+//function setBadVoteColor()
+
+//non-optimized
 function checkVoteColor(noteId,comId){
-    let state ;
+    let state = getVoteState(noteId,comId);
+    if(state == -1){
+        if(getBtnVote(noteId,comId,1).classList.contains('btn-success')){
+            getBtnVote(noteId,comId,1).classList.remove('btn-success');   
+        }
+        getBtnVote(noteId,comId,0).classList.add('btn-danger');
+    }else if(state == 0){
+        if(getBtnVote(noteId,comId,1).classList.contains('btn-success')){
+            getBtnVote(noteId,comId,1).classList.remove('btn-success');   
+        }
+        if(getBtnVote(noteId,comId,0).classList.contains('btn-danger')){
+            getBtnVote(noteId,comId,0).classList.remove('btn-danger');   
+        }
+    }else if(state == 1){
+        if(getBtnVote(noteId,comId,0).classList.contains('btn-danger')){
+            getBtnVote(noteId,comId,0).classList.remove('btn-danger');   
+        }
+        getBtnVote(noteId,comId,1).classList.add('btn-success');
+    }
 }
 
 /*--новые функции*/
