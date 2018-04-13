@@ -282,14 +282,13 @@ function addEventsForNoteLikes(noteId){
     });
 }
 var voteForNote = function(noteId,like){
-    let weight0,weight;
-    (like == 1)? weight0 = 10000 : weight0 = -10000;
-    console.log(weight0+' --> ');
-    weight = updateVoteState(noteId,'',weight0/10000);
-    console.log(weight);
-    /*golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
+    let weight;
+    (like == 1)? weight = 10000 : weight = -10000;
+    console.log(weight+' --> ');
+    weight = updateVoteState(noteId,'',weight/10000);
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
         console.log(err, result);
-    });*/
+    });
 }
 
 function addEventsForComLikes(noteId, comId){
@@ -307,7 +306,6 @@ function addEventsForComLikes(noteId, comId){
 var voteForCom = function(noteId,comId,like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
-    console.log(weight);
     weight = updateVoteState(noteId,comId,weight/10000);
     golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
         console.log(err, result);
@@ -459,15 +457,9 @@ function updateVoteState(noteId,comId,vote){
     let res;
     
     //setting up new state depending on the pressed button
-    if(vote == -1 && state != -1){
-        res = -1;
-    }
-    if(vote == 1 && state != 1){
-        res = 1;
-    }
-    if(vote*state>0){
-        res = 0;
-    }
+    if(vote == -1 && state != -1) res = -1;
+    if(vote == 1 && state != 1) res = 1
+    if(vote*state>0) res = 0;
     
     if(comId){
         getComment(noteId,comId).setAttribute('data-like',res);
@@ -481,23 +473,38 @@ function updateVoteState(noteId,comId,vote){
 }
 function setLblVote(noteId,comId,val0,val){
     let likes;
+    let dislikes;
     let label;
-    let delta;
-    if(val==1 || (val==0 && val0==1)){
-        console.log(getBtnVote(noteId,comId,1));
-        label = getBtnVote(noteId,comId,1).previousElementSibling;
+    if(val==0 || val0==0){//одиночные изменения
+        
+        //нажатие на дизлайк
+        if(val == -1 || val0 == -1) label = getBtnVote(noteId,comId,0).nextElementSibling;
+        //нажатие на лайк
+        if(val == 1 || val0 == 1) label = getBtnVote(noteId,comId,1).previousElementSibling;
+        
+        likes = Number(label.innerHTML);
+        
+        //изменение числа
+        if(val==0) likes--;
+        if(val0==0) likes++;
+        label.innerHTML = likes;
+        
+    }else if(val != 0 && val0 != 0){
+        //двойное изменение
+        likes = Number(getBtnVote(noteId,comId,1).previousElementSibling.innerHTML);
+        dislikes = Number(getBtnVote(noteId,comId,0).nextElementSibling.innerHTML);
+        if(val==1){
+            //нажатие на лайк
+            likes++;
+            dislikes--;
+        }else{
+            //нажатие на дизлайк
+            likes--;
+            dislikes++;
+        }
+        getBtnVote(noteId,comId,1).previousElementSibling.innerHTML = likes;
+        getBtnVote(noteId,comId,0).nextElementSibling.innerHTML = dislikes;
     }
-    if(val==-1 || (val==0 && val0==-1)){
-        console.log(getBtnVote(noteId,comId,0));
-        label = getBtnVote(noteId,comId,0).nextElementSibling;
-    }
-    likes = Number(label.innerHTML);
-    if(val==0){
-        delta=-1;
-    }else{
-       delta = val;
-    }
-    label.innerHTML = likes+delta;
 }
 //non-optimized
 function checkVoteColor(noteId,comId){
