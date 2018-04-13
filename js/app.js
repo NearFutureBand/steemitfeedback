@@ -235,7 +235,6 @@ function hideComments(noteId){
 function addEventsForComDone(noteId){
     getAddComForm(noteId).addEventListener('submit',function(e){
         e.preventDefault();
-        //auth();
         if(wif){
             sendAddComForm(noteId);
         }else{
@@ -282,11 +281,8 @@ function addEventsForNoteLikes(noteId){
     });
 }
 var voteForNote = function(noteId,like){
-    if(like==1){
-        weight = 10000;
-    }else{
-        weight = -10000;
-    }
+    let weight;
+    (like == 1)? weight= 10000 : weight = -10000;
     setLblVote(noteId,'',weight/10000);
     golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
         console.log(err, result);
@@ -306,11 +302,8 @@ function addEventsForComLikes(noteId, comId){
     });
 }
 var voteForCom = function(noteId,comId,like){
-    if(like==1){
-        weight = 10000;
-    }else{
-        weight = -10000;
-    }
+    let weight;
+    (like == 1)? weight= 10000 : weight = -10000;
     setLblVote(noteId,comId,weight/10000);
     golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
         console.log(err, result);
