@@ -4,14 +4,14 @@ golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099
 
 
 /*FORM FOR ADDING NEW NOTE*/
-/*(done)*/
+
 function openAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'block';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'none';
     removeNotes();
 }
 
-/*(done)*/
+
 function closeAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'none';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
@@ -39,11 +39,11 @@ function sendAddNoteForm(){
     var parentAuthor = '';
     var parentPermlink = 'fb '+findCheckedRadio();
     var author = username;
-    var permlink = 'post-' + parentPermlink + '-' + Date.now();
     var title = document.getElementById('formHeader').value;
+    var permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + title;
     var body = document.getElementById('formText').value;
     var jsonMetadata = '';
-    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink);
+    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink);
     console.log(window.wif);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
@@ -65,6 +65,9 @@ document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('clic
     closeAddNoteForm();
 });
 
+function getBlockAddNote(){
+    return document.getElementsByClassName('frm-add-note')[0];
+}
 
 /*NOTES*/
 document.addEventListener('DOMContentLoaded', loadNotes);
@@ -74,17 +77,16 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 function loadNotes(){
     document.querySelector('.lding').style.display = 'block';
     var query = {
-        select_tags: ['auto', 'tag'],
-        select_authors: ['test3'],
+        select_tags: ['fb'],
+        select_authors: ['test2'],
         limit: 100
     };
     golos.api.getDiscussionsByCreated(query, function(err, result) {
-        //console.log(err, result);
+        console.log(err, result);
         
         if ( ! err){
             result.forEach(function(item) {
-                console.log(item);
-                
+                console.log(item);           
                 createNote(formData(item));
             });
         }
@@ -92,14 +94,14 @@ function loadNotes(){
     });
     
     //загрузка тестового поста через permlink
-    golos.api.getContent('test3', 'post-tag-1522967956841', function(err, result) {
+    /*golos.api.getContent('test2', 'pochemu-bogatye-belorusy-ne-berut-udivlyaemsya-na-test-draive-samykh-krutykh-maserati', function(err, result) {
         //console.log(err, result);
         if (!err){
             console.log(result);
             createNote(formData(result));
         }
         else console.error(err);
-    });
+    });*/
     
     //создание записей через массив с данными (для работы без интернета)
     /*for(var i=0;i<2;i++){
@@ -182,7 +184,32 @@ function addEventForNoteHeader(noteId){
             loadNotes();
         }
     });
-} 
+}
+
+function getBlockFormAddComment(noteId){
+    return document.getElementById(noteId).children[document.getElementById(noteId).childElementCount-1];
+}
+function getBlockComments(noteId){
+    return document.getElementById(noteId).getElementsByClassName('comments')[0];
+}
+function getBtnShowComment(noteId){
+    return document.getElementById(noteId).getElementsByClassName('btn-show-comments')[0];
+}
+function getNoteHeader(noteId){
+    return document.getElementById(noteId).getElementsByClassName('text')[0].children[0];
+}
+function getNoteControls(noteId){
+    return document.getElementById(noteId).getElementsByClassName('controls')[0];
+}
+function getLblCommentCount(noteId){
+    return getBtnShowComment(noteId).children[0];
+}
+function getNoteAuthor(noteId){
+    return getNoteControls(noteId).getElementsByClassName('name')[0].children[0].innerHTML;
+}
+function getNotePermlink(noteId){
+    return document.getElementById(noteId).getAttribute('data-permlink');
+}
 
 
 /*COMMENTS*/
@@ -265,12 +292,37 @@ var sendAddComForm = function(noteId){
     document.querySelector('.lding').style.display = 'none';
 }
 
+function getAddComForm(noteId){
+    return getBlockFormAddComment(noteId).children[0].children[0].children[0];
+}
+function getBtnAddComDone(noteId){
+    return getBlockFormAddComment(noteId).getElementsByClassName('btn-add-com-done')[0];
+}
+function getComControls(noteId,comId){
+    return getComment(noteId,comId).getElementsByClassName('controls')[0];
+}
+function getComment(noteId, comId){
+    var comment;
+    Array.from(getBlockComments(noteId).children).forEach(function(item){
+        if(item.getAttribute('id')==comId){
+            comment = item;
+        }
+    });
+    return comment;
+}
+function getTxtareaCom(noteId){
+    return getBlockFormAddComment(noteId).getElementsByClassName('txt-add-com')[0];
+}
+function getComPermlink(noteId,comId){
+    return getComment(noteId,comId).getAttribute('data-permlink');
+}
 
 /*LIKES & DISLIKES*/
 /*Events for these buttons in comments*/
 //следующие 4 функции очень похожи
 function addEventsForNoteLikes(noteId){
-    getBtnVoteNote(noteId).forEach(function(item){
+    //console.log(getNoteControls(noteId));
+    getBtnsVote(noteId,'');/*.forEach(function(item){
         item.addEventListener('click', function(){
             var isLike = Number(item.getAttribute('data-like'));
             if(wif){
@@ -279,7 +331,7 @@ function addEventsForNoteLikes(noteId){
                 auth(voteForNote.bind(this, noteId,isLike));
             }
         });
-    });
+    });*/
 }
 var voteForNote = function(noteId,like){
     let weight;
@@ -292,7 +344,7 @@ var voteForNote = function(noteId,like){
 }
 
 function addEventsForComLikes(noteId, comId){
-    getBtnVoteCom(noteId,comId).forEach(function(item){
+    getBtnsVote(noteId,comId);/*.forEach(function(item){
         item.addEventListener('click', function(){
             var isLike = Number(item.getAttribute('data-like'));
             if(wif){
@@ -301,7 +353,7 @@ function addEventsForComLikes(noteId, comId){
                 auth(voteForCom.bind(this, noteId,comId,isLike));
             }
         });
-    });
+    });*/
 }
 var voteForCom = function(noteId,comId,like){
     let weight;
@@ -355,65 +407,16 @@ function getIndexFromName(name){
     return name.slice(-indexLength);
 }
 
-function getBlockFormAddComment(noteId){
-    return document.getElementById(noteId).children[document.getElementById(noteId).childElementCount-1];
-}
-function getBlockComments(noteId){
-    return document.getElementById(noteId).getElementsByClassName('comments')[0];
-}
-function getBtnShowComment(noteId){
-    return document.getElementById(noteId).getElementsByClassName('btn-show-comments')[0];
-}
-function getNoteHeader(noteId){
-    return document.getElementById(noteId).getElementsByClassName('text')[0].children[0];
-}
-function getBtnAddComDone(noteId){
-    return getBlockFormAddComment(noteId).getElementsByClassName('btn-add-com-done')[0];
-}
-function getAddComForm(noteId){
-    return getBlockFormAddComment(noteId).children[0].children[0].children[0];
-}
-function getNoteControls(noteId){
-    return document.getElementById(noteId).getElementsByClassName('controls')[0];
-}
-function getComControls(noteId,comId){
-    return getComment(noteId,comId).getElementsByClassName('controls')[0];
+
+//returns array of voting buttons
+function getBtnsVote(noteId,comId){
+    if(comId){
+        return Array.from(getComment(noteId,comId).getElementsByClassName('btn-com-vote'));
+    }else{
+        return Array.from( getNoteControls(noteId).getElementsByClassName('btn-vote'));
+    }
 }
 
-function getBtnVoteNote(noteId){
-    return Array.from( getNoteControls(noteId).getElementsByClassName('btn-vote'));
-}
-function getBtnVoteCom(noteId,comId){
-    return Array.from(getComment(noteId,comId).getElementsByClassName('btn-com-vote'));
-}
-
-function getComment(noteId, comId){
-    var comment;
-    Array.from(getBlockComments(noteId).children).forEach(function(item){
-        if(item.getAttribute('id')==comId){
-            comment = item;
-        }
-    });
-    return comment;
-}
-function getBlockAddNote(){
-    return document.getElementsByClassName('frm-add-note')[0];
-}
-function getTxtareaCom(noteId){
-    return getBlockFormAddComment(noteId).getElementsByClassName('txt-add-com')[0];
-}
-function getLblCommentCount(noteId){
-    return getBtnShowComment(noteId).children[0];
-}
-function getNoteAuthor(noteId){
-    return getNoteControls(noteId).getElementsByClassName('name')[0].children[0].innerHTML;
-}
-function getNotePermlink(noteId){
-    return document.getElementById(noteId).getAttribute('data-permlink');
-}
-function getComPermlink(noteId,comId){
-    return getComment(noteId,comId).getAttribute('data-permlink');
-}
 
 //getting current state of voting for this note or comment
 function getVoteState(noteId,comId){
