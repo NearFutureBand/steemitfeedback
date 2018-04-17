@@ -10,8 +10,6 @@ function openAddNoteForm(){
     document.getElementsByClassName('btn-add-note')[0].style.display = 'none';
     removeNotes();
 }
-
-
 function closeAddNoteForm(){
     document.getElementsByClassName('frm-add-note')[0].style.display = 'none';
     document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
@@ -100,7 +98,7 @@ function loadNotes(){
     });
     
     //загрузка тестового поста через permlink
-    /*golos.api.getContent('test2', 'pochemu-bogatye-belorusy-ne-berut-udivlyaemsya-na-test-draive-samykh-krutykh-maserati', function(err, result) {
+    /*golos.api.getContent('test2', 'post-fb-1523961173281', function(err, result) {
         //console.log(err, result);
         if (!err){
             console.log(result);
@@ -141,7 +139,7 @@ function reloadNote(noteId,expanded,loading,removeAll){
         document.querySelector('.lding').style.display = 'block';
     }
     
-    var permlink = getNotePermlink(noteId);
+    var permlink = getPermlink(noteId,'');
     var author = getNoteAuthor(noteId);
     
     //remove all - for the expanding mode, remove one - for the reloading mode
@@ -174,6 +172,14 @@ function reloadNote(noteId,expanded,loading,removeAll){
     
 }
 
+/*оптимизировать под reload notes*/
+function expandNote(noteId){
+    toggleBtnCom(noteId);
+    document.getElementById(noteId).setAttribute('data-opened',1);
+    loadComments(noteId);
+    createCommentForm(noteId);
+}
+
 /*Removing all the notes in the wrapper*/
 function removeNotes(){
     Array.from(document.getElementsByClassName('note')).forEach(function(item){
@@ -184,6 +190,7 @@ function removeNotes(){
 /*Event of expanding note - action like a button 'Comments'*/
 function addEventForNoteHeader(noteId){
     getNoteHeader(noteId).addEventListener('click',function(){
+        console.log(document.getElementById(noteId));
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
             reloadNote(noteId,true,true,true);
         }else{
@@ -214,9 +221,7 @@ function getLblCommentCount(noteId){
 function getNoteAuthor(noteId){
     return getNoteControls(noteId).getElementsByClassName('name')[0].children[0].innerHTML;
 }
-function getNotePermlink(noteId){
-    return document.getElementById(noteId).getAttribute('data-permlink');
-}
+
 
 
 /*COMMENTS*/
@@ -225,7 +230,7 @@ function addEventsForCommentButtons(noteId){
     getBtnShowComment(noteId).addEventListener('click',function(){
         
         if(document.getElementById(noteId).getAttribute('data-opened') == '0'){
-            reloadNote(noteId,true,true,true);
+            reloadNote(noteId,true,true,true);            
         }else{
             removeNotes();
             loadNotes();
@@ -235,7 +240,7 @@ function addEventsForCommentButtons(noteId){
 
 /*Loading comments from database - (done 0.5)*/
 function loadComments(noteId){
-    golos.api.getContentReplies(getNoteAuthor(noteId), getNotePermlink(noteId), function(err, result) {
+    golos.api.getContentReplies(getNoteAuthor(noteId), getPermlink(noteId,''), function(err, result) {
         //console.log(err, result);
         if (!err) {
             result.forEach(function(item) {
@@ -281,7 +286,7 @@ function addEventsForComDone(noteId){
 var sendAddComForm = function(noteId){
     document.querySelector('.lding').style.display = 'block';
     var parentAuthor = getNoteAuthor(noteId);
-    var parentPermlink = getNotePermlink(noteId);
+    var parentPermlink = getPermlink(noteId,'');
     var author = username;
     var permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     var title = '';
@@ -320,8 +325,14 @@ function getComment(noteId, comId){
 function getTxtareaCom(noteId){
     return getBlockFormAddComment(noteId).getElementsByClassName('txt-add-com')[0];
 }
-function getComPermlink(noteId,comId){
-    return getComment(noteId,comId).getAttribute('data-permlink');
+function getPermlink(noteId,comId){
+    let result;
+    if(comId){
+        result = getComment(noteId,comId).getAttribute('data-permlink');
+    }else{
+        result = document.getElementById(noteId).getAttribute('data-permlink');
+    }
+    return result;
 }
 
 
@@ -345,7 +356,7 @@ var voteForNote = function(noteId,like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(noteId,'',weight/10000);
-    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getNotePermlink(noteId), weight, function(err, result) {
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getPermlink(noteId,''), weight, function(err, result) {
         console.log(err, result);
     });
 }
@@ -366,7 +377,7 @@ var voteForCom = function(noteId,comId,like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(noteId,comId,weight/10000);
-    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getComPermlink(noteId,comId), weight, function(err, result){
+    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getPermlink(noteId,comId), weight, function(err, result){
         console.log(err, result);
     });
 }
