@@ -37,13 +37,17 @@ function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     document.querySelector('.lding').style.display = 'block';
     var parentAuthor = '';
-    var parentPermlink = findCheckedRadio();
+    var parentPermlink = 'fb';
     var author = username;
     var title = document.getElementById('formHeader').value;
-    var permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + title;
+    var permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + Date.now().toString();
     var body = document.getElementById('formText').value;
-    var jsonMetadata = '';
-    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink);
+    let tagList = {
+        tags: [findCheckedRadio()]
+    };
+    var jsonMetadata = JSON.stringify(tagList);
+    
+    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' '+tagList+' permlink: '+permlink);
     console.log(window.wif);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
@@ -60,7 +64,7 @@ function sendAddNoteForm(){
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
 
-/*cancelling of adding form for creating feedback (done)*/
+/*cancelling of adding form for creating feedback*/
 document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
     closeAddNoteForm();
 });
@@ -68,6 +72,7 @@ document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('clic
 function getBlockAddNote(){
     return document.getElementsByClassName('frm-add-note')[0];
 }
+
 
 /*NOTES*/
 document.addEventListener('DOMContentLoaded', loadNotes);
@@ -77,8 +82,8 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 function loadNotes(){
     document.querySelector('.lding').style.display = 'block';
     var query = {
-        select_tags: (tagSelector=='all')?['idea','problem','offer','question']:[tagSelector],
-        select_authors: ['test2'],
+        select_tags: (tagSelector=='all')?['fb']:[tagSelector],
+        select_authors: ['test2','test3','test4','test5','test6','test7','test8','test9'],
         limit: 100
     };
     console.log(query.select_tags);
@@ -128,6 +133,7 @@ function removeNote(noteId){
 }
 
 /*reload or expand note*/
+/*упростить*/
 function reloadNote(noteId,expanded,loading,removeAll){
     
     // on/off loading animation
@@ -214,7 +220,7 @@ function getNotePermlink(noteId){
 
 
 /*COMMENTS*/
-/*Events for buttons inside note to manipulate comments (done)*/
+/*Events for buttons inside a note to manipulate comments*/
 function addEventsForCommentButtons(noteId){
     getBtnShowComment(noteId).addEventListener('click',function(){
         
@@ -376,10 +382,13 @@ Array.from(document.getElementById('navbarSupportedContent').getElementsByClassN
         });
         item.classList.add('active');
         tagSelector = item.getAttribute('data-target');
+        removeNotes();
         loadNotes();
     });
 });
 
+
+/*------------------------------------------*/
 /*other functions*/
 function findUniqueIdForComment(noteId){
     var blockComments = getBlockComments(noteId);
