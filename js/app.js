@@ -68,7 +68,7 @@ function sendAddNoteForm(){
     document.getElementById('formText').value = '';
     closeAddNoteForm();
     
-    
+    //getContent and ONLY AFTER loadNotes();
     
     document.querySelector('.lding').style.display = 'none';
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
