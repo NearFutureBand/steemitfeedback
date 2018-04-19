@@ -51,6 +51,15 @@ function sendAddNoteForm(){
         //console.log(err, result);
         if ( ! err) {
             console.log('comment', result);
+            golos.api.getContent(author, permlink, function(err, result) {
+                //console.log(err, result);
+                if (!err) {
+                    console.log(result);
+                    createNote(formData(result));
+                    toggleBtnCom(noteId);
+                }
+                else console.error(err);
+            });
         }
         else console.error(err);
     });
@@ -58,6 +67,9 @@ function sendAddNoteForm(){
     document.getElementById('formHeader').value = '';
     document.getElementById('formText').value = '';
     closeAddNoteForm();
+    
+    
+    
     document.querySelector('.lding').style.display = 'none';
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
@@ -98,14 +110,14 @@ function loadNotes(){
     });
     
     //загрузка тестового поста через permlink
-    /*golos.api.getContent('test2', 'post-fb-1523961173281', function(err, result) {
+    golos.api.getContent('test2', 'post-fb-1523961173281', function(err, result) {
         //console.log(err, result);
         if (!err){
             console.log(result);
             createNote(formData(result));
         }
         else console.error(err);
-    });*/
+    });
     
     //создание записей через массив с данными (для работы без интернета)
     /*for(var i=0;i<2;i++){
@@ -313,6 +325,10 @@ function getBtnAddComDone(noteId){
 function getComControls(noteId,comId){
     return getComment(noteId,comId).getElementsByClassName('controls')[0];
 }
+function getComAuthor(noteId, comId){
+    console.log(getComControls(noteId,comId).querySelector('.name'))
+    return getComControls(noteId,comId).querySelector('.name').children[0].innerHTML;
+}
 function getComment(noteId, comId){
     var comment;
     Array.from(getBlockComments(noteId).children).forEach(function(item){
@@ -377,7 +393,7 @@ var voteForCom = function(noteId,comId,like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(noteId,comId,weight/10000);
-    golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getPermlink(noteId,comId), weight, function(err, result){
+    golos.broadcast.vote(wif, username, getComAuthor(noteId,comId), getPermlink(noteId,comId), weight, function(err, result){
         console.log(err, result);
     });
 }
@@ -585,7 +601,6 @@ function toggleBtnCom(noteId){
 
 /*transform info about a note to data for a feedback block*/
 /*Packing data for creating new note - all instructions here*/
-//HERE---------------------------------------------------------------------------------------------
 function formData(object){
     var data = [];
     data.push(object.id);//0 id
@@ -609,9 +624,7 @@ function formData(object){
     data.push(dislikes);//7 dislikes
     data.push(object.permlink);//8 permlink
     
-    //HERE----------------------------------------------------------------------------------------
-    let myVote = getVoteStateOnload(object);
-    data.push(myVote/10000);//9 vote of this user
+    data.push(getVoteStateOnload(object)/10000);//9 vote of this user
     return data;
 }
 function formDataCom(object, noteId){
@@ -630,7 +643,7 @@ function formDataCom(object, noteId){
     data.push(likes);//5 - likes
     data.push(dislikes);//6 - dislikes
     data.push(object.permlink);//7 permlink
-    data.push(getVoteStateOnload(object));// 8 vote of this user
+    data.push(getVoteStateOnload(object)/10000);// 8 vote of this user
     return data;
 }
 
@@ -660,7 +673,7 @@ function createComment(data){
     comment.className = 'row comment';
     comment.setAttribute('id',data[0]);
     comment.setAttribute('data-permlink',data[7]);
-    comment.setAttribute('data-like',0);
+    comment.setAttribute('data-like',data[8]);
     comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     checkVoteColor(data[1],data[0]);
