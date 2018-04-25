@@ -2,6 +2,7 @@ golos.config.set('websocket', 'wss://ws.testnet.golos.io');
 golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
+initLang('en');
 
 /*FORM FOR ADDING NEW NOTE*/
 
@@ -97,7 +98,7 @@ function loadNotes(){
         limit: 100
     };
     console.log(query.select_tags);
-    golos.api.getDiscussionsByCreated(query, function(err, result) {
+    golos.api.getDiscussionsByBlog(query, function(err, result) {
         console.log(err, result);
         
         if ( ! err){
@@ -559,26 +560,24 @@ function setLblVote(noteId,comId,val0,val){
         getBtnVote(noteId,comId,0).nextElementSibling.innerHTML = dislikes;
     }
 }
-//non-optimized
 function checkVoteColor(noteId,comId){
     let state = getVoteState(noteId,comId);
     if(state == -1){
-        if(getBtnVote(noteId,comId,1).classList.contains('btn-success')){
-            getBtnVote(noteId,comId,1).classList.remove('btn-success');   
-        }
+        delClassIfContains(getBtnVote(noteId,comId,1),'btn-success');
         getBtnVote(noteId,comId,0).classList.add('btn-danger');
     }else if(state == 0){
-        if(getBtnVote(noteId,comId,1).classList.contains('btn-success')){
-            getBtnVote(noteId,comId,1).classList.remove('btn-success');   
-        }
-        if(getBtnVote(noteId,comId,0).classList.contains('btn-danger')){
-            getBtnVote(noteId,comId,0).classList.remove('btn-danger');   
-        }
+        delClassIfContains(getBtnVote(noteId,comId,1),'btn-success');
+        delClassIfContains(getBtnVote(noteId,comId,0),'btn-danger');
     }else if(state == 1){
-        if(getBtnVote(noteId,comId,0).classList.contains('btn-danger')){
-            getBtnVote(noteId,comId,0).classList.remove('btn-danger');   
-        }
+        delClassIfContains(getBtnVote(noteId,comId,0),'btn-danger');
         getBtnVote(noteId,comId,1).classList.add('btn-success');
+    }
+}
+
+/*Removes class from the given element if it contains it*/
+function delClassIfContains(element, className){
+    if(element.classList.contains(className)){
+        element.classList.remove(className);
     }
 }
 /*--новые функции*/
