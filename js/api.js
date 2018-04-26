@@ -1,8 +1,8 @@
-golos.config.set('websocket', 'wss://ws.testnet.golos.io');
+/*golos.config.set('websocket', 'wss://ws.testnet.golos.io');
 golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
-
-initLang('en');
+*/
+//initLang('en');
 
 /*FORM FOR ADDING NEW NOTE*/
 
@@ -34,7 +34,7 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
 });
 function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
-    document.querySelector('.lding').style.display = 'block';
+    //document.querySelector('.lding').style.display = 'block';
     var parentAuthor = '';
     var parentPermlink = 'fb';
     var author = username;
@@ -71,7 +71,7 @@ function sendAddNoteForm(){
     
     //getContent and ONLY AFTER loadNotes();
     
-    document.querySelector('.lding').style.display = 'none';
+    //document.querySelector('.lding').style.display = 'none';
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
 
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', loadNotes);
 /*Loading notes*/
 //gathering notes from the database
 function loadNotes(){
-    document.querySelector('.lding').style.display = 'block';
+    //document.querySelector('.lding').style.display = 'block';
     var query = {
         select_tags: (tagSelector=='all')?['fb']:[tagSelector],
         select_authors: ['test2','test3','test4','test5','test6','test7','test8','test9'],
@@ -135,7 +135,7 @@ function loadNotes(){
         data = [];
     }*/
     
-    document.querySelector('.lding').style.display = 'none';
+    //document.querySelector('.lding').style.display = 'none';
 }
 
 /*Remove one note with the given noteId*/
@@ -149,7 +149,7 @@ function reloadNote(noteId,expanded,loading,removeAll){
     
     // on/off loading animation
     if(loading==true){
-        document.querySelector('.lding').style.display = 'block';
+        //document.querySelector('.lding').style.display = 'block';
     }
     
     var permlink = getPermlink(noteId,'');
@@ -180,7 +180,7 @@ function reloadNote(noteId,expanded,loading,removeAll){
     });
     
     if(loading==true){
-        document.querySelector('.lding').style.display = 'none';
+        //document.querySelector('.lding').style.display = 'none';
     }
     
 }
@@ -297,7 +297,7 @@ function addEventsForComDone(noteId){
     });
 }
 var sendAddComForm = function(noteId){
-    document.querySelector('.lding').style.display = 'block';
+    //document.querySelector('.lding').style.display = 'block';
     var parentAuthor = getNoteAuthor(noteId);
     var parentPermlink = getPermlink(noteId,'');
     var author = username;
@@ -314,7 +314,7 @@ var sendAddComForm = function(noteId){
         else console.error(err);
     });
     getTxtareaCom(noteId).value = '';
-    document.querySelector('.lding').style.display = 'none';
+    //document.querySelector('.lding').style.display = 'none';
 }
 
 function getAddComForm(noteId){
@@ -656,7 +656,7 @@ function createNote(data){
     note.setAttribute('data-opened',0);
     note.setAttribute('data-like',data[9]);
     note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
-    document.querySelector('.gFeedback .card-body').appendChild(note);
+    document.querySelector('.gFeedback .wrapper').appendChild(note);
     checkVoteColor(data[0],'');
     
     addEventsForCommentButtons(data[0]);
