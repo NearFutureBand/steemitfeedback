@@ -84,7 +84,7 @@ function getBlockAddNote(){
     return document.getElementsByClassName('frm-add-note')[0];
 }
 
-
+console.log('api.js started');
 /*NOTES*/
 document.addEventListener('DOMContentLoaded', loadNotes);
 
