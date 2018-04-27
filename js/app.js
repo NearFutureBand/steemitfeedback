@@ -7,12 +7,12 @@ initLang('en');
 /*FORM FOR ADDING NEW NOTE*/
 
 function openAddNoteForm(){
-    document.getElementsByClassName('frm-add-note')[0].style.display = 'block';
+    createNoteForm();
     document.getElementsByClassName('btn-add-note')[0].style.display = 'none';
     removeNotes();
 }
 function closeAddNoteForm(){
-    document.getElementsByClassName('frm-add-note')[0].style.display = 'none';
+    document.getElementsByClassName('frm-add-note')[0].remove();
     document.getElementsByClassName('btn-add-note')[0].style.display = 'block';
     loadNotes();
 }
@@ -23,15 +23,19 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
 });
 
 /*sending note to the database*/
-document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
-    e.preventDefault();
-    if(wif){
-        sendAddNoteForm();
-    }else{
-        auth(sendAddNoteForm);
-    }
-    return false;
-});
+function addEventForNoteDone(){
+    console.log('привязка события');
+    document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
+        console.log('event');
+        e.preventDefault();
+        if(wif){
+            sendAddNoteForm();
+        }else{
+            auth(sendAddNoteForm);
+        }
+        return false;
+    });
+}
 function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     document.querySelector('.lding').style.display = 'block';
@@ -76,9 +80,11 @@ function sendAddNoteForm(){
 }
 
 /*cancelling of adding form for creating feedback*/
-document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
-    closeAddNoteForm();
-});
+function addEventForNoteCancel(){
+    document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
+        closeAddNoteForm();
+    });
+}
 
 function getBlockAddNote(){
     return document.getElementsByClassName('frm-add-note')[0];
@@ -234,7 +240,6 @@ function getLblCommentCount(noteId){
 function getNoteAuthor(noteId){
     return getNoteControls(noteId).getElementsByClassName('name')[0].children[0].innerHTML;
 }
-
 
 
 /*COMMENTS*/
@@ -673,7 +678,7 @@ function createComment(data){
     comment.setAttribute('id',data[0]);
     comment.setAttribute('data-permlink',data[7]);
     comment.setAttribute('data-like',data[8]);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[6]+"</span></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     checkVoteColor(data[1],data[0]);
     console.log("comment has been created: "+data[1]+" "+data[0]);
@@ -687,6 +692,14 @@ function createCommentForm(noteId){
     addEventsForComDone(noteId);
 }//вставлять целиком в конец .note
 
+function createNoteForm(){
+    var noteForm = document.createElement('div');
+    noteForm.className = 'row form frm-add-note';
+    noteForm.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Header</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Enter your text here</label><textarea class='form-control' id='formText' name='txtBody' rows='3' required></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-note-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-note-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
+    document.getElementsByClassName('wrapper')[0].appendChild(noteForm);
+    addEventForNoteDone();
+    addEventForNoteCancel();
+}
 
 /*copied scripts for buttons in nav (UNIQUE FOR THE GOLOSFEEDBACK)*/
 async function getUrls() {
