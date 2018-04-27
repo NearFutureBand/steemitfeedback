@@ -26,12 +26,6 @@ gApi = document.createElement('script');
 gApi.src = 'https://golosfeedback.com/js/api.js';
 (document.head || document.documentElement).appendChild(gApi);
 
-/*gFeedbackContainer = document.createElement('div');
-gFeedbackContainer.className = 'card border-primary mb-3';
-gFeedbackContainer.innerHTML = `<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><p></p></div><div class="card-body text-dark"></div></div>`;
-//document.querySelector('.gFeedback').style.width = gFeedbackWidth;
-document.querySelector('.gFeedback').appendChild(gFeedbackContainer);// div inject*/
-
 window.addEventListener('load', function() { // init script after page loaded
     golos.config.set('websocket', 'wss://ws.testnet.golos.io');
     golos.config.set('address_prefix', 'GLS');
