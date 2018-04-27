@@ -25,12 +25,14 @@ document.getElementsByClassName('btn-add-note')[0].addEventListener('click', fun
 /*sending note to the database*/
 function addEventForNoteDone(){
     console.log('привязка события');
-    document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
+    document.getElementsByClassName('frm-add-note')[0].getElementsByTagName('form')[0].addEventListener('submit', function(e){
         console.log('event');
         e.preventDefault();
         if(wif){
+            console.log('send');
             sendAddNoteForm();
         }else{
+            console.log('auth send');
             auth(sendAddNoteForm);
         }
         return false;
