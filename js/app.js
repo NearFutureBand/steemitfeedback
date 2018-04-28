@@ -376,12 +376,15 @@ function addEventsForNoteLikes(noteId){
         });
     });
 }
-var voteForNote = function(noteId,like){
+var voteForNote = function(noteId, like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
-    weight = updateVoteState(noteId,'',weight/10000);
+    
     golos.broadcast.vote(wif, username, getNoteAuthor(noteId), getPermlink(noteId,''), weight, function(err, result) {
         console.log(err, result);
+        if ( ! err) {
+            weight = updateVoteState(noteId,'',weight/10000);
+        }
     });
 }
 
