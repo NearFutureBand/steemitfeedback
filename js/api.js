@@ -493,7 +493,7 @@ function getVoteStateOnload(object){
         });
     }else{
         result = 0;
-    }*/
+    }*/ 
     return result;
 }
 

@@ -1,4 +1,4 @@
-var bootstrapMin, golosJs, sweetAlert, gAuth, gFeedbackApi, gPollsStyle, gFeedbackWidth, gFeedbackLink, gFeedbackContainer;
+var bootstrapMin, golosJs, sweetAlert, gAuth, gFeedbackApi, gPollsStyle, gFeedbackWidth, gFeedbackLink, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare;
 
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
@@ -11,6 +11,14 @@ bootstrapMin.rel = 'stylesheet';
 bootstrapMin.type = 'text/css';
 bootstrapMin.href = 'https://golosfeedback.com/css/style.css';
 (document.head || document.documentElement).appendChild(bootstrapMin);
+
+bootstrapNativeGithub = document.createElement('script');
+bootstrapNativeGithub.src = 'https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js';
+(document.head || document.documentElement).appendChild(bootstrapNativeGithub);
+
+bootstrapNativeCloudflare = document.createElement('script');
+bootstrapNativeCloudflare.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.22/bootstrap-native-v4.min.js';
+(document.head || document.documentElement).appendChild(bootstrapNativeCloudflare);
 
 golosJs = document.createElement('script');
 golosJs.src = 'https://cdn.jsdelivr.net/npm/golos-js@0.6.1/dist/golos.min.js';
