@@ -485,7 +485,7 @@ function getVoteState(noteId,comId){
 //also can return real state if somebody is signed in
 function getVoteStateOnload(object){
     let result=0;
-    if(wif){
+    /*if(wif){
         object.active_votes.forEach(function(item){
             if(item.voter==username){
                 result = item.percent;
@@ -493,7 +493,7 @@ function getVoteStateOnload(object){
         });
     }else{
         result = 0;
-    }
+    }*/
     return result;
 }
 
@@ -649,6 +649,7 @@ function formDataCom(object, noteId){
 
 /*forming the note, filling it up and placing into the wrapper to the bottom*/
 function createNote(data){
+    console.log('appending note');
     var note = document.createElement('div');
     note.className = 'row note';
     note.setAttribute('id',data[0]);
