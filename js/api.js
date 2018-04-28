@@ -18,12 +18,12 @@ function closeAddNoteForm(){
 }
 
 /*opening form for adding new note*/
-document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
+/*document.getElementsByClassName('btn-add-note')[0].addEventListener('click', function(){
     openAddNoteForm();
-});
+});*/
 
 /*sending note to the database*/
-document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
+/*document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', function(e){
     e.preventDefault();
     if(wif){
         sendAddNoteForm();
@@ -31,7 +31,7 @@ document.getElementsByClassName('frm-add-note')[0].addEventListener('submit', fu
         auth(sendAddNoteForm);
     }
     return false;
-});
+});*/
 function sendAddNoteForm(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     //document.querySelector('.lding').style.display = 'block';
@@ -76,9 +76,9 @@ function sendAddNoteForm(){
 }
 
 /*cancelling of adding form for creating feedback*/
-document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
+/*document.getElementsByClassName('btn-add-note-cancel')[0].addEventListener('click',function(){
     closeAddNoteForm();
-});
+});*/
 
 function getBlockAddNote(){
     return document.getElementsByClassName('frm-add-note')[0];
