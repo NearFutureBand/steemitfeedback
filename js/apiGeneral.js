@@ -13,7 +13,10 @@ var initGolosFeedback = function(){
     //initialization of navbar with tabs for sorting feedbacks
     initTabs();
     
-    initFormAddFb();
+    //adding event for the button (DIFF) 
+    document.querySelector('.'+prefix+'btn-add-note').addEventListener('click', function(){
+        openAddNoteForm();
+    });
 }
 document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
@@ -50,17 +53,40 @@ var initTabs = function(){
 
 //FORM FOR ADDING NEW FEEDBACK
 
-var initFormAddFb = function(){
+var createFromAddFb = function(){
     let form = document.createElement('div');
     form.className = 'row form frm-add-note';
     form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Header</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Enter your text here</label><textarea class='form-control' id='formText' name='txtBody' rows='3' required></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-note-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-note-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(form);
-    //addEventForNoteDone();
-    //addEventForNoteCancel();
+    addEventForFbDone();
+    addEventForFbCancel();
 }
-
-
-    
+function addEventForFbDone(){
+    document.querySelector('.'+prefix+'wrapper .frm-add-note').getElementsByTagName('form')[0].addEventListener('submit', function(e){
+        e.preventDefault();
+        if(wif){
+            sendAddNoteForm();
+        }else{
+            auth(sendAddNoteForm);
+        }
+        return false;
+    });
+}
+function addEventForFbCancel(){
+    document.querySelector('.'+prefix+'wrapper .frm-add-note .btn-add-note-cancel').addEventListener('click',function(){
+        closeAddNoteForm();
+    });
+}
+function openAddNoteForm(){
+    createFromAddFb();
+    document.querySelector('.'+prefix+'btn-add-note').style.display = 'none';
+    //removeNotes();
+}
+function closeAddNoteForm(){
+    document.querySelector('.'+prefix+'wrapper .frm-add-note').remove();
+    document.querySelector('.'+prefix+'btn-add-note').style.display = 'block';
+    //loadNotes();
+}
 
 
 //OTHER FUNCTIONS
