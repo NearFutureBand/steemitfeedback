@@ -2,7 +2,7 @@
 golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 */
-//initLang('en');
+initLang('en');
 
 /*FORM FOR ADDING NEW NOTE*/
 
@@ -485,7 +485,7 @@ function getVoteState(noteId,comId){
 //also can return real state if somebody is signed in
 function getVoteStateOnload(object){
     let result=0;
-    /*if(wif){
+    if(wif){
         object.active_votes.forEach(function(item){
             if(item.voter==username){
                 result = item.percent;
@@ -493,7 +493,7 @@ function getVoteStateOnload(object){
         });
     }else{
         result = 0;
-    }*/ 
+    }
     return result;
 }
 
@@ -649,14 +649,13 @@ function formDataCom(object, noteId){
 
 /*forming the note, filling it up and placing into the wrapper to the bottom*/
 function createNote(data){
-    console.log('appending note');
     var note = document.createElement('div');
     note.className = 'row note';
     note.setAttribute('id',data[0]);
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
     note.setAttribute('data-like',data[9]);
-    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
+    note.innerHTML = "<div class='container body-note tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
     document.querySelector('.gFeedback .wrapper').appendChild(note);
     checkVoteColor(data[0],'');
     
@@ -674,7 +673,7 @@ function createComment(data){
     comment.setAttribute('id',data[0]);
     comment.setAttribute('data-permlink',data[7]);
     comment.setAttribute('data-like',data[8]);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><i class='fas fa-thumbs-up'></i></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><i class='fas fa-thumbs-down'></i></button><span>"+data[6]+"</span></div></div></div></div></div>";
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[6]+"</span></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     checkVoteColor(data[1],data[0]);
     console.log("comment has been created: "+data[1]+" "+data[0]);

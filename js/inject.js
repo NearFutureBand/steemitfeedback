@@ -1,4 +1,4 @@
-var bootstrapMin, golosJs, sweetAlert, gAuth, gFeedbackApi, gPollsStyle, gFeedbackWidth, gFeedbackLink, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare;
+var bootstrapMin, golosJs, sweetAlert, gAuth, gFeedbackApi, gPollsStyle, gFeedbackWidth, gFeedbackLink, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
 
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
@@ -11,6 +11,18 @@ bootstrapMin.rel = 'stylesheet';
 bootstrapMin.type = 'text/css';
 bootstrapMin.href = 'https://golosfeedback.com/css/style.css';
 (document.head || document.documentElement).appendChild(bootstrapMin);
+
+i18next = document.createElement('script');
+i18next.src = 'https://unpkg.com/i18next@10.5.0/i18next.min.js';
+(document.head || document.documentElement).appendChild(i18next);
+
+i18nextBackend = document.createElement('script');
+i18nextBackend.src = 'https://cdnjs.cloudflare.com/ajax/libs/i18next-xhr-backend/1.5.1/i18nextXHRBackend.min.js';
+(document.head || document.documentElement).appendChild(i18nextBackend);
+
+i18nextBrowserLD = document.createElement('script');
+i18nextBrowserLD.src = 'https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.1.0/i18nextBrowserLanguageDetector.min.js';
+(document.head || document.documentElement).appendChild(i18nextBrowserLD);
 
 bootstrapNativeGithub = document.createElement('script');
 bootstrapNativeGithub.src = 'https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js';
