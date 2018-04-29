@@ -1,0 +1,63 @@
+<title>GolosFeedback-Inject</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="https://golosfeedback.com/graphics/logo.svg"/>
+
+<style>
+	body {
+		background: #ccc;
+        padding: 10px;
+	}
+    .gFeedback, .instruction{
+        display: block;
+        margin: 0 auto;
+    }
+    .instruction{
+        width: 1000px;
+    }
+    @media screen and (min-width: 768px){
+        .instruction{
+            width: 750px;
+        }
+    }
+    @media screen and (min-width: 992px){
+        .instruction{
+            width: 900px;
+        }
+    }
+    @media screen and (min-width: 1200px){
+        .instruction{
+            width: 1000px;
+        }  
+    }
+</style>
+
+
+<body>
+    <div class="wrapper">
+       
+        <div class="instruction">
+            <h2>Usage example GolosFeedback-Injection</h2>
+	        <p>Put this <strong>&lt;script src="https://golosfeedback.com/js/inject.js"&gt&lt;/script&gt</strong> tag to the <strong>&lt;head&gt</strong> of your page</p>
+	        <p>Put this button to your website </p>
+	        <p><strong>&l type="button" class="gFeedback"&gt&lt;/div&gt</strong></p>
+	        <!--<p><strong>&lt;div class="gFeedback"&gt&lt;/div&gt</strong></p>-->
+	        <p><strong>&lt;script type="text/javascript"> var gFeedbackWidth = '1000';&lt;/script&gt</strong></p>
+	        <p>to the place, where the Poll block will be</p>
+        </div>
+        
+        <!-- Put this div and script tags to the place, where the Feedback block will be -->
+	    <div class="gFwrapper"></div>
+	    
+	    <div class="instruction">
+	        <p>That`s all folks!</p>
+        </div>
+    </div>
+	
+	
+	
+	
+	<script type="text/javascript">
+        var gFeedbackWidth = 1000; 
+    </script>
+	<script src="js/injectNew.js"></script>
+</body>
