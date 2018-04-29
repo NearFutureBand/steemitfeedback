@@ -1,12 +1,11 @@
-
-
-
 var prefix = 'gF';
 var tagSelector = 'all';
+
+
+
 //GENERAL
 
 var initGolosFeedback = function(){
-    
     
     //setting up container-row-col structure
     initBootstrapStructure();
@@ -17,9 +16,6 @@ var initGolosFeedback = function(){
     //adding event for the button (DIFF) 
     //в полной версии подразумевается, что навбар уже на странице есть, и нужно только привязать событие к кнопке (как здесь)
     //в виджете навбара нет и кнопка будет создаваться отдельно
-    document.querySelector('.'+prefix+'btn-add-fb').addEventListener('click', function(){
-        openAddFbForm();
-    });
     
     
     //loading posts according to current tag selector

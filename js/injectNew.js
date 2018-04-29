@@ -59,8 +59,13 @@ window.addEventListener('load', function() { // init script after page loaded
     
 	gFeedbackContainer = document.createElement('div');
 	gFeedbackContainer.className = 'card border-primary mb-3';
-	gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><p></p></div><div class="card-body text-dark wrapper"></div></div>';
+	gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button></div><div class="card-header-right"><p></p></div><div class="card-body text-dark wrapper"></div></div>';
 	document.querySelector('.gFwrapper').style.width = gFeedbackWidth;
 	
-    initGolosFeedback();
+    //initGolosFeedback();
+    
+    //add event for btn add feedback
+    /*document.querySelector('.'+prefix+'btn-add-fb').addEventListener('click', function(){
+        openAddFbForm();
+    });*/
 });
