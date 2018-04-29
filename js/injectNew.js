@@ -9,7 +9,7 @@ bootstrapMin.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/boot
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
 bootstrapMin.type = 'text/css';
-bootstrapMin.href = 'https://golosfeedback.com/css/style.css';
+bootstrapMin.href = 'https://golosfeedback.com/css/styleNew.css';
 (document.head || document.documentElement).appendChild(bootstrapMin);
 
 i18next = document.createElement('script');
