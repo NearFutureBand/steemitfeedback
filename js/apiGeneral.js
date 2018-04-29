@@ -5,13 +5,11 @@ golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099
 
 
 var prefix = 'gF';
-
+var tagSelector = 'all';
 //GENERAL
 
 var initGolosFeedback = function(){
     
-    //selector for sorting all the printing feedbacks
-    var tagSelector='all';
     
     //setting up container-row-col structure
     initBootstrapStructure();
@@ -27,6 +25,8 @@ var initGolosFeedback = function(){
     });
     
     
+    //loading posts according to current tag selector
+    loadFbs();
 }
 document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
@@ -63,8 +63,9 @@ var initTabs = function(){
 }
 
 
-//FORM FOR ADDING NEW FEEDBACK
 
+
+//FORM FOR ADDING NEW FEEDBACK----------------------------------------------------------
 var createFromAddFb = function(){
     let form = document.createElement('div');
     form.className = 'row form frm-add-fb';
@@ -100,8 +101,9 @@ function closeAddFbForm(){
     loadFbs();
 }
 
-//FEEDBACKS
 
+
+//FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function(){
     
     var query = {
@@ -116,7 +118,7 @@ var loadFbs = function(){
         if ( ! err){
             result.forEach(function(item) {
                 console.log(item);           
-                createFbs(formData(item));
+                createFb(formData(item));
             });
         }
         else console.error(err);
@@ -127,27 +129,10 @@ var loadFbs = function(){
         //console.log(err, result);
         if (!err){
             console.log(result);
-            createFbs(formData(result));
+            createFb(formData(result));
         }
         else console.error(err);
     });
-}
-var createFbs = function(data){
-    let note = document.createElement('div');
-    note.className = 'row '+prefix+'fb';
-    note.setAttribute('id',data[0]);
-    note.setAttribute('data-permlink',data[8]);
-    note.setAttribute('data-opened',0);
-    note.setAttribute('data-like',data[9]);
-    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
-    document.querySelector('.'+prefix+'wrapper').appendChild(note);
-    //checkVoteColor(data[0],'');
-    
-    //addEventsForCommentButtons(data[0]);
-    //addEventsForFbLikes(data[0]);
-    //addEventForFbHeader(data[0]);
-    
-    console.log('feedback has been created: id = '+data[0]);
 }
 var formData = function(object){
     let data = [];
@@ -175,10 +160,84 @@ var formData = function(object){
     data.push(getVoteStateOnload(object)/10000);//9 vote of this user
     return data;
 }
-function removeFbs(){
-    Array.from(document.getElementsByClassName(prefix+'fb')).forEach(function(item){
-        item.remove();
+var createFb = function(data){
+    let note = document.createElement('div');
+    note.className = 'row fb';
+    note.setAttribute('id',data[0]);
+    note.setAttribute('data-permlink',data[8]);
+    note.setAttribute('data-opened',0);
+    note.setAttribute('data-like',data[9]);
+    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
+    document.querySelector('.'+prefix+'wrapper').appendChild(note);
+    checkVoteColor(data[0],'');
+    
+    addEventsForCommentButtons(data[0]);
+    //addEventsForFbLikes(data[0]);
+    //addEventForFbHeader(data[0]);
+    
+    console.log('feedback has been created: id = '+data[0]);
+}
+
+var addEventsForCommentButtons = function (fbId){
+    getBtnShowComment(fbId).addEventListener('click',function(){
+        if(document.getElementById(fbId).getAttribute('data-opened') == '0'){
+            reloadNote(fbId,true,true,true);            
+        }else{
+            removeFbs();
+            loadFbs();
+        }
     });
+}
+var reloadNote = function(fbId,expanded,loading,removeAll){
+    
+    // on/off loading animation
+    /*if(loading==true){
+        document.querySelector('.lding').style.display = 'block';
+    }*/
+    
+    let permlink = getPermlink(fbId,'');
+    let author = getAuthor(fbId,'');
+    
+    //remove all - for the expanding mode, remove one - for the reloading mode
+    if(removeAll==true){
+        removeFbs();
+    }else{
+        removeFb(fbId);
+    }
+    
+    golos.api.getContent(author, permlink, function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            console.log(result);
+            createFb(formData(result));
+            toggleBtnCom(fbId);
+            
+            //if the note was expanded
+            if(expanded==true){
+                document.getElementById(fbId).setAttribute('data-opened',1);
+                loadComments(fbId);
+                createCommentForm(fbId);
+            }
+        }
+        else console.error(err);
+    });
+    
+    /*if(loading==true){
+        document.querySelector('.lding').style.display = 'none';
+    }*/
+}
+
+function removeFbs(){
+    document.querySelector('.'+prefix+'wrapper .fb').remove();
+}
+function getVoteState(fbId,comId){
+    let state;
+    if(comId){
+        state = Number(getComment(fbId,comId).getAttribute('data-like'));
+    }else{
+        state = Number(document.getElementById(fbId).getAttribute('data-like'));
+    }
+    return state;
 }
 function getVoteStateOnload(object){
     let result=0;
@@ -193,10 +252,124 @@ function getVoteStateOnload(object){
     }*/
     return result;
 }
+function checkVoteColor(fbId,comId){
+    let state = getVoteState(fbId,comId);
+    if(state == -1){
+        delClassIfContains(getBtnVote(fbId,comId,1),'btn-success');
+        getBtnVote(fbId,comId,0).classList.add('btn-danger');
+    }else if(state == 0){
+        delClassIfContains(getBtnVote(fbId,comId,1),'btn-success');
+        delClassIfContains(getBtnVote(fbId,comId,0),'btn-danger');
+    }else if(state == 1){
+        delClassIfContains(getBtnVote(fbId,comId,0),'btn-danger');
+        getBtnVote(fbId,comId,1).classList.add('btn-success');
+    }
+}
+function getBtnShowComment(fbId){
+    return document.getElementById(fbId).getElementsByClassName('btn-show-comments')[0];
+}
+function toggleBtnCom(fbId){
+    let thisBtn = getBtnShowComment(fbId);
+    if(thisBtn.children[2].classList.contains('hidden')){
+        thisBtn.children[0].classList.add('hidden');
+        thisBtn.children[1].classList.add('hidden');
+        thisBtn.children[2].classList.remove('hidden');
+        thisBtn.children[3].classList.remove('hidden');
+    }else{
+        thisBtn.children[2].classList.add('hidden');
+        thisBtn.children[3].classList.add('hidden');
+        thisBtn.children[0].classList.remove('hidden');
+        thisBtn.children[1].classList.remove('hidden');
+    }
+}
+function getFbControls(fbId){
+    return document.getElementById(fbId).getElementsByClassName('controls')[0];
+}
 
-//COMMENTS
-//FORM FOR ADDING NEW COMMENT
+
+//COMMENTS-------------------------------------------------------------------------------
+function loadComments(fbId){
+    golos.api.getContentReplies(getAuthor(fbId,''), getPermlink(fbId,''), function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            result.forEach(function(item) {
+                console.log('getContentReplies', item);
+                createComment(formDataCom(item,fbId));
+            });
+        }
+        else console.error(err);
+    });
+}
+var formDataCom = function(object, fbId){
+    var data = [];
+    data.push(object.id);//0 - id
+    data.push(fbId);//1 - parent ID
+    data.push(object.body);//2 - body
+    data.push(object.author);//3 - author
+    data.push(object.created);//4 - created (date)
+    let likes = 0;
+    let dislikes = 0;
+    object.active_votes.forEach(function(item){
+        if(item.percent>0) likes++;
+        else if(item.percent<0) dislikes++;
+    });
+    data.push(likes);//5 - likes
+    data.push(dislikes);//6 - dislikes
+    data.push(object.permlink);//7 permlink
+    data.push(getVoteStateOnload(object)/10000);// 8 vote of this user
+    return data;
+}
+var createComment = function(data){
+    let comment = document.createElement('div');
+    comment.className = 'row comment';
+    comment.setAttribute('id',data[0]);
+    comment.setAttribute('data-permlink',data[7]);
+    comment.setAttribute('data-like',data[8]);
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[6]+"</span></div></div></div></div></div>";
+    getBlockComments(data[1]).appendChild(comment);
+    //checkVoteColor(data[1],data[0]);
+    //addEventsForComLikes(data[1],data[0]);
+    console.log("comment has been created: "+data[1]+" "+data[0]);
+}
+
+function getComment(fbId, comId){
+    let comment;
+    Array.from(getBlockComments(fbId).children).forEach(function(item){
+        if(item.getAttribute('id')==comId){
+            comment = item;
+        }
+    });
+    return comment;
+}
+
+function getBlockComments(noteId){
+    return document.getElementById(noteId).getElementsByClassName('comments')[0];
+}
+
+
+//FORM FOR ADDING NEW COMMENT-------------------------------------------------------------
+function createCommentForm(fbId){
+    var commentForm = document.createElement('div');
+    commentForm.className = 'container frm-add-com';
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
+    document.getElementById(fbId).appendChild(commentForm);
+    //addEventsForComDone(noteId);
+}
+
+
+
+
 //VOTES
+
+var getBtnVote = function(fbId, comId, isLike){
+    let btn;
+    if(comId){
+        btn = getComControls(fbId,comId).getElementsByClassName('btn-com-vote')[1-isLike];
+    }else{
+        btn = getFbControls(fbId).getElementsByClassName('btn-vote')[1-isLike];
+    }
+    return btn;
+}
 
 
 //OTHER FUNCTIONS
@@ -206,5 +379,24 @@ var delClassIfContains = function (element, className){
     if(element.classList.contains(className)){
         element.classList.remove(className);
     }
+}
+
+function getPermlink(fbId,comId){
+    let result;
+    if(comId){
+        result = getComment(fbId,comId).getAttribute('data-permlink');
+    }else{
+        result = document.getElementById(fbId).getAttribute('data-permlink');
+    }
+    return result;
+}
+function getAuthor(fbId,comId){
+    let result;
+    if(comId){
+        //result = getComment(fbId,comId).getAttribute('data-permlink');
+    }else{
+        result = getFbControls(fbId).getElementsByClassName('name')[0].children[0].innerHTML;
+    }
+    return result;
 }
 

@@ -59,21 +59,23 @@ body{
 a, a:hover{
     color: inherit;
 }
-.tile{
+
+/*styles of card*/
+.gFwrapper .tile{
     padding: 15px;
     border: 1px solid rgba(0,0,0,.125);
     border-radius:  5px;
     margin-bottom: 10px;
     background-color: white;
 }
+
+/*general styles for navbars*/
 nav{
     padding: 10px;
 }
-ul.nav-tabs{
-    padding: 10px 10px 0px 10px;
-    background-color: #fff;
-}
-.nav-tab-buttons{
+
+/*additional navbar with tabs to sort feedbacks*/
+.gFwrapper .nav-tab-buttons{
     margin-bottom: 10px;
     >div{
         padding: 0;
@@ -83,6 +85,10 @@ ul.nav-tabs{
         padding: 0;
         .tabs{
             padding: 0px;
+            ul.nav-tabs{
+                padding: 10px 10px 0px 10px;
+                background-color: #fff;
+            }
             .tab{
                 background-color: transparent;
                 border: none;
@@ -95,9 +101,66 @@ ul.nav-tabs{
     }
 }
 
+/*github octocat*/
 .github-corner {
     position: fixed;
     top: 0;
     right: 0;
 }
 
+.gFwrapper .fb{
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: transparent;
+    .body{
+        width: 100%;
+    }
+    .text{
+        p{
+            text-align: justify;
+        }
+        h3:hover{
+            cursor: pointer;
+        }
+        button{
+            margin: 0;
+        }
+        span{
+            padding: 0 10px;
+        }
+        .badge{
+            padding: 5px 10px;
+        }
+    }
+}
+
+.gFwrapper .controls{
+    display: flex;
+    align-content: stretch;
+    .controls-wrapper{
+        width: 100%;
+        padding: 15px;
+        border: 1px solid rgba(0,0,0,0.125);
+        border-radius: 5px;
+        .name, .date{
+            padding: 3px;
+            width: 100%;
+            text-align: center;
+        }
+        .likes{
+            display: flex;
+            justify-content: center;
+            button{
+                margin: 0 5px;
+            }
+            span{
+                padding: 5px;
+                line-height: 28px;
+            }
+        }
+    }
+}
+
+.gFwrapper .hidden{
+    display: none;
+}
