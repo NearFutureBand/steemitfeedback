@@ -53,14 +53,19 @@ gApi.src = 'https://golosfeedback.com/js/apiNew.js';
 (document.head || document.documentElement).appendChild(gApi);
 
 window.addEventListener('load', function() { // init script after page loaded
+    console.log(-1,Date.now());
     golos.config.set('websocket', 'wss://ws.testnet.golos.io');
     golos.config.set('address_prefix', 'GLS');
     golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
-    
+    console.log(0,Date.now());
 	gFeedbackContainer = document.createElement('div');
+    console.log(1,Date.now());
 	gFeedbackContainer.className = 'card border-primary mb-3';
+    console.log(2,Date.now());
 	gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button></div><div class="card-header-right"><p></p></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
+    console.log(3,Date.now());
 	document.querySelector('.golos-feedback-container').style.width = gFeedbackWidth;
+    console.log(4,Date.now());
 	
     //initGolosFeedback();
     
