@@ -113,6 +113,7 @@ var sendAddFbForm = function(){
     document.getElementById('formHeader').value = '';
     document.getElementById('formText').value = '';
     closeAddFbForm();
+    loadFbs();
     
     //getContent and ONLY AFTER loadNotes();
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
@@ -120,17 +121,19 @@ var sendAddFbForm = function(){
 var addEventForFbCancel = function(){
     document.querySelector('.'+prefix+'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
         closeAddFbForm();
+        loadFbs();
     });
 }
 var openAddFbForm = function(){
+    removeFbs();
     createFromAddFb();
     document.querySelector('.'+prefix+'btn-add-fb').style.display = 'none';
-    removeFbs();
 }
 var closeAddFbForm = function(){
-    document.querySelector('.'+prefix+'wrapper .frm-add-fb').remove();
-    document.querySelector('.'+prefix+'btn-add-fb').style.display = 'block';
-    loadFbs();
+    if(document.querySelector('.'+prefix+'btn-add-fb').style.display == 'none'){
+        document.querySelector('.'+prefix+'wrapper .frm-add-fb').remove();
+        document.querySelector('.'+prefix+'btn-add-fb').style.display = 'block';
+    }
 }
 var findCheckedRadio = function(){
     let res = '';
@@ -245,7 +248,8 @@ var expandFb = function(fbId){
 var removeFbs = function(){
     Array.from(document.querySelectorAll('.'+prefix+'wrapper .fb')).forEach(function(item){
         item.remove();
-    });    
+    });
+    closeAddFbForm();
 }
 var checkVoteColor = function(fbId,comId){
     let state = getVoteState(fbId,comId);
@@ -481,6 +485,7 @@ var getBtnsVote = function(fbId,comId){
 
 
 //OTHER FUNCTIONS
+
 
 /*Removes class from the given element if it contains it*/
 var delClassIfContains = function (element, className){
