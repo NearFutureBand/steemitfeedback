@@ -7,3 +7,46 @@ golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099
 document.querySelector('.'+prefix+'btn-add-fb').addEventListener('click', function(){
     openAddFbForm();
 });
+
+
+async function getUrls() {
+    if (wif == '') {
+        await auth();
+        /* ---- changes only for the GolosFeedback -----*/
+        removeFbs();
+        loadFbs();
+        /* ---- changes only for the GolosFeedback -----*/
+    } else {
+        golos.api.getContent(username, constPermlik, function(err, result) {
+            result.id == 0 ? swal({
+                html: document.getElementById('no-records-IPFS').innerHTML
+            }) : getPostJson(username, constPermlik, result);
+            if (err) swal(err);
+        });
+    }
+}
+document.getElementById('golos-urls').onclick = getUrls;
+document.getElementById('aboutGolosFeedbackCallBtn').addEventListener('click', () => {
+        swal({
+            title: document.getElementById('about-html-title').innerHTML,
+            html: document.getElementById('about-html').innerHTML,
+            type: 'info',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-success btn-lg',
+            confirmButtonText: document.getElementById('button-cool').innerHTML,
+            position: 'top',
+            showCloseButton: true
+        });
+    }, false);
+document.getElementById('integration').addEventListener('click', function(e) {
+        swal({
+            title: 'About integration!',
+            html: document.getElementById('integration-html').innerHTML,
+            type: 'info',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-success btn-lg',
+            confirmButtonText: '<span class="icon-checkmark"></span> Cool!',
+            position: 'top',
+            showCloseButton: true
+        })
+    })

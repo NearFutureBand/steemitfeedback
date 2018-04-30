@@ -70,19 +70,19 @@ var createFromAddFb = function(){
 var addEventForFbDone = function(){
     document.querySelector('.'+prefix+'wrapper .frm-add-fb').getElementsByTagName('form')[0].addEventListener('submit', function(e){
         e.preventDefault();
-        /*if(wif){
+        if(wif){
             sendAddFbForm();
         }else{
             auth(sendAddFbForm);
         }
-        return false;*/
+        return false;
     });
 }
 var sendAddFbForm = function(){
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     let parentAuthor = '';
     let parentPermlink = 'fb';
-    //let author = username;
+    let author = username;
     let title = document.getElementById('formHeader').value;
     let permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + Date.now().toString();
     let body = document.getElementById('formText').value;
@@ -92,8 +92,8 @@ var sendAddFbForm = function(){
     let jsonMetadata = JSON.stringify(tagList);
     
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' '+tagList+' permlink: '+permlink);
-    //console.log(window.wif);
-    /*golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    console.log(window.wif);
+    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             console.log('comment', result);
@@ -101,22 +101,20 @@ var sendAddFbForm = function(){
                 //console.log(err, result);
                 if (!err) {
                     console.log(result);
-                    createNote(formData(result));
-                    toggleBtnCom(noteId);
+                    createFb(formData(result));
+                    toggleBtnCom(fbId);
                 }
                 else console.error(err);
             });
         }
         else console.error(err);
-    });*/
+    });
     
     document.getElementById('formHeader').value = '';
     document.getElementById('formText').value = '';
     closeAddFbForm();
     
     //getContent and ONLY AFTER loadNotes();
-    
-    document.querySelector('.lding').style.display = 'none';
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
 var addEventForFbCancel = function(){
@@ -136,7 +134,7 @@ var closeAddFbForm = function(){
 }
 var findCheckedRadio = function(){
     let res = '';
-    Array.from(getBlockAddNote().getElementsByClassName('form-check-input')).forEach(function(item){
+    Array.from(getBlockAddFb().getElementsByClassName('form-check-input')).forEach(function(item){
         if(item.checked==true){
             res = item.getAttribute('id').split('-')[1].toString();
         }
@@ -144,6 +142,9 @@ var findCheckedRadio = function(){
     return res;
 }
 
+function getBlockAddFb(){
+    return document.getElementsByClassName('frm-add-fb')[0];
+}
 
 
 
@@ -242,7 +243,9 @@ var expandFb = function(fbId){
     });
 }
 var removeFbs = function(){
-    document.querySelector('.'+prefix+'wrapper .fb').remove();
+    Array.from(document.querySelectorAll('.'+prefix+'wrapper .fb')).forEach(function(item){
+        item.remove();
+    });    
 }
 var checkVoteColor = function(fbId,comId){
     let state = getVoteState(fbId,comId);
@@ -369,16 +372,16 @@ function createCommentForm(fbId){
     commentForm.className = 'container frm-add-com';
     commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     document.getElementById(fbId).appendChild(commentForm);
-    addEventsForComDone(noteId);
+    addEventsForComDone(fbId);
 }
 var addEventsForComDone = function(fbId){
     getAddComForm(fbId).addEventListener('submit',function(e){
         e.preventDefault();
-        /*if(wif){
+        if(wif){
             sendAddComForm(fbId);
         }else{
             auth(sendAddComForm.bind(this, fbId));
-        }*/
+        }
         return false;
     });
 }
@@ -388,17 +391,17 @@ var sendAddComForm = function(fbId){
     //let author = username;
     let permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     let title = '';
-    let body = getTxtareaCom(noteId).value;
+    let body = getTxtareaCom(fbId).value;
     let jsonMetadata = '{}';
-    console.log('comment to note '+noteId+'. Body: '+body);
-    /*golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    console.log('comment to note '+fbId+'. Body: '+body);
+    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if (!err) {
             console.log('comment', result);
         }
         else console.error(err);
-    });*/
-    getTxtareaCom(noteId).value = '';
+    });
+    getTxtareaCom(fbId).value = '';
 }
 
 var getTxtareaCom = function(fbId){
@@ -417,11 +420,11 @@ var addEventsForFbLikes = function(fbId){
     getBtnsVote(fbId,'').forEach(function(item){
         item.addEventListener('click', function(){
             let isLike = Number(item.getAttribute('data-like'));
-            /*if(wif){
+            if(wif){
                 voteForNote(fbId,isLike);
             }else{
-                auth(voteForNote.bind(this, fbId,isLike));
-            }*/
+                auth(voteForFb.bind(this, fbId,isLike));
+            }
         });
     });
 }
@@ -429,22 +432,22 @@ var voteForFb = function(fbId, like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId,'',weight/10000);
-    /*golos.broadcast.vote(wif, username, getNoteAuthor(fbId), getPermlink(fbId,''), weight, function(err, result) {
+    golos.broadcast.vote(wif, username, getNoteAuthor(fbId), getPermlink(fbId,''), weight, function(err, result) {
         console.log(err, result);
         if ( ! err) {
             //callback here - вызов функции покраски
         }
-    });*/
+    });
 }
 var addEventsForComLikes = function(fbId, comId){
-    getBtnsVote(noteId,comId).forEach(function(item){
+    getBtnsVote(fbId,comId).forEach(function(item){
         item.addEventListener('click', function(){
             let isLike = Number(item.getAttribute('data-like'));
-            /*if(wif){
+            if(wif){
                 voteForCom(fbId,comId,isLike);
             }else{
                 auth(voteForCom.bind(this, fbId,comId,isLike));
-            }*/
+            }
         });
     });
 }
@@ -452,9 +455,9 @@ var voteForCom = function(fbId,comId,like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId,comId,weight/10000);
-    /*golos.broadcast.vote(wif, username, getComAuthor(fbId,comId), getPermlink(fbId,comId), weight, function(err, result){
+    golos.broadcast.vote(wif, username, getComAuthor(fbId,comId), getPermlink(fbId,comId), weight, function(err, result){
         console.log(err, result);
-    });*/
+    });
 }
 
 var getBtnVote = function(fbId, comId, isLike){
