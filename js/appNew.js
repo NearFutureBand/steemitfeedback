@@ -11,11 +11,13 @@ document.querySelector('.'+prefix+'btn-add-fb').addEventListener('click', functi
 
 async function getUrls() {
     if (wif == '') {
-        await auth();
-        /* ---- changes only for the GolosFeedback -----*/
-        removeFbs();
-        loadFbs();
-        /* ---- changes only for the GolosFeedback -----*/
+        /* ---- changed for the GolosFeedback -----*/
+        await auth(function(){
+            removeFbs();
+            loadFbs();
+        });
+         /* ---- changed for the GolosFeedback -----*/
+       
     } else {
         golos.api.getContent(username, constPermlik, function(err, result) {
             result.id == 0 ? swal({

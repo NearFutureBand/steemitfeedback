@@ -138,7 +138,7 @@ var findCheckedRadio = function(){
     return res;
 }
 
-function getBlockAddFb(){
+var getBlockAddFb = function(){
     return document.getElementsByClassName('frm-add-fb')[0];
 }
 
@@ -288,9 +288,6 @@ var toggleFb = function(fbId){
 var getBtnShowComment = function(fbId){
     return document.getElementById(fbId).getElementsByClassName('btn-show-comments')[0];
 }
-var getFbControls = function(fbId){
-    return document.getElementById(fbId).getElementsByClassName('controls')[0];
-}
 var getFbHeader = function(fbId){
     return document.getElementById(fbId).getElementsByClassName('text')[0].children[0];
 }
@@ -362,9 +359,6 @@ var getComment = function(fbId, comId){
 }
 var getBlockComments = function(fbId){
     return document.getElementById(fbId).getElementsByClassName('comments')[0];
-}
-var getComControls = function(fbId,comId){
-    return getComment(fbId,comId).getElementsByClassName('controls')[0];
 }
 var getAddComForm = function(fbId){
     return getBlockFormAddComment(fbId).children[0].children[0].children[0];
@@ -438,13 +432,13 @@ var addEventsForFbLikes = function(fbId){
 }
 var voteForFb = function(fbId, like){
     let weight;
+    let state = getVoteState(fbId,'');
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId,'',weight/10000);
     golos.broadcast.vote(wif, username, getAuthor(fbId,''), getPermlink(fbId,''), weight, function(err, result) {
         console.log(err, result);
         if ( ! err) {
-            //callback here - вызов функции покраски
-            setLblVote(fbId,'',weight/10000);
+            setLblVote(fbId,'',weight/10000,state);
             checkVoteColor(fbId,'');
         }
     });
@@ -463,19 +457,24 @@ var addEventsForComLikes = function(fbId, comId){
 }
 var voteForCom = function(fbId,comId,like){
     let weight;
+    let state = getVoteState(fbId,comId);
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId,comId,weight/10000);
-    golos.broadcast.vote(wif, username, getComAuthor(fbId,comId), getPermlink(fbId,comId), weight, function(err, result){
+    golos.broadcast.vote(wif, username, getAuthor(fbId,comId), getPermlink(fbId,comId), weight, function(err, result){
         console.log(err, result);
+        if ( ! err) {
+            setLblVote(fbId,comId,weight/10000,state);
+            checkVoteColor(fbId,comId);
+        }
     });
 }
 
 var getBtnVote = function(fbId, comId, isLike){
     let btn;
     if(comId){
-        btn = getComControls(fbId,comId).getElementsByClassName('btn-com-vote')[1-isLike];
+        btn = getBlockControls(fbId,comId).getElementsByClassName('btn-com-vote')[1-isLike];
     }else{
-        btn = getFbControls(fbId).getElementsByClassName('btn-vote')[1-isLike];
+        btn = getBlockControls(fbId,'').getElementsByClassName('btn-vote')[1-isLike];
     }
     return btn;
 }
@@ -483,7 +482,7 @@ var getBtnsVote = function(fbId,comId){
     if(comId){
         return Array.from(getComment(fbId,comId).getElementsByClassName('btn-com-vote'));
     }else{
-        return Array.from( getFbControls(fbId).getElementsByClassName('btn-vote'));
+        return Array.from( getBlockControls(fbId,'').getElementsByClassName('btn-vote'));
     }
 }
 
@@ -520,6 +519,15 @@ var updateVoteState = function(fbId,comId,vote){
     return res*10000;
 }
 
+/*Returns the block with info & controll buttons of a feedback or comment*/
+var getBlockControls = function(fbId,comId){
+    if(comId){
+        return getComment(fbId,comId).getElementsByClassName('controls')[0];
+    }else{
+        return document.getElementById(fbId).getElementsByClassName('controls')[0];
+    }
+}
+
 /*Gets the permlink parameter of the given feedback or comment*/
 var getPermlink = function(fbId,comId){
     let result;
@@ -535,11 +543,11 @@ var getPermlink = function(fbId,comId){
 var getAuthor = function(fbId,comId){
     let result;
     if(comId){
-        //result = getComment(fbId,comId).getAttribute('data-permlink');
+        result = getBlockControls(fbId,comId);
     }else{
-        result = getFbControls(fbId).getElementsByClassName('name')[0].children[0].innerHTML;
+        result = getBlockControls(fbId,'');
     }
-    return result;
+    return result.getElementsByClassName('name')[0].children[0].innerHTML;
 }
 
 /*Gets the current vote state of a feedback or comment*/
@@ -570,23 +578,16 @@ var getVoteStateOnload = function(object){
 
 /*Sets the number of likes or dislikes on the label in a comment or feedback control panel*/
 //упростить
-var setLblVote = function(fbId,comId,val){
-    let val0 = getVoteState(fbId,comId);
+var setLblVote = function(fbId,comId,val,val0){
     let likes;
     let dislikes;
     let label;
     if(val==0 || val0==0){//одиночные изменения
         
         //нажатие на дизлайк
-        if(val == -1 || val0 == -1){
-            label = getBtnVote(fbId,comId,0).nextElementSibling;
-            console.log(getBtnVote(fbId,comId,0));
-        }
+        if(val == -1 || val0 == -1) label = getBtnVote(fbId,comId,0).nextElementSibling;
         //нажатие на лайк
-        if(val == 1 || val0 == 1){
-            label = getBtnVote(fbId,comId,1).previousElementSibling;
-            console.log(getBtnVote(fbId,comId,1));
-        }
+        if(val == 1 || val0 == 1) label = getBtnVote(fbId,comId,1).previousElementSibling;
         
         likes = Number(label.innerHTML);
         
