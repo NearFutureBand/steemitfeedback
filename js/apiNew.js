@@ -345,8 +345,10 @@ var createComment = function(data){
     addEventsForComLikes(data[1],data[0]);
     console.log("comment has been created: "+data[1]+" "+data[0]);
 }
-var removeComments = function(){
-    
+var removeComments = function(fbId){
+    Array.from(getBlockComments(fbId).children).forEach(function(item){
+        item.remove();
+    });
 }
 
 var getComment = function(fbId, comId){
@@ -403,6 +405,8 @@ var sendAddComForm = function(fbId){
         if (!err) {
             console.log('comment', result);
             getTxtareaCom(fbId).value = '';
+            removeComments(fbId);
+            loadComments(fbId);
         }
         else console.error(err);
     });
