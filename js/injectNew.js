@@ -1,4 +1,4 @@
-var bootstrapMin, golosJs, sweetAlert, gAuth, gFeedbackApi, gPollsStyle, gFeedbackWidth, gFeedbackLink, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
+var bootstrapMin, styleInject, golosJs, sweetAlert, gAuth, gFeedbackApi, gFeedbackWidth, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
 
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
@@ -11,6 +11,12 @@ bootstrapMin.rel = 'stylesheet';
 bootstrapMin.type = 'text/css';
 bootstrapMin.href = 'https://golosfeedback.com/css/styleNew.css';
 (document.head || document.documentElement).appendChild(bootstrapMin);
+
+styleInject = document.createElement('link');
+styleInject.rel = 'stylesheet';
+styleInject.type = 'text/css';
+styleInject.href = 'https://golosfeedback.com/css/styleInject.css';
+(document.head || document.documentElement).appendChild(styleInject);
 
 i18next = document.createElement('script');
 i18next.src = 'https://unpkg.com/i18next@10.5.0/i18next.min.js';
@@ -61,7 +67,7 @@ window.addEventListener('load', function() { // init script after page loaded
 	gFeedbackContainer = document.createElement('div');
     
 	gFeedbackContainer.className = 'card border-primary mb-3';
-	gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb d-flex justify-content-center"><span class="icon-forward"></span> Add feedback</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
+	gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
     
 	document.querySelector('.golos-feedback-container').style.width = gFeedbackWidth;
     document.querySelector('.golos-feedback-container').appendChild(gFeedbackContainer);
