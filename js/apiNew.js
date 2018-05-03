@@ -96,24 +96,17 @@ var sendAddFbForm = function(){
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
-            console.log('comment', result);
-            golos.api.getContent(author, permlink, function(err, result) {
-                //console.log(err, result);
-                if (!err) {
-                    console.log(result);
-                    createFb(formData(result));
-                    toggleBtnCom(fbId);
-                }
-                else console.error(err);
-            });
+            document.getElementById('formHeader').value = '';
+            document.getElementById('formText').value = '';
+            closeAddFbForm();
+            removeFbs();
+            loadFbs();
         }
+        
         else console.error(err);
     });
     
-    document.getElementById('formHeader').value = '';
-    document.getElementById('formText').value = '';
-    closeAddFbForm();
-    loadFbs();
+    
     
     //getContent and ONLY AFTER loadNotes();
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
@@ -352,6 +345,9 @@ var createComment = function(data){
     addEventsForComLikes(data[1],data[0]);
     console.log("comment has been created: "+data[1]+" "+data[0]);
 }
+var removeComments = function(){
+    
+}
 
 var getComment = function(fbId, comId){
     let comment;
@@ -365,8 +361,12 @@ var getComment = function(fbId, comId){
 var getBlockComments = function(fbId){
     return document.getElementById(fbId).getElementsByClassName('comments')[0];
 }
-
-
+var getComControls = function(fbId,comId){
+    return getComment(fbId,comId).getElementsByClassName('controls')[0];
+}
+var getAddComForm = function(fbId){
+    return getBlockFormAddComment(fbId).children[0].children[0].children[0];
+}
 
 
 
@@ -392,7 +392,7 @@ var addEventsForComDone = function(fbId){
 var sendAddComForm = function(fbId){
     let parentAuthor = getAuthor(fbId,'');
     let parentPermlink = getPermlink(fbId,'');
-    //let author = username;
+    let author = username;
     let permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     let title = '';
     let body = getTxtareaCom(fbId).value;
@@ -402,10 +402,10 @@ var sendAddComForm = function(fbId){
         //console.log(err, result);
         if (!err) {
             console.log('comment', result);
+            getTxtareaCom(fbId).value = '';
         }
         else console.error(err);
     });
-    getTxtareaCom(fbId).value = '';
 }
 
 var getTxtareaCom = function(fbId){
@@ -425,7 +425,7 @@ var addEventsForFbLikes = function(fbId){
         item.addEventListener('click', function(){
             let isLike = Number(item.getAttribute('data-like'));
             if(wif){
-                voteForNote(fbId,isLike);
+                voteForFb(fbId,isLike);
             }else{
                 auth(voteForFb.bind(this, fbId,isLike));
             }
@@ -436,10 +436,12 @@ var voteForFb = function(fbId, like){
     let weight;
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId,'',weight/10000);
-    golos.broadcast.vote(wif, username, getNoteAuthor(fbId), getPermlink(fbId,''), weight, function(err, result) {
+    golos.broadcast.vote(wif, username, getAuthor(fbId,''), getPermlink(fbId,''), weight, function(err, result) {
         console.log(err, result);
         if ( ! err) {
             //callback here - вызов функции покраски
+            setLblVote(fbId,'',weight/10000);
+            checkVoteColor(fbId,'');
         }
     });
 }
@@ -509,8 +511,8 @@ var updateVoteState = function(fbId,comId,vote){
     }else{
         document.getElementById(fbId).setAttribute('data-like',res);
     }
-    setLblVote(fbId,comId,state,res);
-    checkVoteColor(fbId,comId);
+    //setLblVote(fbId,comId,state,res);
+    //checkVoteColor(fbId,comId);
     return res*10000;
 }
 
@@ -550,7 +552,7 @@ var getVoteState = function(fbId,comId){
 /*Gets the vote state relatively to the current user if he has signed in*/
 var getVoteStateOnload = function(object){
     let result=0;
-    /*if(wif){
+    if(wif){
         object.active_votes.forEach(function(item){
             if(item.voter==username){
                 result = item.percent;
@@ -558,22 +560,29 @@ var getVoteStateOnload = function(object){
         });
     }else{
         result = 0;
-    }*/
+    }
     return result;
 }
 
 /*Sets the number of likes or dislikes on the label in a comment or feedback control panel*/
 //упростить
-var setLblVote = function(fbId,comId,val0,val){
+var setLblVote = function(fbId,comId,val){
+    let val0 = getVoteState(fbId,comId);
     let likes;
     let dislikes;
     let label;
     if(val==0 || val0==0){//одиночные изменения
         
         //нажатие на дизлайк
-        if(val == -1 || val0 == -1) label = getBtnVote(fbId,comId,0).nextElementSibling;
+        if(val == -1 || val0 == -1){
+            label = getBtnVote(fbId,comId,0).nextElementSibling;
+            console.log(getBtnVote(fbId,comId,0));
+        }
         //нажатие на лайк
-        if(val == 1 || val0 == 1) label = getBtnVote(fbId,comId,1).previousElementSibling;
+        if(val == 1 || val0 == 1){
+            label = getBtnVote(fbId,comId,1).previousElementSibling;
+            console.log(getBtnVote(fbId,comId,1));
+        }
         
         likes = Number(label.innerHTML);
         
