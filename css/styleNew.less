@@ -142,10 +142,20 @@ a, a:hover{
             justify-content: center;
             button{
                 margin: 0 5px;
+                display: flex;
+                align-items: stretch;
             }
             span{
-                padding: 5px;
-                line-height: 28px;
+                padding: 4px 8px;
+                line-height: 19px;
+            }
+            [class^="icon-"], [class*=" icon-"]{
+                font-size: 19px;
+                display: inline-block;
+            }
+            span.badge{
+                height: 27px;
+                display: inline-block;
             }
         }
     }

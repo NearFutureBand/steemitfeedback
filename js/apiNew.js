@@ -208,7 +208,7 @@ var createFb = function(data){
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
     note.setAttribute('data-like',data[9]);
-    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><span>"+data[6]+"</span><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[7]+"</span></div></div></div></div></div><div class='container comments'></div>";
+    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='date'><small>"+data[5]+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
     checkVoteColor(data[0],'');
     
@@ -336,7 +336,7 @@ var createComment = function(data){
     comment.setAttribute('id',data[0]);
     comment.setAttribute('data-permlink',data[7]);
     comment.setAttribute('data-like',data[8]);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><span>"+data[5]+"</span><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span></button><span>"+data[6]+"</span></div></div></div></div></div>";
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='date'><small>"+data[4]+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='badge badge-dark'>"+data[5]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[6]+"</span></button></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     checkVoteColor(data[1],data[0]);
     addEventsForComLikes(data[1],data[0]);
@@ -585,9 +585,9 @@ var setLblVote = function(fbId,comId,val,val0){
     if(val==0 || val0==0){//одиночные изменения
         
         //нажатие на дизлайк
-        if(val == -1 || val0 == -1) label = getBtnVote(fbId,comId,0).nextElementSibling;
+        if(val == -1 || val0 == -1) label = getBtnVote(fbId,comId,0).children[1];
         //нажатие на лайк
-        if(val == 1 || val0 == 1) label = getBtnVote(fbId,comId,1).previousElementSibling;
+        if(val == 1 || val0 == 1) label = getBtnVote(fbId,comId,1).children[0];
         
         likes = Number(label.innerHTML);
         
@@ -598,8 +598,8 @@ var setLblVote = function(fbId,comId,val,val0){
         
     }else if(val != 0 && val0 != 0){
         //двойное изменение
-        likes = Number(getBtnVote(fbId,comId,1).previousElementSibling.innerHTML);
-        dislikes = Number(getBtnVote(fbId,comId,0).nextElementSibling.innerHTML);
+        likes = Number(getBtnVote(fbId,comId,1).children[0].innerHTML);
+        dislikes = Number(getBtnVote(fbId,comId,0).children[1].innerHTML);
         if(val==1){
             //нажатие на лайк
             likes++;
@@ -609,8 +609,8 @@ var setLblVote = function(fbId,comId,val,val0){
             likes--;
             dislikes++;
         }
-        getBtnVote(fbId,comId,1).previousElementSibling.innerHTML = likes;
-        getBtnVote(fbId,comId,0).nextElementSibling.innerHTML = dislikes;
+        getBtnVote(fbId,comId,1).children[0].innerHTML = likes;
+        getBtnVote(fbId,comId,0).children[1].innerHTML = dislikes;
     }
 }
 
