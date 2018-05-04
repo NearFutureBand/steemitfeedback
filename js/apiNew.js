@@ -125,7 +125,7 @@ var openAddFbForm = function(){
 var closeAddFbForm = function(){
     if(document.querySelector('.'+prefix+'btn-add-fb').style.display == 'none'){
         document.querySelector('.'+prefix+'wrapper .frm-add-fb').remove();
-        document.querySelector('.'+prefix+'btn-add-fb').style.display = 'block';
+        document.querySelector('.'+prefix+'btn-add-fb').style.display = 'inline-block';
     }
 }
 var findCheckedRadio = function(){
