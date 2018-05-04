@@ -19,15 +19,15 @@ styleInject.href = 'https://golosfeedback.com/css/styleInject.css';
 (document.head || document.documentElement).appendChild(styleInject);
 
 i18next = document.createElement('script');
-i18next.src = 'https://unpkg.com/i18next@10.5.0/i18next.min.js';
+i18next.src = 'https://cdn.jsdelivr.net/npm/i18next@11.2.3/i18next.min.js';
 (document.head || document.documentElement).appendChild(i18next);
 
 i18nextBackend = document.createElement('script');
-i18nextBackend.src = 'https://cdnjs.cloudflare.com/ajax/libs/i18next-xhr-backend/1.5.1/i18nextXHRBackend.min.js';
+i18nextBackend.src = 'https://cdn.jsdelivr.net/npm/i18next-xhr-backend@1.5.1/i18nextXHRBackend.min.js';
 (document.head || document.documentElement).appendChild(i18nextBackend);
 
 i18nextBrowserLD = document.createElement('script');
-i18nextBrowserLD.src = 'https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.1.0/i18nextBrowserLanguageDetector.min.js';
+i18nextBrowserLD.src = 'https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@2.2.0/i18nextBrowserLanguageDetector.min.js';
 (document.head || document.documentElement).appendChild(i18nextBrowserLD);
 
 bootstrapNativeGithub = document.createElement('script');
@@ -35,7 +35,7 @@ bootstrapNativeGithub.src = 'https://thednp.github.io/bootstrap.native/dist/boot
 (document.head || document.documentElement).appendChild(bootstrapNativeGithub);
 
 bootstrapNativeCloudflare = document.createElement('script');
-bootstrapNativeCloudflare.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.22/bootstrap-native-v4.min.js';
+bootstrapNativeCloudflare.src = 'https://cdn.jsdelivr.net/npm/bootstrap.native@2.0.22/dist/bootstrap-native-v4.min.js';
 (document.head || document.documentElement).appendChild(bootstrapNativeCloudflare);
 
 golosJs = document.createElement('script');
@@ -43,7 +43,7 @@ golosJs.src = 'https://cdn.jsdelivr.net/npm/golos-js@0.6.1/dist/golos.min.js';
 (document.head || document.documentElement).appendChild(golosJs);
 
 sweetAlert = document.createElement('script');
-sweetAlert.src = 'https://unpkg.com/sweetalert2@7.15.0/dist/sweetalert2.all.js';
+sweetAlert.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@7.19.1/dist/sweetalert2.all.min.js';
 (document.head || document.documentElement).appendChild(sweetAlert);
 
 gAuth = document.createElement('script');
