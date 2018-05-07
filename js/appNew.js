@@ -52,3 +52,11 @@ document.getElementById('integration').addEventListener('click', function(e) {
             showCloseButton: true
         })
     })
+
+/*script for loading VFX*/
+document.onreadystatechange = function () { // loading animation switch-off
+	console.log('<f> doc ready');
+	if (document.readyState === "complete") {
+		document.querySelector('.lding').style.display = 'none';
+	}
+}
