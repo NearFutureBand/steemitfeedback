@@ -1,10 +1,20 @@
 var bootstrapMin, styleInject, golosJs, sweetAlert, gAuth, gFeedbackApi, gFeedbackWidth, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
 
+
+
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
 bootstrapMin.type = 'text/css';
 bootstrapMin.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css';
 (document.head || document.documentElement).appendChild(bootstrapMin);
+
+bootstrapNativeGithub = document.createElement('script');
+bootstrapNativeGithub.src = 'https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js';
+(document.head || document.documentElement).appendChild(bootstrapNativeGithub);
+
+bootstrapNativeCloudflare = document.createElement('script');
+bootstrapNativeCloudflare.src = 'https://cdn.jsdelivr.net/npm/bootstrap.native@2.0.22/dist/bootstrap-native-v4.min.js';
+(document.head || document.documentElement).appendChild(bootstrapNativeCloudflare);
 
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
@@ -30,14 +40,6 @@ i18nextBrowserLD = document.createElement('script');
 i18nextBrowserLD.src = 'https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@2.2.0/i18nextBrowserLanguageDetector.min.js';
 (document.head || document.documentElement).appendChild(i18nextBrowserLD);
 
-bootstrapNativeGithub = document.createElement('script');
-bootstrapNativeGithub.src = 'https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js';
-(document.head || document.documentElement).appendChild(bootstrapNativeGithub);
-
-bootstrapNativeCloudflare = document.createElement('script');
-bootstrapNativeCloudflare.src = 'https://cdn.jsdelivr.net/npm/bootstrap.native@2.0.22/dist/bootstrap-native-v4.min.js';
-(document.head || document.documentElement).appendChild(bootstrapNativeCloudflare);
-
 golosJs = document.createElement('script');
 golosJs.src = 'https://cdn.jsdelivr.net/npm/golos-js@0.6.1/dist/golos.min.js';
 (document.head || document.documentElement).appendChild(golosJs);
@@ -55,7 +57,7 @@ gLang.src = 'https://golosimages.com/lang.js';
 (document.head || document.documentElement).appendChild(gLang);
 
 gApi = document.createElement('script');
-gApi.src = 'https://golosfeedback.com/js/apiNew.js';
+gApi.src = 'https://golosfeedback.com/js/api.js';
 (document.head || document.documentElement).appendChild(gApi);
 
 window.addEventListener('load', function() { // init script after page loaded
