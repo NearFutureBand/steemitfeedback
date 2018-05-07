@@ -53,10 +53,17 @@ document.getElementById('integration').addEventListener('click', function(e) {
         })
     })
 
+
 /*script for loading VFX*/
-document.onreadystatechange = function () { // loading animation switch-off
-	console.log('<f> doc ready');
-	if (document.readyState === "complete") {
+var initVFX = function(){
+    if (document.readyState === "complete") {
 		document.querySelector('.lding').style.display = 'none';
 	}
+}
+
+
+document.onreadystatechange = function () { // loading animation switch-off
+	console.log('<f> doc ready');
+	initVFX();
+    initLang('en');
 }
