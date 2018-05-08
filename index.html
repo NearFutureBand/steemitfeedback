@@ -122,22 +122,17 @@
     
   </body>
   
-    <div id="check-table-for-records" hidden="true">
-    	Check table for records
-    </div>
-    <div id="no-records-IPFS" hidden="true">
-    	You have not got records in IPFS
-    </div>
+    
     <div id="about-html-title" hidden="true">About!</div>
     <div id="button-cool" hidden="true">
     	<span class="icon-checkmark"></span> Cool!
     </div>
     <div id="about-html" hidden="true">
 	    <p class="float-left text-left">
-	    GolosImages - this microservice for storing images on the  blockchain <a target="_blank" href="https://golos.io">Golos</a> and <a target="_blank" href="https://ipfs.io/">IPFS</a>. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).
+	        GolosFeedback - is a microservice on the blockchain <a target="_blank" href="https://golos.io">Golos</a> that allows you to manage all the messages with ideas, offers and problems from your clients. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).
 	    </p>
 	    <ul class="float-left text-left">
-	    We use:
+	        We use:
 	    <li><a target="_blank"  href="https://github.com/GolosChain/golos-js">Golos.js</a> - the JavaScript API for Golos blockchain;</li>
 	    <li><a target="_blank" href="https://github.com/twbs/bootstrap">Bootstrap</a> - the most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web;</li>
 	    <li><a target="_blank" href="http://www.dropzonejs.com">Dropzone</a> - DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews;</li>
@@ -155,26 +150,20 @@
     <div id="integration-html" hidden="true">
         <div class="text-left">
             1. Add JavaScript in your HTML-page: 
-            <pre><code>&lt;script src=&quot;https://golosimages.com/inject.js&quot;&gt;&lt;/script&gt;</pre></code>
+            <pre><code>&lt;script src=&quot;https://golosfeedback.com/js/inject.js&quot;&gt;&lt;/script&gt;</pre></code>
             2. Add button in your HTML-page:
-            <pre><code>&lt;button id=&quot;upload&quot;&gt;Upload to IPFS&lt;/button&gt;</code></pre>
-            3. Add eventListener for upload button:
-            <div class="text-left"><pre><code>&lt;script&gt;
-                document.getElementById('upload').addEventListener('click', function() {
-                    uploadImageToIpfs(function(files) {
-                        console.log(files);
-                    });
-                });
-            &lt;/script&gt;</code></pre></div>
-            4. You can set remote addresses to your IPFS node:
-            <div class="text-left"><pre><code>&lt;script&gt;
-                function initCustomConnection() {
-                    localStorage.connectionCustom = {
-                        api: { protocol: 'http', port: '5001', address: '91.201.41.253' },
-                        gateway: { protocol: 'http', port: '7777', address: '91.201.41.253' }
-                    };
-                }
-            &lt;/script&gt;</code></pre></div>
+            <pre><code>&lt;button type=&quot;button&quot; data-toggle=&quot;modal&quot; data-target=&quot;.modal-lg-golos-feedback&quot;&gt;Open Golos Feedback&lt;/button&gt;</code></pre>
+            3. Set up a standard bootstrap modal window:
+            <div class="text-left"><pre><code>
+&lt;div class=&quot;modal fade modal-lg-golos-feedback&quot; tabindex=&quot;-1&quot; role=&quot;dialog&quot; aria-labelledby=&quot;GolosFeedback&quot; aria-hidden=&quot;true&quot;&gt;
+    &lt;div class=&quot;modal-dialog modal-lg&quot;&gt;
+        &lt;div class=&quot;modal-content golos-feedback-container&quot;&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div>
+
         </div>
     </div>
   
