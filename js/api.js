@@ -2,7 +2,6 @@ var prefix = 'gF';
 var tagSelector = 'all';
 
 
-
 //GENERAL
 
 var initGolosFeedback = function(){
@@ -17,9 +16,9 @@ var initGolosFeedback = function(){
     //в полной версии подразумевается, что навбар уже на странице есть, и нужно только привязать событие к кнопке (как здесь)
     //в виджете навбара нет и кнопка будет создаваться отдельно
     
-    
     //loading posts according to current tag selector
     loadFbs();
+    
 }
 document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
@@ -234,6 +233,7 @@ var expandFb = function(fbId){
             document.getElementById(fbId).setAttribute('data-opened',1);
             loadComments(fbId);
             createCommentForm(fbId);
+            setHash(fbId);
         }
         else console.error(err);
     });
@@ -243,6 +243,7 @@ var removeFbs = function(){
         item.remove();
     });
     closeAddFbForm();
+    clearHash();
 }
 var checkVoteColor = function(fbId,comId){
     let state = getVoteState(fbId,comId);
@@ -627,4 +628,12 @@ var checkVoteColor = function(fbId,comId){
         delClassIfContains(getBtnVote(fbId,comId,0),'btn-danger');
         getBtnVote(fbId,comId,1).classList.add('btn-success');
     }
+}
+
+/**/
+var setHash = function(fbId){
+    location.hash = getAuthor(fbId,'')+'/'+getPermlink(fbId,'');
+}
+var clearHash = function(){
+    location.hash = '';
 }
