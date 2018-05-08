@@ -43,18 +43,28 @@
        
         <div class="instruction">
             <h2>Usage example injection of the GolosFeedback</h2>
-	        <p>Put this <strong>&lt;script src="https://golosfeedback.com/js/inject.js"&gt&lt;/script&gt</strong> tag to the <strong>&lt;head&gt</strong> of your page</p>
-	        <p>Put this button to your website </p>
-	        <p><strong>&lt;button type="button" data-toggle="modal" data-target=".bd-example-modal-lg"&gt&lt;/div&gt</strong></p>
-	        <!--<p><strong>&lt;div class="gFeedback"&gt&lt;/div&gt</strong></p>-->
-	        <!--<p><strong>&lt;script type="text/javascript"> var gFeedbackWidth = '1000';&lt;/script&gt</strong></p>-->
-	        <!--Какие будут внешние параметры? -->
-	        <p>to the place, where the Feedback block will be</p>
+	        <p>Put this <strong>&lt;script src="https://golosfeedback.com/js/inject.js"&gt;&lt;/script&gt;</strong> tag to the <strong>&lt;head&gt;</strong> of your page</p>
+	        <p>Add this button on your page</p>
+	        <p><strong>&lt;button type="button" data-toggle="modal" data-target=".bd-example-modal-lg"&gt;&lt;/div&gt;</strong></p>
+	        <p>Set up a standard bootstrap modal window</p>
+	        <p><strong><pre>
+&lt;div class="modal fade modal-lg-golos-feedback" tabindex="-1" role="dialog" aria-labelledby="GolosFeedback" aria-hidden="true"&gt;
+    &lt;div class="modal-dialog modal-lg"&gt;
+        &lt;div class="modal-content golos-feedback-container"&gt;
+  
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </pre></strong></p>
+            
+            <!-- The button that opens the GolosFeedback modal window. Pay attention to the attribute "data-target"! -->
+            
 	        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-lg-golos-feedback">Open GolosFeedback</button>
+	        
         </div>
         
         
-        <!-- Put this div and script tags to the place, where the Feedback block will be -->
+        <!-- Put this modal window structure somewhere to your html code. Don't forget about the "golos-feedback-container" class! -->
         
 	    <div class="modal fade modal-lg-golos-feedback" tabindex="-1" role="dialog" aria-labelledby="GolosFeedback" aria-hidden="true">
           <div class="modal-dialog modal-lg">
