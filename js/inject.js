@@ -1,6 +1,14 @@
-var bootstrapMin, styleInject, golosJs, sweetAlert, gAuth, gFeedbackApi, gFeedbackWidth, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
+var ckeditor, moment, bootstrapMin, styleInject, golosJs, sweetAlert, gAuth, gFeedbackApi, gFeedbackWidth, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
 
 
+
+ckeditor = document.createElement('script');
+ckeditor.src = 'https://cdn.ckeditor.com/ckeditor5/10.0.0/classic/ckeditor.js';
+(document.head || document.documentElement).appendChild(ckeditor);
+
+moment = document.createElement('script');
+moment.src = 'https://cdn.jsdelivr.net/npm/moment@2.21.0/min/moment.min.js';
+(document.head || document.documentElement).appendChild(moment);
 
 bootstrapMin = document.createElement('link');
 bootstrapMin.rel = 'stylesheet';
