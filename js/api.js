@@ -1,7 +1,6 @@
 var prefix = 'gF';
 var tagSelector = 'all';
-
-
+var ckeditor;
 //GENERAL
 
 var initGolosFeedback = function(){
@@ -61,16 +60,25 @@ var initTabs = function(){
 var createFromAddFb = function(){
     let form = document.createElement('div');
     form.className = 'row form frm-add-fb';
-    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Header</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Enter your text here</label><textarea class='form-control' id='formText' name='txtBody' rows='3' required></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
+    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Header</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Enter your text here</label><textarea class='form-control' id='editor' name='txtBody' rows='3'></textarea></div><div class='form-group'><button class='btn btn-dark' id='upload'>Attach images</button></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(form);
     
     addEventForFbDone();
     addEventForFbCancel();
     ClassicEditor
-        .create( document.querySelector( '#formText' ) )
-        .catch( error => {
-            console.error( error );
+        .create( document.querySelector( '#editor' ) )
+        .then( editor => {
+            console.log( 'Editor was initialized', editor );
+            ckeditor = editor;
+        } )
+        .catch( err => {
+            console.error( err.stack );
         } );
+    document.getElementById('upload').addEventListener('click', function() {
+        uploadImageToIpfs(function(files) {
+            console.log(files);
+        });
+    });
 }
 var addEventForFbDone = function(){
     document.querySelector('.'+prefix+'wrapper .frm-add-fb').getElementsByTagName('form')[0].addEventListener('submit', function(e){
@@ -90,7 +98,8 @@ var sendAddFbForm = function(){
     let author = username;
     let title = document.getElementById('formHeader').value;
     let permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + Date.now().toString();
-    let body = document.getElementById('formText').value;
+    let body = ckeditor.getData();
+    //const body = formText.getData();
     let tagList = {
         tags: [findCheckedRadio()]
     };
@@ -158,7 +167,7 @@ var loadFbs = function(){
         limit: 100
     };
     console.log(query.select_tags);
-    golos.api.getDiscussionsByBlog(query, function(err, result) {
+    golos.api.getDiscussionsByCreated(query, function(err, result) {
         console.log(err, result);
         
         if ( ! err){
@@ -213,7 +222,7 @@ var createFb = function(data){
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
     note.setAttribute('data-like',data[9]);
-    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='photo'><img src='https://pp.userapi.com/c636531/v636531949/47694/QoHRj9BHyAw.jpg'></div><div class='date'><small>"+moment(data[5]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
+    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='photo'><img src='http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg'></div><div class='date'><small>"+moment(data[5]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
     checkVoteColor(data[0],'');
     
@@ -343,7 +352,7 @@ var createComment = function(data){
     comment.setAttribute('id',data[0]);
     comment.setAttribute('data-permlink',data[7]);
     comment.setAttribute('data-like',data[8]);
-    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='photo'><img src='https://pp.userapi.com/c636531/v636531949/47694/QoHRj9BHyAw.jpg'></div><div class='date'><small>"+moment(data[4]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='badge badge-dark'>"+data[5]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[6]+"</span></button></div></div></div></div></div>";
+    comment.innerHTML = "<div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment'><div class='row'><div class='col-lg-9 col-md-9 text'><p>"+data[2]+"</p></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[3]+"</h6></div><div class='photo'><img src='http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg'></div><div class='date'><small>"+moment(data[4]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-com-vote' data-like='1'><span class='badge badge-dark'>"+data[5]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-com-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[6]+"</span></button></div></div></div></div></div>";
     getBlockComments(data[1]).appendChild(comment);
     checkVoteColor(data[1],data[0]);
     addEventsForComLikes(data[1],data[0]);
