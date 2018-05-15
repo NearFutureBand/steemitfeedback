@@ -65,6 +65,8 @@ var createFromAddFb = function(){
     
     addEventForFbDone();
     addEventForFbCancel();
+    addEventForBtnUploadImg();
+    
     ClassicEditor
         .create( document.querySelector( '#formText' ) )
         .then( editor => {
@@ -73,21 +75,15 @@ var createFromAddFb = function(){
         .catch( err => {
             console.error( err.stack );
         } );
-    
-    document.getElementById('upload').addEventListener('click', function() {
-        uploadImageToIpfs(function(files) {
-            console.log(files);
-        });
-    });
 }
 var addEventForFbDone = function(){
     document.querySelector('.'+prefix+'wrapper .frm-add-fb').getElementsByTagName('form')[0].addEventListener('submit', function(e){
         e.preventDefault();
-        if(wif){
+        //if(wif){
             sendAddFbForm();
-        }else{
-            auth(sendAddFbForm);
-        }
+        //}else{
+        //    auth(sendAddFbForm);
+        //}
         return false;
     });
 }
@@ -100,30 +96,43 @@ var sendAddFbForm = function(){
     let permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + Date.now().toString();
     let body = ckeditor.getData();
     //const body = formText.getData();
-    let tagList = {
+    /*let tagList = {
         tags: [findCheckedRadio()]
-    };
-    let jsonMetadata = JSON.stringify(tagList);
-    
-    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' '+tagList+' permlink: '+permlink);
+    };*/
+    let jsonMetadata = '';
+    jsonMetadata = clearJsonMetadata(jsonMetadata);// = JSON.stringify(tagList);//add tagList to json
+    jsonMetadata = addToJsonMetadata(jsonMetadata, [findCheckedRadio()], "tags");
+    console.log(jsonMetadata);
+    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
-    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    /*golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             document.getElementById('formHeader').value = '';
-            document.getElementById('formText').value = '';
+            ckeditor.setData('');
             closeAddFbForm();
             removeFbs();
             loadFbs();
         }
         
         else console.error(err);
-    });
+    });*/
     
     
     
     //getContent and ONLY AFTER loadNotes();
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
+}
+var addEventForBtnUploadImg = function(){
+    document.getElementById('upload').addEventListener('click', function() {
+        uploadImageToIpfs(function(files) {
+            files.forEach(function(item){
+                //add images to json
+                addToJsonMetadata(jsonMetadata,item);
+            });
+            console.log(files);
+        });
+    });
 }
 var addEventForFbCancel = function(){
     document.querySelector('.'+prefix+'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
@@ -643,6 +652,24 @@ var checkVoteColor = function(fbId,comId){
         delClassIfContains(getBtnVote(fbId,comId,0),'btn-danger');
         getBtnVote(fbId,comId,1).classList.add('btn-success');
     }
+}
+
+var clearJsonMetadata = function(jsonMetadata){
+    jsonMetadata = '{"tags":[],"images":[]}';
+    return jsonMetadata;
+}
+
+var addToJsonMetadata = function(jsonMetadata, element, mode){
+    let parsed = {};
+    console.log(parsed);
+    parsed = JSON.parse(jsonMetadata);
+    console.log(parsed);
+    
+    if(mode=="tags"){
+        parsed.tags = element;
+    }
+    console.log(parsed);
+    return JSON.stringify(jsonMetadata);
 }
 
 /**/
