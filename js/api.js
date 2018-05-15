@@ -1,9 +1,10 @@
 var prefix = 'gF';
 var tagSelector = 'all';
 var ckeditor;
+var jsonMetadata = '';
 //GENERAL
 
-var initGolosFeedback = function(){
+var initGolosFeedback = function() {
     
     //setting up container-row-col structure
     initBootstrapStructure();
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
 
 //START---------------------------------------------------------------------------------
-var initBootstrapStructure = function(){
+var initBootstrapStructure = function() {
     let wrapper = document.querySelector('.'+prefix+'wrapper');
     wrapper.classList.add('container');
 }
@@ -32,16 +33,16 @@ var initBootstrapStructure = function(){
 
 
 //TABS----------------------------------------------------------------------------------
-var initTabs = function(){
+var initTabs = function() {
     let navTabs = document.createElement('div');
     navTabs.className = 'row nav-tab-buttons';
     navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All</a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas</a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems</a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions</a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers</a></li></ul></div></div></div></div></nav></div>';
     document.querySelector('.'+prefix+'wrapper').appendChild(navTabs);
     
     //add events for tab buttons
-    Array.from(document.getElementById('navbarNavFeedbackTabs').getElementsByClassName('tab')).forEach(function(item){
+    Array.from(document.getElementById('navbarNavFeedbackTabs').getElementsByClassName('tab')).forEach( function(item) {
         item.addEventListener('click',function(){
-            Array.from(document.getElementById('navbarNavFeedbackTabs').getElementsByClassName('tab')).forEach(function(item){
+            Array.from(document.getElementById('navbarNavFeedbackTabs').getElementsByClassName('tab')).forEach( function(item) {
                 delClassIfContains(item, 'active');
             });
             item.classList.add('active');
@@ -57,7 +58,7 @@ var initTabs = function(){
 
 
 //FORM FOR ADDING NEW FEEDBACK----------------------------------------------------------
-var createFromAddFb = function(){
+var createFromAddFb = function() {
     let form = document.createElement('div');
     form.className = 'row form frm-add-fb';
     form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Header</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Enter your text here</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-group'><button class='btn btn-dark' id='upload'>Attach images</button></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
@@ -66,9 +67,12 @@ var createFromAddFb = function(){
     addEventForFbDone();
     addEventForFbCancel();
     addEventForBtnUploadImg();
+    clearJsonMetadata();// = JSON.stringify(tagList);//add tagList to json
     
     ClassicEditor
-        .create( document.querySelector( '#formText' ) )
+        .create( document.querySelector( '#formText' )/*,{
+             plugins: [ Essentials, Paragraph, Bold, Italic ],
+        } */)
         .then( editor => {
             ckeditor = editor;
         } )
@@ -76,7 +80,7 @@ var createFromAddFb = function(){
             console.error( err.stack );
         } );
 }
-var addEventForFbDone = function(){
+var addEventForFbDone = function() {
     document.querySelector('.'+prefix+'wrapper .frm-add-fb').getElementsByTagName('form')[0].addEventListener('submit', function(e){
         e.preventDefault();
         //if(wif){
@@ -87,7 +91,7 @@ var addEventForFbDone = function(){
         return false;
     });
 }
-var sendAddFbForm = function(){
+var sendAddFbForm = function() {
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     let parentAuthor = '';
     let parentPermlink = 'fb';
@@ -99,9 +103,8 @@ var sendAddFbForm = function(){
     /*let tagList = {
         tags: [findCheckedRadio()]
     };*/
-    let jsonMetadata = '';
-    jsonMetadata = clearJsonMetadata(jsonMetadata);// = JSON.stringify(tagList);//add tagList to json
-    jsonMetadata = addToJsonMetadata(jsonMetadata, [findCheckedRadio()], "tags");
+    
+    addToJsonMetadata([findCheckedRadio()], "tags");
     console.log(jsonMetadata);
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
@@ -123,35 +126,35 @@ var sendAddFbForm = function(){
     //getContent and ONLY AFTER loadNotes();
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
-var addEventForBtnUploadImg = function(){
+var addEventForBtnUploadImg = function() {
     document.getElementById('upload').addEventListener('click', function() {
-        uploadImageToIpfs(function(files) {
-            files.forEach(function(item){
-                //add images to json
-                addToJsonMetadata(jsonMetadata,item);
-            });
+        uploadImageToIpfs( function(files) {
             console.log(files);
+            addToJsonMetadata(files, "image");
+            files.forEach( function(item) {
+                addImageToFb(item[0].path);
+            });
         });
     });
 }
-var addEventForFbCancel = function(){
+var addEventForFbCancel = function() {
     document.querySelector('.'+prefix+'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
         closeAddFbForm();
         loadFbs();
     });
 }
-var openAddFbForm = function(){
+var openAddFbForm = function() {
     removeFbs();
     createFromAddFb();
     document.querySelector('.'+prefix+'btn-add-fb').style.display = 'none';
 }
-var closeAddFbForm = function(){
+var closeAddFbForm = function() {
     if(document.querySelector('.'+prefix+'btn-add-fb').style.display == 'none'){
         document.querySelector('.'+prefix+'wrapper .frm-add-fb').remove();
         document.querySelector('.'+prefix+'btn-add-fb').style.display = 'inline-block';
     }
 }
-var findCheckedRadio = function(){
+var findCheckedRadio = function() {
     let res = '';
     Array.from(getBlockAddFb().getElementsByClassName('form-check-input')).forEach(function(item){
         if(item.checked==true){
@@ -161,14 +164,14 @@ var findCheckedRadio = function(){
     return res;
 }
 
-var getBlockAddFb = function(){
+var getBlockAddFb = function() {
     return document.getElementsByClassName('frm-add-fb')[0];
 }
 
 
 
 //FEEDBACKS------------------------------------------------------------------------------
-var loadFbs = function(){
+var loadFbs = function() {
     
     var query = {
         select_tags: (tagSelector=='all')?['fb']:[tagSelector],
@@ -198,7 +201,7 @@ var loadFbs = function(){
         else console.error(err);
     });
 }
-var formData = function(object){
+var formData = function(object) {
     let data = [];
     data.push(object.id);//0 id
     data.push(object.title);//1 title
@@ -224,7 +227,7 @@ var formData = function(object){
     data.push(getVoteStateOnload(object)/10000);//9 vote of this user
     return data;
 }
-var createFb = function(data){
+var createFb = function(data) {
     let note = document.createElement('div');
     note.className = 'row fb';
     note.setAttribute('id',data[0]);
@@ -241,12 +244,12 @@ var createFb = function(data){
     
     console.log('feedback has been created: id = '+data[0]);
 }
-var addEventsForCommentButtons = function (fbId){
+var addEventsForCommentButtons = function(fbId) {
     getBtnShowComment(fbId).addEventListener('click',function(){
         toggleFb(fbId);
     });
 }
-var expandFb = function(fbId){
+var expandFb = function(fbId) {
     golos.api.getContent(getAuthor(fbId,''), getPermlink(fbId,''), function(err, result) {
         //console.log(err, result);
         if (!err) {
@@ -262,14 +265,14 @@ var expandFb = function(fbId){
         else console.error(err);
     });
 }
-var removeFbs = function(){
+var removeFbs = function() {
     Array.from(document.querySelectorAll('.'+prefix+'wrapper .fb')).forEach(function(item){
         item.remove();
     });
     closeAddFbForm();
     clearHash();
 }
-var checkVoteColor = function(fbId,comId){
+var checkVoteColor = function(fbId,comId) {
     let state = getVoteState(fbId,comId);
     if(state == -1){
         delClassIfContains(getBtnVote(fbId,comId,1),'btn-success');
@@ -282,7 +285,7 @@ var checkVoteColor = function(fbId,comId){
         getBtnVote(fbId,comId,1).classList.add('btn-success');
     }
 }
-var toggleBtnCom = function(fbId){
+var toggleBtnCom = function(fbId) {
     let thisBtn = getBtnShowComment(fbId);
     if(thisBtn.children[2].classList.contains('hidden')){
         thisBtn.children[0].classList.add('hidden');
@@ -296,12 +299,12 @@ var toggleBtnCom = function(fbId){
         thisBtn.children[1].classList.remove('hidden');
     }
 }
-var addEventForFbHeader = function(fbId){
+var addEventForFbHeader = function(fbId) {
     getFbHeader(fbId).addEventListener('click',function(){
         toggleFb(fbId);
     });
 }
-var toggleFb = function(fbId){
+var toggleFb = function(fbId) {
     if(document.getElementById(fbId).getAttribute('data-opened') == '0'){
         expandFb(fbId);
     }else{
@@ -310,10 +313,10 @@ var toggleFb = function(fbId){
     }
 }
 
-var getBtnShowComment = function(fbId){
+var getBtnShowComment = function(fbId) {
     return document.getElementById(fbId).getElementsByClassName('btn-show-comments')[0];
 }
-var getFbHeader = function(fbId){
+var getFbHeader = function(fbId) {
     return document.getElementById(fbId).getElementsByClassName('text')[0].children[0];
 }
 //prototype getFbById(fbId) - take fb from existing here
@@ -324,7 +327,7 @@ var getFbHeader = function(fbId){
 
 
 //COMMENTS-------------------------------------------------------------------------------
-var loadComments = function(fbId){
+var loadComments = function(fbId) {
     golos.api.getContentReplies(getAuthor(fbId,''), getPermlink(fbId,''), function(err, result) {
         //console.log(err, result);
         if (!err) {
@@ -336,7 +339,7 @@ var loadComments = function(fbId){
         else console.error(err);
     });
 }
-var formDataCom = function(object, fbId){
+var formDataCom = function(object, fbId) {
     var data = [];
     data.push(object.id);//0 - id
     data.push(fbId);//1 - parent ID
@@ -355,7 +358,7 @@ var formDataCom = function(object, fbId){
     data.push(getVoteStateOnload(object)/10000);// 8 vote of this user
     return data;
 }
-var createComment = function(data){
+var createComment = function(data) {
     let comment = document.createElement('div');
     comment.className = 'row comment';
     comment.setAttribute('id',data[0]);
@@ -367,13 +370,13 @@ var createComment = function(data){
     addEventsForComLikes(data[1],data[0]);
     console.log("comment has been created: "+data[1]+" "+data[0]);
 }
-var removeComments = function(fbId){
+var removeComments = function(fbId) {
     Array.from(getBlockComments(fbId).children).forEach(function(item){
         item.remove();
     });
 }
 
-var getComment = function(fbId, comId){
+var getComment = function(fbId, comId) {
     let comment;
     Array.from(getBlockComments(fbId).children).forEach(function(item){
         if(item.getAttribute('id')==comId){
@@ -382,24 +385,24 @@ var getComment = function(fbId, comId){
     });
     return comment;
 }
-var getBlockComments = function(fbId){
+var getBlockComments = function(fbId) {
     return document.getElementById(fbId).getElementsByClassName('comments')[0];
 }
-var getAddComForm = function(fbId){
+var getAddComForm = function(fbId) {
     return getBlockFormAddComment(fbId).children[0].children[0].children[0];
 }
 
 
 
 //FORM FOR ADDING NEW COMMENT-------------------------------------------------------------
-function createCommentForm(fbId){
+function createCommentForm(fbId) {
     var commentForm = document.createElement('div');
     commentForm.className = 'container frm-add-com';
     commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     document.getElementById(fbId).appendChild(commentForm);
     addEventsForComDone(fbId);
 }
-var addEventsForComDone = function(fbId){
+var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit',function(e){
         e.preventDefault();
         if(wif){
@@ -410,7 +413,7 @@ var addEventsForComDone = function(fbId){
         return false;
     });
 }
-var sendAddComForm = function(fbId){
+var sendAddComForm = function(fbId) {
     let parentAuthor = getAuthor(fbId,'');
     let parentPermlink = getPermlink(fbId,'');
     let author = username;
@@ -431,10 +434,10 @@ var sendAddComForm = function(fbId){
     });
 }
 
-var getTxtareaCom = function(fbId){
+var getTxtareaCom = function(fbId) {
     return getBlockFormAddComment(fbId).getElementsByClassName('txt-add-com')[0];
 }
-var getBlockFormAddComment = function(fbId){
+var getBlockFormAddComment = function(fbId) {
     return document.getElementById(fbId).children[document.getElementById(fbId).childElementCount-1];
 }
 
@@ -443,7 +446,7 @@ var getBlockFormAddComment = function(fbId){
 
 //VOTING----------------------------------------------------------------------------------
 //эти 4 функции похожи
-var addEventsForFbLikes = function(fbId){
+var addEventsForFbLikes = function(fbId) {
     getBtnsVote(fbId,'').forEach(function(item){
         item.addEventListener('click', function(){
             let isLike = Number(item.getAttribute('data-like'));
@@ -455,7 +458,7 @@ var addEventsForFbLikes = function(fbId){
         });
     });
 }
-var voteForFb = function(fbId, like){
+var voteForFb = function(fbId, like) {
     let weight;
     let state = getVoteState(fbId,'');
     (like == 1)? weight = 10000 : weight = -10000;
@@ -468,7 +471,7 @@ var voteForFb = function(fbId, like){
         }
     });
 }
-var addEventsForComLikes = function(fbId, comId){
+var addEventsForComLikes = function(fbId, comId) {
     getBtnsVote(fbId,comId).forEach(function(item){
         item.addEventListener('click', function(){
             let isLike = Number(item.getAttribute('data-like'));
@@ -480,7 +483,7 @@ var addEventsForComLikes = function(fbId, comId){
         });
     });
 }
-var voteForCom = function(fbId,comId,like){
+var voteForCom = function(fbId,comId,like) {
     let weight;
     let state = getVoteState(fbId,comId);
     (like == 1)? weight = 10000 : weight = -10000;
@@ -494,7 +497,7 @@ var voteForCom = function(fbId,comId,like){
     });
 }
 
-var getBtnVote = function(fbId, comId, isLike){
+var getBtnVote = function(fbId, comId, isLike) {
     let btn;
     if(comId){
         btn = getBlockControls(fbId,comId).getElementsByClassName('btn-com-vote')[1-isLike];
@@ -503,7 +506,7 @@ var getBtnVote = function(fbId, comId, isLike){
     }
     return btn;
 }
-var getBtnsVote = function(fbId,comId){
+var getBtnsVote = function(fbId,comId) {
     if(comId){
         return Array.from(getComment(fbId,comId).getElementsByClassName('btn-com-vote'));
     }else{
@@ -654,22 +657,33 @@ var checkVoteColor = function(fbId,comId){
     }
 }
 
-var clearJsonMetadata = function(jsonMetadata){
+var clearJsonMetadata = function(){
     jsonMetadata = '{"tags":[],"images":[]}';
-    return jsonMetadata;
 }
 
-var addToJsonMetadata = function(jsonMetadata, element, mode){
+var addImageToFb = function(path){
+    let text = ckeditor.getData();
+    text += '<img src='+path+'>';
+    ckeditor.setData(text);
+}
+
+var addToJsonMetadata = function( element, mode){
     let parsed = {};
-    console.log(parsed);
     parsed = JSON.parse(jsonMetadata);
     console.log(parsed);
-    
+    console.log(element);
     if(mode=="tags"){
+        
         parsed.tags = element;
     }
+    if(mode == "image"){
+        element.forEach(function(item){
+            parsed.images.push(item);    
+        });
+        
+    }
     console.log(parsed);
-    return JSON.stringify(jsonMetadata);
+    jsonMetadata = JSON.stringify(parsed);
 }
 
 /**/
