@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
 //START---------------------------------------------------------------------------------
 var initBootstrapStructure = function() {
-    let wrapper = document.querySelector('.'+prefix+'wrapper');
+    let wrapper = document.querySelector('.' + prefix + 'wrapper');
     wrapper.classList.add('container');
 }
 
@@ -37,7 +37,7 @@ var initTabs = function() {
     let navTabs = document.createElement('div');
     navTabs.className = 'row nav-tab-buttons';
     navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All</a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas</a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems</a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions</a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers</a></li></ul></div></div></div></div></nav></div>';
-    document.querySelector('.'+prefix+'wrapper').appendChild(navTabs);
+    document.querySelector('.' + prefix + 'wrapper').appendChild(navTabs);
     
     //add events for tab buttons
     Array.from(document.getElementById('navbarNavFeedbackTabs').getElementsByClassName('tab')).forEach( function(item) {
@@ -81,16 +81,18 @@ var createFromAddFb = function() {
         } );
 }
 var addEventForFbDone = function() {
-    document.querySelector('.'+prefix+'wrapper .frm-add-fb').getElementsByTagName('form')[0].addEventListener('submit', function(e){
-        e.preventDefault();
-        //if(wif){
-            sendAddFbForm();
-        //}else{
-        //    auth(sendAddFbForm);
-        //}
-        return false;
-    });
-}
+    document.querySelector('.' + prefix + 'wrapper .frm-add-fb')
+        .getElementsByTagName('form')[0]
+        .addEventListener('submit', function(e) {
+            e.preventDefault();
+            //if(wif){
+                sendAddFbForm();
+            //}else{
+            //    auth(sendAddFbForm);
+            //}
+            return false;
+        });
+ }
 var sendAddFbForm = function() {
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     let parentAuthor = '';
@@ -138,7 +140,7 @@ var addEventForBtnUploadImg = function() {
     });
 }
 var addEventForFbCancel = function() {
-    document.querySelector('.'+prefix+'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
+    document.querySelector('.' + prefix + 'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
         closeAddFbForm();
         loadFbs();
     });
@@ -146,18 +148,18 @@ var addEventForFbCancel = function() {
 var openAddFbForm = function() {
     removeFbs();
     createFromAddFb();
-    document.querySelector('.'+prefix+'btn-add-fb').style.display = 'none';
+    document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'none';
 }
 var closeAddFbForm = function() {
-    if(document.querySelector('.'+prefix+'btn-add-fb').style.display == 'none'){
-        document.querySelector('.'+prefix+'wrapper .frm-add-fb').remove();
-        document.querySelector('.'+prefix+'btn-add-fb').style.display = 'inline-block';
+    if(document.querySelector('.' + prefix + 'btn-add-fb').style.display == 'none'){
+        document.querySelector('.' + prefix + 'wrapper .frm-add-fb').remove();
+        document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'inline-block';
     }
 }
 var findCheckedRadio = function() {
     let res = '';
     Array.from(getBlockAddFb().getElementsByClassName('form-check-input')).forEach(function(item){
-        if(item.checked==true){
+        if(item.checked == true){
             res = item.getAttribute('id').split('-')[1].toString();
         }
     });
