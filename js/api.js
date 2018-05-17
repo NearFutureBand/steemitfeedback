@@ -326,8 +326,6 @@ var getFbHeader = function(fbId) {
 
 
 
-
-
 //COMMENTS-------------------------------------------------------------------------------
 var loadComments = function(fbId) {
     golos.api.getContentReplies(getAuthor(fbId, ''), getPermlink(fbId, ''), function(err, result) {
@@ -400,9 +398,23 @@ var getAddComForm = function(fbId) {
 function createCommentForm(fbId) {
     var commentForm = document.createElement('div');
     commentForm.className = 'container frm-add-com';
-    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here' required></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><div class='form-group'><button class='btn btn-dark' id='upload'>Attach images</button></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     document.getElementById(fbId).appendChild(commentForm);
+    
     addEventsForComDone(fbId);
+    addEventForBtnUploadImg();
+    clearJsonMetadata();
+    
+    ClassicEditor
+    .create( document.querySelector( '#commentBody' )/*,{
+             plugins: [ Essentials, Paragraph, Bold, Italic ],
+        } */)
+        .then( editor => {
+            ckeditor = editor;
+        } )
+        .catch( err => {
+            console.error( err.stack );
+        } );
 }
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
@@ -421,8 +433,7 @@ var sendAddComForm = function(fbId) {
     let author = username;
     let permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     let title = '';
-    let body = getTxtareaCom(fbId).value;
-    let jsonMetadata = '{}';
+    let body = ckeditor.getData();
     console.log('comment to note '+fbId+'. Body: '+body);
     golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
@@ -659,16 +670,19 @@ var checkVoteColor = function(fbId, comId) {
     }
 }
 
+/*Sets the default statement of the json*/
 var clearJsonMetadata = function() {
     jsonMetadata = '{"tags":[],"images":[]}';
 }
 
+/*Adds the image tag to the current text in textbox of a texteditor*/
 var addImageToFb = function(path) {
     let text = ckeditor.getData();
     text += '<img src='+path+'>';
     ckeditor.setData(text);
 }
 
+/*Adds data of different types to the json*/
 var addToJsonMetadata = function( element, mode){
     let parsed = {};
     parsed = JSON.parse(jsonMetadata);

@@ -5,7 +5,7 @@ golos.config.set('address_prefix', 'GLS');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 hljs.initHighlightingOnLoad();
 
-document.querySelector('.'+prefix+'btn-add-fb').addEventListener('click', function(){
+document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function() {
     openAddFbForm();
 });
 
@@ -61,7 +61,7 @@ document.getElementById('integration').addEventListener('click', function(e) {
 
 
 /*script for loading VFX*/
-var initVFX = function(){
+var initVFX = function() {
     if (document.readyState === "complete") {
 		document.querySelector('.lding').style.display = 'none';
 	}
