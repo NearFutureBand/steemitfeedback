@@ -67,3 +67,5 @@ var initVFX = function() {
 	}
 }
 
+var domain = location.hostname;
+console.log(domain);

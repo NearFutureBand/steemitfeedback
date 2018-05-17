@@ -87,4 +87,43 @@ window.addEventListener('load', function() { // init script after page loaded
     document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
         openAddFbForm();
     });
+    
+    
+    
+    /*Additional methods & overrides*/
+    
+    var domain = location.hostname;
+    console.log(domain);
+    
+    /*[Override from api.js]*/
+    var sendAddFbForm = function() {
+        //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
+        let parentAuthor = '';
+        let parentPermlink = 'fb';
+        let author = username;
+        let title = document.getElementById('formHeader').value;
+        let permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + Date.now().toString();
+        let body = ckeditor.getData();
+        //const body = formText.getData();
+        /*let tagList = {
+            tags: [findCheckedRadio()]
+        };*/
+        
+        addToJsonMetadata([findCheckedRadio()], "tags");
+        console.log(jsonMetadata);
+        console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
+        console.log(window.wif);
+        /*golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+            //console.log(err, result);
+            if ( ! err) {
+                document.getElementById('formHeader').value = '';
+                ckeditor.setData('');
+                closeAddFbForm();
+                removeFbs();
+                loadFbs();
+            }
+            
+            else console.error(err);
+        });*/
+    }
 });
