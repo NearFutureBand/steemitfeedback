@@ -66,6 +66,3 @@ var initVFX = function() {
 		document.querySelector('.lding').style.display = 'none';
 	}
 }
-
-var domain = location.hostname;
-console.log(domain);

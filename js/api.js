@@ -2,6 +2,8 @@ var prefix = 'gF';
 var tagSelector = 'all';
 var ckeditor;
 var jsonMetadata = '';
+var domain = location.hostname;
+
 //GENERAL
 
 var initGolosFeedback = function() {
@@ -174,9 +176,11 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
+    let tags = (tagSelector == 'all') ? ['fb'] : ['fb', tagSelector];
+    tags.push(domain);
     
     var query = {
-        select_tags: (tagSelector == 'all') ? ['fb'] : [tagSelector],
+        select_tags: tags,
         select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
         limit: 100
     };
