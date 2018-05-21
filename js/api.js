@@ -181,9 +181,11 @@ var loadFbs = function() {
     
     var query = {
         select_tags: tags,
-        select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
+        //select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
+        select_authors: ['beesocial-test','beesocial-test1','beesocial-test2','beesocial-test3','beesocial-test4'],
         limit: 100
     };
+
     console.log(query.select_tags);
     golos.api.getDiscussionsByCreated(query, function(err, result) {
         console.log(err, result);
@@ -198,14 +200,14 @@ var loadFbs = function() {
     });
     
     //загрузка тестового поста через permlink
-    golos.api.getContent('test2', 'post-fb-1523961173281', function(err, result) {
+    /*golos.api.getContent('test2', 'post-fb-1523961173281', function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             console.log(result);
             createFb(formData(result));
         }
         else console.error(err);
-    });
+    });*/
 }
 var formData = function(object) {
     let data = [];
