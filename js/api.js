@@ -21,6 +21,7 @@ var initGolosFeedback = function() {
     //loading posts according to current tag selector
     loadFbs();
     
+    location.hash = 'all';
 }
 document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
@@ -136,7 +137,8 @@ var addEventForBtnUploadImg = function() {
             console.log(files);
             addToJsonMetadata(files, "image");
             files.forEach( function(item) {
-                addImageToFb(item[0].path);
+                addImageToFb(item[0].path+item[0].hash);
+                console.log('image to fb: '+item[0].path+item[0].hash);
             });
         });
     });
@@ -176,8 +178,8 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
-    let tags = (tagSelector == 'all') ? ['fb'] : ['fb', tagSelector];
-    tags.push(domain);
+    let tags = [domain];
+    tags.push( (tagSelector == 'all') ? ['fb'] : ['fb', tagSelector]);
     
     var query = {
         select_tags: tags,
@@ -192,7 +194,7 @@ var loadFbs = function() {
         
         if ( ! err) {
             result.forEach(function(item) {
-                console.log(item);           
+                console.log(item);
                 createFb(formData(item));
             });
         }
@@ -678,7 +680,7 @@ var checkVoteColor = function(fbId, comId) {
 
 /*Sets the default statement of the json*/
 var clearJsonMetadata = function() {
-    jsonMetadata = '{"tags":[],"images":[]}';
+    jsonMetadata = '{"tags":['+domain+'],"images":[]}';
 }
 
 /*Adds the image tag to the current text in textbox of a texteditor*/
