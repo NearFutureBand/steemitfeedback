@@ -105,15 +105,13 @@ var sendAddFbForm = function() {
     let permlink = 'post-' + parentPermlink.split(' ')[0] + '-' + Date.now().toString();
     let body = ckeditor.getData();
     //const body = formText.getData();
-    /*let tagList = {
-        tags: [findCheckedRadio()]
-    };*/
+    
     
     addToJsonMetadata([findCheckedRadio()], "tags");
     console.log(jsonMetadata);
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
-    /*golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             document.getElementById('formHeader').value = '';
@@ -124,11 +122,8 @@ var sendAddFbForm = function() {
         }
         
         else console.error(err);
-    });*/
+    });
     
-    
-    
-    //getContent and ONLY AFTER loadNotes();
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
 var addEventForBtnUploadImg = function() {
@@ -178,8 +173,10 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
+    
     let tags = [domain];
-    tags.push( (tagSelector == 'all') ? ['fb'] : ['fb', tagSelector]);
+    tags.push('fb');
+    if(tagSelector != 'all') tags.push(tagSelector);
     
     var query = {
         select_tags: tags,
