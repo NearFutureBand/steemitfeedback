@@ -88,11 +88,11 @@ var addEventForFbDone = function() {
         .getElementsByTagName('form')[0]
         .addEventListener('submit', function(e) {
             e.preventDefault();
-            //if(wif){
+            if(wif.posting){
                 sendAddFbForm();
-            //}else{
-            //    auth(sendAddFbForm);
-            //}
+            }else{
+                auth(sendAddFbForm);
+            }
             return false;
         });
  }
@@ -111,7 +111,7 @@ var sendAddFbForm = function() {
     console.log(jsonMetadata);
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
-    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             document.getElementById('formHeader').value = '';
@@ -129,12 +129,17 @@ var sendAddFbForm = function() {
 var addEventForBtnUploadImg = function() {
     document.getElementById('upload').addEventListener('click', function() {
         uploadImageToIpfs( function(files) {
-            console.log(files);
-            addToJsonMetadata(files, "image");
-            files.forEach( function(item) {
-                addImageToFb(item[0].path+item[0].hash);
-                console.log('image to fb: '+item[0].path+item[0].hash);
-            });
+            if(files){
+                console.log(files);
+                addToJsonMetadata(files, "image");
+                files.forEach( function(item) {
+                    addImageToFb(item[0].path+item[0].hash);
+                    console.log('image to fb: '+item[0].path+item[0].hash);
+                });    
+            } else {
+                console.log('images uploading error');
+            }
+            
         });
     });
 }
@@ -424,7 +429,7 @@ function createCommentForm(fbId) {
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
         e.preventDefault();
-        if(wif){
+        if(wif.posting){
             sendAddComForm(fbId);
         }else{
             auth(sendAddComForm.bind(this, fbId));
@@ -440,7 +445,7 @@ var sendAddComForm = function(fbId) {
     let title = '';
     let body = ckeditor.getData();
     console.log('comment to note '+fbId+'. Body: '+body);
-    golos.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if (!err) {
             console.log('comment', result);
@@ -468,7 +473,7 @@ var addEventsForFbLikes = function(fbId) {
     getBtnsVote(fbId, '').forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            if(wif) {
+            if(wif.posting) {
                 voteForFb(fbId,isLike);
             }else{
                 auth(voteForFb.bind(this, fbId, isLike));
@@ -481,7 +486,7 @@ var voteForFb = function(fbId, like) {
     let state = getVoteState(fbId, '');
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId, '', weight/10000);
-    golos.broadcast.vote(wif, username, getAuthor(fbId, ''), getPermlink(fbId, ''), weight, function(err, result) {
+    golos.broadcast.vote(wif.posting, username, getAuthor(fbId, ''), getPermlink(fbId, ''), weight, function(err, result) {
         console.log(err, result);
         if ( ! err) {
             setLblVote(fbId, '', weight/10000, state);
@@ -493,7 +498,7 @@ var addEventsForComLikes = function(fbId, comId) {
     getBtnsVote(fbId, comId).forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            if(wif) {
+            if(wif.posting) {
                 voteForCom(fbId, comId, isLike);
             } else {
                 auth(voteForCom.bind(this, fbId, comId, isLike));
@@ -506,7 +511,7 @@ var voteForCom = function(fbId, comId, like) {
     let state = getVoteState(fbId, comId);
     (like == 1)? weight = 10000 : weight = -10000;
     weight = updateVoteState(fbId, comId, weight/10000);
-    golos.broadcast.vote(wif, username, getAuthor(fbId, comId), getPermlink(fbId, comId), weight, function(err, result){
+    golos.broadcast.vote(wif.posting, username, getAuthor(fbId, comId), getPermlink(fbId, comId), weight, function(err, result){
         console.log(err, result);
         if ( ! err) {
             setLblVote(fbId, comId, weight/10000, state);
@@ -610,7 +615,7 @@ var getVoteState = function(fbId,comId){
 /*Gets the vote state relatively to the current user if he has signed in*/
 var getVoteStateOnload = function(object) {
     let result = 0;
-    if(wif) {
+    if(wif.posting) {
         object.active_votes.forEach(function(item) {
             if(item.voter == username) {
                 result = item.percent;
@@ -695,12 +700,17 @@ var addToJsonMetadata = function( element, mode){
     console.log(element);
     if(mode == "tags") {
         
-        parsed.tags = element;
+        parsed.tags.push(element);
     }
     if(mode == "image") {
-        element.forEach(function(item) {
-            parsed.images.push(item);    
-        });
+        if(element != null) {
+            element.forEach(function(item) {
+                parsed.images.push(item);    
+            });    
+        } else {
+            console.log('null exception in image mode');
+        }
+        
         
     }
     console.log(parsed);
