@@ -199,7 +199,7 @@ var loadFbs = function() {
     var query = {
         select_tags: ['fb', domain ],
         //select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
-        //select_authors: ['beesocial-test','beesocial-test1','beesocial-test2','beesocial-test3','beesocial-test4'],
+        select_authors: ['beesocial-test','beesocial-test2','beesocial-test3','beesocial-test4'],
         limit: 100
     };
 
@@ -207,13 +207,26 @@ var loadFbs = function() {
     golos.api.getDiscussionsByBlog(query, function(err, result) {
         console.log(err, result);
         
+        //no matching feedbacks
+        let nothing = true;
+        
         if ( ! err) {
-            
-            result.forEach(function(item) {
+            if(result == []) {
+                createEmptyFb();
+            } else {
+                result.forEach(function(item) {
+                    if(item.parent_permlink == 'fb' ) {
+                        nothing = false;
+                        console.log(item);
+                        createFb( formData(item) );
+                    }
+                });
                 
-                console.log(item);
-                createFb(formData(item));
-            });
+                if(nothing) {
+                    createEmptyFb();
+                }
+            }
+                
         }
         else console.error(err);
     });
@@ -341,6 +354,13 @@ var toggleFb = function(fbId) {
 }
 var getNumberOfAllTypes = function() {
     
+}
+var createEmptyFb = function(){
+    let note = document.createElement('div');
+    note.className = 'row fb empty-fb';
+    
+    note.innerHTML = "<div class='col-12'><h4>There's no feedbacks in this category yet. You can be the first</h4></div>";
+    document.querySelector('.'+prefix+'wrapper').appendChild(note);
 }
 
 var getBtnShowComment = function(fbId) {
