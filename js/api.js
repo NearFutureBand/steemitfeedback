@@ -9,8 +9,8 @@ var domain = location.hostname;
 // 2 - problems
 // 3 - questions
 // 4 - offers
-var feedbacks = [0,0,0,0,0];
-
+var tabLabels = [0,0,0,0,0];
+var tabLabelNames = ['idea','problem','question','offer'];
 
 //GENERAL
 
@@ -47,7 +47,7 @@ var initBootstrapStructure = function() {
 var initTabs = function() {
     let navTabs = document.createElement('div');
     navTabs.className = 'row nav-tab-buttons';
-    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All ('+feedbacks[0]+')</a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas ('+feedbacks[1]+')</a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems ('+feedbacks[2]+')</a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions ('+feedbacks[3]+')</a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers ('+feedbacks[4]+')</a></li></ul></div></div></div></div></nav></div>';
+    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All <span class="tab-label"><span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions <span class="tab-label">('+tabLabels[3]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers <span class="tab-label">('+tabLabels[4]+')</span></a></li></ul></div></div></div></div></nav></div>';
     document.querySelector('.' + prefix + 'wrapper').appendChild(navTabs);
     
     //add events for tab buttons
@@ -63,6 +63,18 @@ var initTabs = function() {
             loadFbs();
         });
     });
+}
+
+var updateTabLabels = function(data) {
+    
+    
+}
+var getTabLabel = function(type) {
+    return document.querySelector('.nav-tab-buttons span.tab-label:nth-of-type('+(getTabLabelIndexByType(type)+1)+')');
+}
+
+var getTabLabelIndexByType = function(type) {
+    return tabLabelNames.indexOf(type) + 1;
 }
 
 
@@ -96,11 +108,11 @@ var addEventForFbDone = function() {
         .getElementsByTagName('form')[0]
         .addEventListener('submit', function(e) {
             e.preventDefault();
-            if(wif.posting){
+            //if(wif.posting){
                 sendAddFbForm();
-            }else{
-                auth(sendAddFbForm);
-            }
+            //}else{
+            //    auth(sendAddFbForm);
+            //}
             return false;
         });
  }
@@ -119,7 +131,7 @@ var sendAddFbForm = function() {
     console.log(jsonMetadata);
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
-    golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    /*golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             document.getElementById('formHeader').value = '';
@@ -130,7 +142,7 @@ var sendAddFbForm = function() {
         }
         
         else console.error(err);
-    });
+    });*/
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
@@ -213,6 +225,7 @@ var loadFbs = function() {
         if ( ! err) {
             if(result == []) {
                 createEmptyFb();
+                
             } else {
                 result.forEach(function(item) {
                     if(item.parent_permlink == 'fb' ) {
@@ -720,7 +733,7 @@ var checkVoteColor = function(fbId, comId) {
 
 /*Sets the default statement of the json*/
 var clearJsonMetadata = function() {
-    jsonMetadata = '{"tags":['+domain+'],"images":[]}';
+    jsonMetadata = '{"tags":["'+domain+'"],"images":[]}';
 }
 
 /*Adds the image tag to the current text in textbox of a texteditor*/
@@ -734,11 +747,12 @@ var addImageToFb = function(path) {
 var addToJsonMetadata = function( element, mode){
     let parsed = {};
     parsed = JSON.parse(jsonMetadata);
-    console.log(parsed);
-    console.log(element);
+    
     if(mode == "tags") {
+        element.forEach(function(item) {
+            parsed.tags.push(item);    
+        })
         
-        parsed.tags.push(element);
     }
     if(mode == "image") {
         if(element != null) {

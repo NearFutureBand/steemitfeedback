@@ -20,11 +20,30 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script src="https://golosimages.com/inject.js"></script>
     <script>
-        document.getElementById('upload').addEventListener('click', function() {
-            uploadImageToIpfs(function(files) {
-                console.log(files);
-            });
-}       );
+            document.getElementById('upload').addEventListener('click', function() {
+        uploadImageToIpfs(function( err, files ) {
+            if (err) console.error(`IPFS ERROR: ${err}`)
+            else console.log(files[0][0])
+        })
+    });
+</script>
+<script>
+	let ChangeNode = {}
+function initCustomConnection() {
+	ChangeNode.connectionCustom = {
+	    api : {
+	        protocol: `http`,
+	        port: `7777`,
+	        address: `13.59.234.79`
+	    },
+	    gateway: {
+	        protocol: `http`,
+	        port: `5001`,
+	        address: `13.59.234.79`
+	    }
+	}
+	initConnection(ChangeNode.connectionCustom);
+}
 </script>
   </body>
 </html>
