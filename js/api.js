@@ -9,8 +9,9 @@ var domain = location.hostname;
 // 2 - problems
 // 3 - questions
 // 4 - offers
-var tabLabels = [0,0,0,0,0];
-var tabLabelNames = ['idea','problem','question','offer'];
+var tabLabels = [0,1,2,3,4];
+var tabLabelNames = ['all','idea','problem','question','offer'];
+var labels = [];
 
 //GENERAL
 
@@ -63,18 +64,24 @@ var initTabs = function() {
             loadFbs();
         });
     });
+    
+    labels = Array.from( document.getElementsByClassName('tab-label') );
 }
 
 var updateTabLabels = function(data) {
-    
+    labels.forEach(function(item,i) {
+        if(i != 1) {
+            item.innerHTML = '(' + data[i] + ')';
+        }
+    });
     
 }
 var getTabLabel = function(type) {
-    return document.querySelector('.nav-tab-buttons span.tab-label:nth-of-type('+(getTabLabelIndexByType(type)+1)+')');
+    return labels[ getTabLabelIndexByType(type)+1 ];
 }
 
 var getTabLabelIndexByType = function(type) {
-    return tabLabelNames.indexOf(type) + 1;
+    return tabLabelNames.indexOf(type);
 }
 
 
