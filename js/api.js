@@ -47,7 +47,7 @@ var initBootstrapStructure = function() {
 var initTabs = function() {
     let navTabs = document.createElement('div');
     navTabs.className = 'row nav-tab-buttons';
-    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All <span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions <span class="tab-label">('+tabLabels[3]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers <span class="tab-label">('+tabLabels[4]+')</span></a></li></ul></div></div></div></div></nav></div>';
+    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas <span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers <span class="tab-label">('+tabLabels[3]+')</span></a></li></ul></div></div></div></div></nav></div>';
     document.querySelector('.' + prefix + 'wrapper').appendChild(navTabs);
     
     //add events for tab buttons
@@ -58,7 +58,6 @@ var initTabs = function() {
             });
             item.classList.add('active');
             tagSelector = item.getAttribute('data-target');
-            console.log(tagSelector);
             removeFbs();
             loadFbs();
         });
@@ -68,13 +67,28 @@ var initTabs = function() {
 }
 
 var updateTabLabels = function(data) {
-    let i; 
+    let i;
     let sum = 0;
     for(i = labels.length; i > 1; i--) {
-        labels[i-1].innerHTML = '(' + data[i-1] + ')';
-        sum += data[i-1];
+        labels[i-1].innerHTML = '(' + data[i-2] + ')';
+        sum += data[i-2];
     }
     labels[0].innerHTML = '(' + sum + ')';
+}
+
+var incData = function( type) {
+    tabLabels[ getTabLabelIndexByType(type) ] += 1;
+}
+
+var getTabLabelIndexByType = function(type) {
+    return tabLabelNames.indexOf(type) - 1;
+}
+
+var clearTabLabels = function() {
+    tabLabels.forEach( function(item) {
+        item = 0;    
+    });
+    
 }
 
 
@@ -202,10 +216,10 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
-    
-    let tags = [domain];
-    tags.push('fb');
-    if(tagSelector != 'all') tags.push(tagSelector);
+    clearTabLabels();
+    //let tags = [domain];
+    //tags.push('fb');
+    //if(tagSelector != 'all') tags.push(tagSelector);
     
     var query = {
         select_tags: ['fb', domain ],
@@ -213,7 +227,8 @@ var loadFbs = function() {
         select_authors: ['beesocial-test','beesocial-test2','beesocial-test3','beesocial-test4'],
         limit: 100
     };
-
+    
+    console.log(tagSelector);
     console.log(query.select_tags);
     golos.api.getDiscussionsByBlog(query, function(err, result) {
         console.log(err, result);
@@ -228,20 +243,42 @@ var loadFbs = function() {
             } else {
                 result.forEach(function(item) {
                     if(item.parent_permlink == 'fb') {
+                        
+                        //если контрольный тэг fb совпадает, можно парсить метадату
                         let json = JSON.parse(item.json_metadata);
-                        if(json.tags[0] == domain) {
-                            nothing = false;
-                            console.log(item);
-                            createFb( formData(item) );
-                        }
+                        //let json = JSON.parse('{"tags":["","idea"]}');
                         
-                        
+                        if(json.tags[0] == domain) {            
+                            
+                            //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
+                            var control = false;
+                            //проверить по всем типам фидбеков
+                            for(let j = 0; j < tabLabelNames.length; j++) {
+                                console.log(json.tags[1] + ' : ' + tabLabelNames[j]);
+                                //инкрементировать лейбл
+                                if(json.tags[1] == tabLabelNames[j] ) {
+                                    incData(json.tags[1]);
+                                    control = true;
+                                    console.log('инкрементировано: '+tabLabelNames[j]);
+                                    break;
+                                }
+                            }
+                            
+                            //если текущий таб тоже совпадает - вывести фидбек
+                            if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
+                                nothing = false;
+                                console.log(item);
+                                createFb( formData(item) );
+                            }
+                            
+                        }                        
                     }
                 });
                 
                 if(nothing) {
                     createEmptyFb();
                 }
+                updateTabLabels(tabLabels);
             }
                 
         }
