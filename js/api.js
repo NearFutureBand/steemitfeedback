@@ -4,12 +4,11 @@ var ckeditor;
 var jsonMetadata = '';
 var domain = location.hostname;
 
-// 0 - all
-// 1 - ideas
-// 2 - problems
-// 3 - questions
-// 4 - offers
-var tabLabels = [0,1,2,3,4];
+// 0 - ideas
+// 1 - problems
+// 2 - questions
+// 3 - offers
+var tabLabels = [0,0,0,0];
 var tabLabelNames = ['all','idea','problem','question','offer'];
 var labels = [];
 
@@ -48,7 +47,7 @@ var initBootstrapStructure = function() {
 var initTabs = function() {
     let navTabs = document.createElement('div');
     navTabs.className = 'row nav-tab-buttons';
-    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All <span class="tab-label"><span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions <span class="tab-label">('+tabLabels[3]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers <span class="tab-label">('+tabLabels[4]+')</span></a></li></ul></div></div></div></div></nav></div>';
+    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All <span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions <span class="tab-label">('+tabLabels[3]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers <span class="tab-label">('+tabLabels[4]+')</span></a></li></ul></div></div></div></div></nav></div>';
     document.querySelector('.' + prefix + 'wrapper').appendChild(navTabs);
     
     //add events for tab buttons
@@ -69,21 +68,14 @@ var initTabs = function() {
 }
 
 var updateTabLabels = function(data) {
-    labels.forEach(function(item,i) {
-        if(i != 1) {
-            item.innerHTML = '(' + data[i] + ')';
-        }
-    });
-    
+    let i; 
+    let sum = 0;
+    for(i = labels.length; i > 1; i--) {
+        labels[i-1].innerHTML = '(' + data[i-1] + ')';
+        sum += data[i-1];
+    }
+    labels[0].innerHTML = '(' + sum + ')';
 }
-var getTabLabel = function(type) {
-    return labels[ getTabLabelIndexByType(type)+1 ];
-}
-
-var getTabLabelIndexByType = function(type) {
-    return tabLabelNames.indexOf(type);
-}
-
 
 
 
@@ -235,10 +227,15 @@ var loadFbs = function() {
                 
             } else {
                 result.forEach(function(item) {
-                    if(item.parent_permlink == 'fb' ) {
-                        nothing = false;
-                        console.log(item);
-                        createFb( formData(item) );
+                    if(item.parent_permlink == 'fb') {
+                        let json = JSON.parse(item.json_metadata);
+                        if(json.tags[0] == domain) {
+                            nothing = false;
+                            console.log(item);
+                            createFb( formData(item) );
+                        }
+                        
+                        
                     }
                 });
                 
