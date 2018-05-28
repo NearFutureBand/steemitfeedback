@@ -89,7 +89,7 @@ var clearTabLabels = function() {
     tabLabels.forEach( function(item) {
         item = 0;    
     });
-    
+    return tabLabels;
 }
 
 
