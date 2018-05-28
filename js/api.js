@@ -121,15 +121,14 @@ var addEventForFbDone = function() {
         .getElementsByTagName('form')[0]
         .addEventListener('submit', function(e) {
             e.preventDefault();
-            if(wif.posting){
+            
+            /*if(wif.posting){
                 sendAddFbForm();
             }else{
                 auth(sendAddFbForm);
-            }
+            }*/
             
-            /*auth(function() {
-                golos.api.comment(wif.posting, ...)
-            }, ['posting']);*/
+            auth( sendAddFbForm, ['posting']);
                 
             return false;
         });
@@ -149,7 +148,7 @@ var sendAddFbForm = function() {
     console.log(jsonMetadata);
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
-    /*golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+    golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             document.getElementById('formHeader').value = '';
@@ -160,7 +159,7 @@ var sendAddFbForm = function() {
         }
         
         else console.error(err);
-    });*/
+    });
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
 }
@@ -412,9 +411,6 @@ var toggleFb = function(fbId) {
         loadFbs();
     }
 }
-var getNumberOfAllTypes = function() {
-    
-}
 var createEmptyFb = function(){
     let note = document.createElement('div');
     note.className = 'row fb empty-fb';
@@ -527,11 +523,13 @@ function createCommentForm(fbId) {
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
         e.preventDefault();
-        if(wif.posting){
+        /*if(wif.posting){
             sendAddComForm(fbId);
         }else{
             auth(sendAddComForm.bind(this, fbId));
-        }
+        }*/
+        
+        auth( sendAddComForm, ['posting']);
         return false;
     });
 }
@@ -571,11 +569,12 @@ var addEventsForFbLikes = function(fbId) {
     getBtnsVote(fbId, '').forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            if(wif.posting) {
+            /*if(wif.posting) {
                 voteForFb(fbId,isLike);
             }else{
                 auth(voteForFb.bind(this, fbId, isLike));
-            }
+            }*/
+            auth( voteForFb(fbId, isLike), ['posting']);
         });
     });
 }
@@ -596,11 +595,12 @@ var addEventsForComLikes = function(fbId, comId) {
     getBtnsVote(fbId, comId).forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            if(wif.posting) {
+            /*if(wif.posting) {
                 voteForCom(fbId, comId, isLike);
             } else {
                 auth(voteForCom.bind(this, fbId, comId, isLike));
-            }
+            }*/
+            auth( voteForCom(fbId, comId, isLike), ['posting']);
         });
     });
 }
