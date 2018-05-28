@@ -528,7 +528,7 @@ var addEventsForComDone = function(fbId) {
             auth(sendAddComForm.bind(this, fbId));
         }*/
         
-        auth( sendAddComForm, ['posting']);
+        auth( sendAddComForm.bind(this, fbId), ['posting']);
         return false;
     });
 }
@@ -573,7 +573,7 @@ var addEventsForFbLikes = function(fbId) {
             }else{
                 auth(voteForFb.bind(this, fbId, isLike));
             }*/
-            auth( voteForFb(fbId, isLike), ['posting']);
+            auth( voteForFb.bind(this, fbId, isLike), ['posting']);
         });
     });
 }
@@ -599,7 +599,7 @@ var addEventsForComLikes = function(fbId, comId) {
             } else {
                 auth(voteForCom.bind(this, fbId, comId, isLike));
             }*/
-            auth( voteForCom(fbId, comId, isLike), ['posting']);
+            auth( voteForCom.bind(this, fbId, comId, isLike), ['posting']);
         });
     });
 }
