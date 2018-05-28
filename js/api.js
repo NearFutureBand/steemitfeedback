@@ -121,11 +121,16 @@ var addEventForFbDone = function() {
         .getElementsByTagName('form')[0]
         .addEventListener('submit', function(e) {
             e.preventDefault();
-            //if(wif.posting){
+            if(wif.posting){
                 sendAddFbForm();
-            //}else{
-            //    auth(sendAddFbForm);
-            //}
+            }else{
+                auth(sendAddFbForm);
+            }
+            
+            /*auth(function() {
+                golos.api.comment(wif.posting, ...)
+            }, ['posting']);*/
+                
             return false;
         });
  }
@@ -242,16 +247,17 @@ var loadFbs = function() {
                 
             } else {
                 result.forEach(function(item) {
-                    if(item.parent_permlink == 'fb') {
+                    if(item.parent_permlink == 'fb' && item.permlink != 'post-fb-1527284621475') {
                         
                         //если контрольный тэг fb совпадает, можно парсить метадату
                         let json = JSON.parse(item.json_metadata);
-                        //let json = JSON.parse('{"tags":["","idea"]}');
+                        
                         
                         if(json.tags[0] == domain) {            
                             
                             //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
                             var control = false;
+                            
                             //проверить по всем типам фидбеков
                             for(let j = 0; j < tabLabelNames.length; j++) {
                                 console.log(json.tags[1] + ' : ' + tabLabelNames[j]);
