@@ -85,6 +85,7 @@ var getTabLabelIndexByType = function(type) {
 }
 
 var clearTabLabels = function() {
+    console.log('clearTabLabels');
     tabLabels.forEach( function(item) {
         item = 0;    
     });
@@ -221,6 +222,7 @@ var getBlockAddFb = function() {
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
     clearTabLabels();
+    console.log(tabLabels);
     //let tags = [domain];
     //tags.push('fb');
     //if(tagSelector != 'all') tags.push(tagSelector);
