@@ -231,23 +231,17 @@ var loadFbs = function() {
         console.log(err, result);
         
         //no matching feedbacks
-        let nothing = true;
+        let nothing = false;
         
         if ( ! err) {
             if(result == []) {
                 createEmptyFb();
                 
             } else {
-                result.forEach(function(item) {
-                    
-                    //здесь вызов функции фильтрации
-                    filter(item);
-                    
-                });
                 
-                if(nothing) {
-                    createEmptyFb();
-                }
+                //проверить все полученные фидбеки - функция создания фидбека внутри
+                filter(result);
+                
                 updateTabLabels(tabLabels);
             }
                 
@@ -384,42 +378,47 @@ var createEmptyFb = function() {
     note.innerHTML = "<div class='col-12'><h4>There's no feedbacks in this category yet. You can be the first</h4></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
 }
-var filter = function(item) {
-    if(item.parent_permlink == 'fb' && item.permlink != 'post-fb-1527284621475') {
-        
-        //если контрольный тэг fb совпадает, можно парсить метадату
-        let json = JSON.parse(item.json_metadata);
-        
-        
-        if(json.tags[0] == domain) {            
+var filter = function(selection) {
+    
+    let nothing = true;
+    selection.forEach(function(item) {
+         
+        if(item.parent_permlink == 'fb' && item.permlink != 'post-fb-1527284621475') {
             
-            //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
-            var control = false;
+            //если контрольный тэг fb совпадает, можно парсить метадату
+            let json = JSON.parse(item.json_metadata);
             
-            //проверить по всем типам фидбеков
-            for(let j = 0; j < tabLabelNames.length; j++) {
-                console.log(json.tags[1] + ' : ' + tabLabelNames[j]);
-                //инкрементировать лейбл
-                if(json.tags[1] == tabLabelNames[j] ) {
-                    incData(json.tags[1]);
-                    control = true;
-                    console.log('инкрементировано: '+tabLabelNames[j]);
-                    break;
+            
+            if(json.tags[0] == domain) {            
+                
+                //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
+                var control = false;
+                
+                //проверить по всем типам фидбеков
+                for(let j = 0; j < tabLabelNames.length; j++) {
+                    
+                    //инкрементировать лейбл
+                    if(json.tags[1] == tabLabelNames[j] ) {
+                        incData(json.tags[1]);
+                        control = true;
+                        console.log('инкрементировано: '+tabLabelNames[j]);
+                        break;
+                    }
                 }
-            }
-            
-            //если текущий таб тоже совпадает - вывести фидбек
-            if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
-                nothing = false;
-                console.log(item);
-                createFb( formData(item) );
-            }
-            
-        } else {
-            return false;
-        }                        
-    } else {
-        return false;    
+                
+                //если текущий таб тоже совпадает - вывести фидбек
+                if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
+                    console.log(item);
+                    createFb( formData(item) );
+                    nothing = false;
+                }
+                
+            }                       
+        }          
+    });
+    
+    if( nothing) {
+        createEmptyFb();    
     }
     
 }
