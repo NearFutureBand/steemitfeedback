@@ -120,13 +120,7 @@ var addEventForFbDone = function() {
         .getElementsByTagName('form')[0]
         .addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            /*if(wif.posting){
-                sendAddFbForm();
-            }else{
-                auth(sendAddFbForm);
-            }*/
-            
+                    
             auth( sendAddFbForm, ['posting']);
                 
             return false;
@@ -245,38 +239,10 @@ var loadFbs = function() {
                 
             } else {
                 result.forEach(function(item) {
-                    if(item.parent_permlink == 'fb' && item.permlink != 'post-fb-1527284621475') {
-                        
-                        //если контрольный тэг fb совпадает, можно парсить метадату
-                        let json = JSON.parse(item.json_metadata);
-                        
-                        
-                        if(json.tags[0] == domain) {            
-                            
-                            //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
-                            var control = false;
-                            
-                            //проверить по всем типам фидбеков
-                            for(let j = 0; j < tabLabelNames.length; j++) {
-                                console.log(json.tags[1] + ' : ' + tabLabelNames[j]);
-                                //инкрементировать лейбл
-                                if(json.tags[1] == tabLabelNames[j] ) {
-                                    incData(json.tags[1]);
-                                    control = true;
-                                    console.log('инкрементировано: '+tabLabelNames[j]);
-                                    break;
-                                }
-                            }
-                            
-                            //если текущий таб тоже совпадает - вывести фидбек
-                            if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
-                                nothing = false;
-                                console.log(item);
-                                createFb( formData(item) );
-                            }
-                            
-                        }                        
-                    }
+                    
+                    //здесь вызов функции фильтрации
+                    filter(item);
+                    
                 });
                 
                 if(nothing) {
@@ -385,12 +351,12 @@ var checkVoteColor = function(fbId, comId) {
 }
 var toggleBtnCom = function(fbId) {
     let thisBtn = getBtnShowComment(fbId);
-    if(thisBtn.children[2].classList.contains('hidden')){
+    if(thisBtn.children[2].classList.contains('hidden')) {
         thisBtn.children[0].classList.add('hidden');
         thisBtn.children[1].classList.add('hidden');
         thisBtn.children[2].classList.remove('hidden');
         thisBtn.children[3].classList.remove('hidden');
-    }else{
+    } else {
         thisBtn.children[2].classList.add('hidden');
         thisBtn.children[3].classList.add('hidden');
         thisBtn.children[0].classList.remove('hidden');
@@ -405,17 +371,57 @@ var addEventForFbHeader = function(fbId) {
 var toggleFb = function(fbId) {
     if(document.getElementById(fbId).getAttribute('data-opened') == '0') {
         expandFb(fbId);
-    }else{
+    } else {
         removeFbs();
         loadFbs();
+        resetHash();
     }
 }
-var createEmptyFb = function(){
+var createEmptyFb = function() {
     let note = document.createElement('div');
     note.className = 'row fb empty-fb';
     
     note.innerHTML = "<div class='col-12'><h4>There's no feedbacks in this category yet. You can be the first</h4></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
+}
+var filter = function(item) {
+    if(item.parent_permlink == 'fb' && item.permlink != 'post-fb-1527284621475') {
+        
+        //если контрольный тэг fb совпадает, можно парсить метадату
+        let json = JSON.parse(item.json_metadata);
+        
+        
+        if(json.tags[0] == domain) {            
+            
+            //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
+            var control = false;
+            
+            //проверить по всем типам фидбеков
+            for(let j = 0; j < tabLabelNames.length; j++) {
+                console.log(json.tags[1] + ' : ' + tabLabelNames[j]);
+                //инкрементировать лейбл
+                if(json.tags[1] == tabLabelNames[j] ) {
+                    incData(json.tags[1]);
+                    control = true;
+                    console.log('инкрементировано: '+tabLabelNames[j]);
+                    break;
+                }
+            }
+            
+            //если текущий таб тоже совпадает - вывести фидбек
+            if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
+                nothing = false;
+                console.log(item);
+                createFb( formData(item) );
+            }
+            
+        } else {
+            return false;
+        }                        
+    } else {
+        return false;    
+    }
+    
 }
 
 var getBtnShowComment = function(fbId) {
@@ -818,6 +824,14 @@ var addToJsonMetadata = function( element, mode){
 /**/
 var setHash = function(fbId) {
     location.hash = getAuthor(fbId, '') + '/' + getPermlink(fbId, '');
+}
+var resetHash = function() {
+    labels.forEach( function(item) {
+        if( item.parentElement.classList.contains('active') ) {
+            //console.log( item.parentElement);
+            location.hash = item.parentElement.getAttribute('href').substr(1);
+        }
+    });
 }
 var clearHash = function() {
     location.hash = '';
