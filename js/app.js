@@ -58,7 +58,14 @@ document.getElementById('integration').addEventListener('click', function(e) {
             showCloseButton: true
         })
     })
-
+document.getElementById('support').addEventListener('click', () => {
+    swal({
+        html: document.getElementById('support-body').innerHTML,
+        showCloseButton: true,
+        width: 600,
+        type: 'question'
+    })
+});
 
 /*script for loading VFX*/
 var initVFX = function() {
