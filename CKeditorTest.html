@@ -9,14 +9,70 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
     <title>CKeditor Test</title>
+      <style>
+          #editor{
+              margin-top: 100px;
+              width: 100%;
+              height: 500px;
+          }
+          .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline{
+              height: 300px;
+          }
+      
+      </style>
   </head>
   <body>
-    
+    <div id="editor">
+      
+      </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+      <script src="https://cdn.ckeditor.com/ckeditor5/10.0.0/classic/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+      <script>
+        $(document).ready(function(){
+            //var ckeditor;
+            
+            /*ClassicEditor
+                .create( document.querySelector( '#editor' ) )
+                .then( editor => {
+                    console.log( editor );
+                } )
+                .catch( error => {
+                    console.error( error );
+                } );   
+            */
+            
+            
+            /*ClassicEditor
+            .create( document.querySelector( '#editor' ), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+                heading: {
+                    options: [
+                        { modelElement: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { modelElement: 'heading1', viewElement: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { modelElement: 'heading2', viewElement: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    ]
+                }
+            } )
+            .catch( error => {
+                console.log( error );
+            } );*/
+            
+            
+            // Remove a few plugins from the default setup.
+            ClassicEditor
+                .create( document.querySelector( '#editor' ), {
+                removePlugins: [ 'Heading', 'Link' ],
+                toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ]
+            } )
+                .catch( error => {
+                console.log( error );
+            } );
+        });
+      
+      </script>
   </body>
 </html>
