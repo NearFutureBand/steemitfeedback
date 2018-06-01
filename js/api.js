@@ -138,10 +138,10 @@ var addEventForFbDone = function() {
 var sendAddFbForm = function() {
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     let parentAuthor = '';
-    let parentPermlink = 'fb';
+    let parentPermlink = 'test';
     let author = username;
     let title = document.getElementById('formHeader').value;
-    let permlink = urlLit( title, 0 ) + ' ' + Date.now().toString();
+    let permlink = urlLit( title, 0 ) + '-' + Date.now().toString();
     let body = ckeditor.getData();
     //const body = formText.getData();
     
