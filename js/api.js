@@ -193,13 +193,13 @@ var openAddFbForm = function() {
     removeFbs();
     createFromAddFb();
     document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'none';
-    document.querySelector('.' + prefix + ' .fb').style.display = 'none';
+    
 }
 var closeAddFbForm = function() {
     if(document.querySelector('.' + prefix + 'btn-add-fb').style.display == 'none'){
         document.querySelector('.' + prefix + 'wrapper .frm-add-fb').remove();
         document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'inline-block';
-        document.querySelector('.' + prefix + ' .fb').style.display = 'block';
+        
     }
 }
 var findCheckedRadio = function() {
