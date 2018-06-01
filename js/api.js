@@ -226,7 +226,7 @@ var loadFbs = function() {
     //if(tagSelector != 'all') tags.push(tagSelector);
     
     var query = {
-        select_tags: ['fb', domain ],
+        select_tags: ['test', 'fb', domain ],
         //select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
         select_authors: ['beesocial-test','beesocial-test2','beesocial-test3','beesocial-test4'],
         limit: 100
@@ -385,7 +385,9 @@ var createEmptyFb = function() {
     note.innerHTML = "<div class='col-12'><h4>There's no feedbacks in this category yet. You can be the first</h4></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
 }
-var filter = function(selection) {
+
+// - filter for testnet
+/*var filter = function(selection) {
     
     let nothing = true;
     selection.forEach(function(item) {
@@ -397,6 +399,52 @@ var filter = function(selection) {
             
             
             if(json.tags[0] == domain) {            
+                
+                //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
+                var control = false;
+                
+                //проверить по всем типам фидбеков
+                for(let j = 0; j < tabLabelNames.length; j++) {
+                    
+                    //инкрементировать лейбл
+                    if(json.tags[1] == tabLabelNames[j] ) {
+                        incData(json.tags[1]);
+                        control = true;
+                        console.log('инкрементировано: '+tabLabelNames[j]);
+                        break;
+                    }
+                }
+                
+                //если текущий таб тоже совпадает - вывести фидбек
+                if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
+                    console.log(item);
+                    createFb( formData(item) );
+                    nothing = false;
+                }
+                
+            }                       
+        }          
+    });
+    
+    if( nothing) {
+        createEmptyFb();    
+    }
+    
+}*/
+//filter for testnet
+
+var filter = function(selection) {
+    
+    let nothing = true;
+    selection.forEach(function(item) {
+         
+        if(item.parent_permlink == 'test' && item.permlink != 'post-fb-1527284621475') {
+            
+            //если контрольный тэг fb совпадает, можно парсить метадату
+            let json = JSON.parse(item.json_metadata);
+            
+            
+            if(json.tags[0] == 'fb' && json.tags[1] == domain) {            
                 
                 //переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
                 var control = false;
@@ -589,11 +637,6 @@ var addEventsForFbLikes = function(fbId) {
     getBtnsVote(fbId, '').forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            /*if(wif.posting) {
-                voteForFb(fbId,isLike);
-            }else{
-                auth(voteForFb.bind(this, fbId, isLike));
-            }*/
             auth( voteForFb.bind(this, fbId, isLike), ['posting']);
         });
     });
@@ -800,7 +843,8 @@ var checkVoteColor = function(fbId, comId) {
 
 /*Sets the default statement of the json*/
 var clearJsonMetadata = function() {
-    jsonMetadata = '{"tags":["'+domain+'"],"images":[]}';
+    //jsonMetadata = '{"tags":["'+domain+'"],"images":[]}'; - for testnet
+    jsonMetadata = '{"tags":["fb","'+domain+'"],"images":[]}';
 }
 
 /*Adds the image tag to the current text in textbox of a texteditor*/
