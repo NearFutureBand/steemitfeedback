@@ -60,6 +60,7 @@ var initTabs = function() {
             tagSelector = item.getAttribute('data-target');
             removeFbs();
             loadFbs();
+            closeAddFbForm();
         });
     });
     
@@ -192,11 +193,13 @@ var openAddFbForm = function() {
     removeFbs();
     createFromAddFb();
     document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'none';
+    document.querySelector('.' + prefix + ' .fb').style.display = 'none';
 }
 var closeAddFbForm = function() {
     if(document.querySelector('.' + prefix + 'btn-add-fb').style.display == 'none'){
         document.querySelector('.' + prefix + 'wrapper .frm-add-fb').remove();
         document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'inline-block';
+        document.querySelector('.' + prefix + ' .fb').style.display = 'block';
     }
 }
 var findCheckedRadio = function() {
@@ -510,23 +513,32 @@ var getAddComForm = function(fbId) {
 function createCommentForm(fbId) {
     var commentForm = document.createElement('div');
     commentForm.className = 'container frm-add-com';
-    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><div class='form-group'><button type='button' class='btn btn-dark' id='upload'>Attach images</button></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
     document.getElementById(fbId).appendChild(commentForm);
     
-    addEventsForComDone(fbId);
-    addEventForBtnUploadImg();
-    clearJsonMetadata();
+    
     
     ClassicEditor
-    .create( document.querySelector( '#commentBody' )/*,{
-             plugins: [ Essentials, Paragraph, Bold, Italic ],
-        } */)
+        .create( document.querySelector( '#commentBody' ), {
+                removePlugins: [ 'ImageUpload' ],
+            } )
         .then( editor => {
             ckeditor = editor;
+            
+            let but = document.createElement('button');
+            but.className = "ck ck-button ck-enabled ck-off attach-image";
+            but.innerHTML = '<svg class="ck ck-icon ck-button__icon" viewBox="0 0 20 20"><path d="M6.91 10.54c.26-.23.64-.21.88.03l3.36 3.14 2.23-2.06a.64.64 0 0 1 .87 0l2.52 2.97V4.5H3.2v10.12l3.71-4.08zm10.27-7.51c.6 0 1.09.47 1.09 1.05v11.84c0 .59-.49 1.06-1.09 1.06H2.79c-.6 0-1.09-.47-1.09-1.06V4.08c0-.58.49-1.05 1.1-1.05h14.38zm-5.22 5.56a1.96 1.96 0 1 1 3.4-1.96 1.96 1.96 0 0 1-3.4 1.96z" fill="#000" fill-rule="nonzero"></path></svg><span class="ck ck-tooltip ck-tooltip_s"><span class="ck ck-tooltip__text">Attach image via GolosImages</span></span><span class="ck ck-button__label">Attach image</span>';
+            but.id = "upload";
+            but.type = "button";
+            document.querySelector('div.ck.ck-toolbar').appendChild(but);
+            addEventForBtnUploadImg();
         } )
         .catch( err => {
             console.error( err.stack );
         } );
+    
+    addEventsForComDone(fbId);
+    clearJsonMetadata();
 }
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
