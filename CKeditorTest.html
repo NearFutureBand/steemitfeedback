@@ -18,7 +18,9 @@
           .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline{
               height: 300px;
           }
-      
+          .redButton{
+              
+          }
       </style>
   </head>
   <body>
@@ -39,12 +41,30 @@
                 .create( document.querySelector( '#editor' ) )
                 .then( editor => {
                     console.log( editor );
+                    
+                    console.log( editor.ui.componentFactory._components.get("imageupload"));
+                    console.log(editor.commands._commands.get("imageUpload").execute);
+                    
+                    //editor.ui.componentFactory._components.get("imageupload").('click');
+                
+                    $('span.ck-file-dialog-button>button.ck.ck-button.ck-enabled.ck-off').off('click');
+                    document.querySelector('span.ck-file-dialog-button>button.ck.ck-button.ck-enabled.ck-off').removeEventListener('click', editor.commands._commands.get("imageUpload").execute);
+                    
+                    let but = document.createElement('button');
+                    but.className = "ck ck-button ck-enabled ck-off redButton";
+                    but.innerHTML = ""
+                    document.querySelector('div.ck.ck-toolbar').appendChild(but);
+                    
+                    /*document.querySelector('span.ck-file-dialog-button>button.ck.ck-button.ck-enabled.ck-off').addEventListener('click', function(){
+                        alert('click');
+                    });
+                
                 } )
                 .catch( error => {
                     console.error( error );
                 } );   
-            */
             
+            */
             
             /*ClassicEditor
             .create( document.querySelector( '#editor' ), {
@@ -65,13 +85,15 @@
             // Remove a few plugins from the default setup.
             ClassicEditor
                 .create( document.querySelector( '#editor' ), {
-                removePlugins: [ 'Heading', 'Link' ],
-                toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ]
-            } )
+                    //removePlugins: [ 'ImageUpload' ],
+                } )
                 .catch( error => {
-                console.log( error );
-            } );
+                    console.log( error );
+                } );
+            
         });
+          
+          
       
       </script>
   </body>

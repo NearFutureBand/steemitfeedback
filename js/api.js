@@ -96,24 +96,32 @@ var clearTabLabels = function() {
 var createFromAddFb = function() {
     let form = document.createElement('div');
     form.className = 'row form frm-add-fb';
-    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Title</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Description</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-group'><button type='button' class='btn btn-dark' id='upload'>Attach images</button></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
+    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Title</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Description</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(form);
     
-    addEventForFbDone();
-    addEventForFbCancel();
-    addEventForBtnUploadImg();
-    clearJsonMetadata();// = JSON.stringify(tagList);//add tagList to json
     
     ClassicEditor
-        .create( document.querySelector( '#formText' )/*,{
-             plugins: [ Essentials, Paragraph, Bold, Italic ],
-        } */)
+        .create( document.querySelector( '#formText' ), {
+                removePlugins: [ 'ImageUpload' ],
+            } )
         .then( editor => {
             ckeditor = editor;
+            
+            let but = document.createElement('button');
+            but.className = "ck ck-button ck-enabled ck-off attach-image";
+            but.innerHTML = '<svg class="ck ck-icon ck-button__icon" viewBox="0 0 20 20"><path d="M6.91 10.54c.26-.23.64-.21.88.03l3.36 3.14 2.23-2.06a.64.64 0 0 1 .87 0l2.52 2.97V4.5H3.2v10.12l3.71-4.08zm10.27-7.51c.6 0 1.09.47 1.09 1.05v11.84c0 .59-.49 1.06-1.09 1.06H2.79c-.6 0-1.09-.47-1.09-1.06V4.08c0-.58.49-1.05 1.1-1.05h14.38zm-5.22 5.56a1.96 1.96 0 1 1 3.4-1.96 1.96 1.96 0 0 1-3.4 1.96z" fill="#000" fill-rule="nonzero"></path></svg><span class="ck ck-tooltip ck-tooltip_s"><span class="ck ck-tooltip__text">Attach image via GolosImages</span></span><span class="ck ck-button__label">Attach image</span>';
+            but.id = "upload";
+            but.type = "button";
+            document.querySelector('div.ck.ck-toolbar').appendChild(but);
+            addEventForBtnUploadImg();
         } )
         .catch( err => {
             console.error( err.stack );
         } );
+    
+    addEventForFbDone();
+    addEventForFbCancel();
+    clearJsonMetadata();// = JSON.stringify(tagList);//add tagList to json
 }
 var addEventForFbDone = function() {
     document.querySelector('.' + prefix + 'wrapper .frm-add-fb')
@@ -159,8 +167,17 @@ var sendAddFbForm = function() {
 var addEventForBtnUploadImg = function() {
     
     document.getElementById('upload').addEventListener('click', function() {
-        uploadImageToIpfs( function(files) {
-            if(files){
+        
+        uploadImageToIpfs(function( err, files ) {
+            if ( ! err) {
+                console.log(files);
+            } else {
+                console.error(' IPFS error: ' +err);
+            }
+        });
+        
+        /*uploadImageToIpfs( function(files) {
+            if(files) {
                 console.log(files);
                 addToJsonMetadata(files, "image");
                 files.forEach( function(item) {
@@ -169,14 +186,8 @@ var addEventForBtnUploadImg = function() {
                 });
             } else {
                 console.log('images uploading error');
-            }
-        });
+            }*/
     });
-    
-    localStorage.connectionCustom = {
-        api: { protocol: 'http', port: '5001', address: '91.201.41.253' },
-        gateway: { protocol: 'http', port: '7777', address: '91.201.41.253' }
-    };
 }
 var addEventForFbCancel = function() {
     document.querySelector('.' + prefix + 'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
