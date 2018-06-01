@@ -453,8 +453,8 @@ var filter = function(selection) {
                 for(let j = 0; j < tabLabelNames.length; j++) {
                     
                     //инкрементировать лейбл
-                    if(json.tags[1] == tabLabelNames[j] ) {
-                        incData(json.tags[1]);
+                    if(json.tags[2] == tabLabelNames[j] ) {
+                        incData(json.tags[2]);
                         control = true;
                         console.log('инкрементировано: '+tabLabelNames[j]);
                         break;
@@ -462,7 +462,7 @@ var filter = function(selection) {
                 }
                 
                 //если текущий таб тоже совпадает - вывести фидбек
-                if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
+                if( (json.tags[2] == tagSelector || tagSelector == 'all') && control ) {
                     console.log(item);
                     createFb( formData(item) );
                     nothing = false;
