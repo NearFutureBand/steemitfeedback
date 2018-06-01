@@ -170,29 +170,22 @@ var addEventForBtnUploadImg = function() {
         
         uploadImageToIpfs(function( err, files ) {
             if ( ! err) {
+                
+                files = refactorIpfsResult(files);
                 console.log(files);
+                addToJsonMetadata(files, "image");
+                addImageToTxtarea(files);
             } else {
                 console.error(' IPFS error: ' +err);
             }
         });
-        
-        /*uploadImageToIpfs( function(files) {
-            if(files) {
-                console.log(files);
-                addToJsonMetadata(files, "image");
-                files.forEach( function(item) {
-                    addImageToFb(item[0].path+item[0].hash);
-                    console.log('image to fb: '+item[0].path+item[0].hash);
-                });
-            } else {
-                console.log('images uploading error');
-            }*/
     });
 }
 var addEventForFbCancel = function() {
     document.querySelector('.' + prefix + 'wrapper .frm-add-fb .btn-add-fb-cancel').addEventListener('click',function(){
         closeAddFbForm();
         loadFbs();
+        clearJsonMetadata();
     });
 }
 var openAddFbForm = function() {
@@ -799,10 +792,18 @@ var clearJsonMetadata = function() {
 }
 
 /*Adds the image tag to the current text in textbox of a texteditor*/
-var addImageToFb = function(path) {
+var addImageToTxtarea = function(imageObjects) {
+    console.log(imageObjects);
     let text = ckeditor.getData();
-    text += '<img src='+path+'>';
+    console.log(text);
+    imageObjects.forEach(function(item) {
+        
+        text += '<br> <a href="' + item.path + item.hash + '">' + item.path + item.hash + '</a><br>';
+        //text += '<img src="'+item.path+item.hash+'">';
+        console.log(text);
+    });
     ckeditor.setData(text);
+    console.log(ckeditor.getData());
 }
 
 /*Adds data of different types to the json*/
@@ -814,8 +815,8 @@ var addToJsonMetadata = function( element, mode){
         element.forEach(function(item) {
             parsed.tags.push(item);    
         })
-        
     }
+    
     if(mode == "image") {
         if(element != null) {
             element.forEach(function(item) {
@@ -824,14 +825,12 @@ var addToJsonMetadata = function( element, mode){
         } else {
             console.log('null exception in image mode');
         }
-        
-        
     }
-    console.log(parsed);
+    
     jsonMetadata = JSON.stringify(parsed);
 }
 
-/**/
+/*Work with hash in the url string*/
 var setHash = function(fbId) {
     location.hash = getAuthor(fbId, '') + '/' + getPermlink(fbId, '');
 }
@@ -847,6 +846,7 @@ var clearHash = function() {
     location.hash = '';
 }
 
+/*Translates russian letters to translit form*/
 var urlLit = function(w, v) { // cyrilic-to-translit-function
 	var tr = 'a b v g d e ["zh","j"] z i y k l m n o p r s t u f h c ch sh ["shh","shch"] ~ y ~ e yu ya ~ ["jo","e"]'.split(' ');
 	var ww = '';
@@ -858,4 +858,14 @@ var urlLit = function(w, v) { // cyrilic-to-translit-function
 		else ww += eval(ch)[v];
 	}
 	return (ww.replace(/[^a-zA-Z0-9\-]/g, '-').replace(/[-]{2,}/gim, '-').replace(/^\-+/g, '').replace(/\-+$/g, ''));
+}
+
+/**/
+var refactorIpfsResult = function(result) {
+    let i;
+    let out = [];
+    for(i = 0; i < result.length; i++) {
+        out.push(result[i][0]);
+    }
+    return out;
 }
