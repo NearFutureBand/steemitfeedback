@@ -49,7 +49,7 @@ i18nextBrowserLD.src = 'https://cdn.jsdelivr.net/npm/i18next-browser-languagedet
 (document.head || document.documentElement).appendChild(i18nextBrowserLD);
 
 golosJs = document.createElement('script');
-golosJs.src = 'https://cdn.jsdelivr.net/npm/golos-js@0.6.1/dist/golos.min.js';
+golosJs.src = 'https://cdn.rawgit.com/epexa/cd0cb942eabe09f1cb4c9143c4c04418/raw/golos.min.js';
 (document.head || document.documentElement).appendChild(golosJs);
 
 sweetAlert = document.createElement('script');

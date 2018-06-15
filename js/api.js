@@ -138,7 +138,7 @@ var addEventForFbDone = function() {
 var sendAddFbForm = function() {
     //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     let parentAuthor = '';
-    let parentPermlink = 'test';
+    let parentPermlink = 'fb';
     let author = username;
     let title = document.getElementById('formHeader').value;
     let permlink = urlLit( title, 0 ) + '-' + Date.now().toString();
@@ -226,9 +226,8 @@ var loadFbs = function() {
     //if(tagSelector != 'all') tags.push(tagSelector);
     
     var query = {
-        select_tags: ['test', 'fb', domain ],
-        //select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
-        select_authors: ['beesocial-test','beesocial-test2','beesocial-test3','beesocial-test4'],
+        select_tags: ['fb', domain ],
+        select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
         limit: 100
     };
     
@@ -591,11 +590,6 @@ function createCommentForm(fbId) {
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
         e.preventDefault();
-        /*if(wif.posting){
-            sendAddComForm(fbId);
-        }else{
-            auth(sendAddComForm.bind(this, fbId));
-        }*/
         
         auth( sendAddComForm.bind(this, fbId), ['posting']);
         return false;
@@ -844,7 +838,7 @@ var checkVoteColor = function(fbId, comId) {
 /*Sets the default statement of the json*/
 var clearJsonMetadata = function() {
     //jsonMetadata = '{"tags":["'+domain+'"],"images":[]}'; - for testnet
-    jsonMetadata = '{"tags":["fb","'+domain+'"],"images":[]}';
+    jsonMetadata = '{"tags":["'+domain+'"],"images":[]}';
 }
 
 /*Adds the image tag to the current text in textbox of a texteditor*/
