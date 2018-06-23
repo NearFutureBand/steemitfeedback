@@ -386,12 +386,12 @@ var createEmptyFb = function() {
 }
 
 // - filter for testnet
-/*var filter = function(selection) {
+var filter = function(selection) {
     
     let nothing = true;
     selection.forEach(function(item) {
          
-        if(item.parent_permlink == 'fb' && item.permlink != 'post-fb-1527284621475') {
+        if(item.parent_permlink == 'fb') {
             
             //если контрольный тэг fb совпадает, можно парсить метадату
             let json = JSON.parse(item.json_metadata);
@@ -429,9 +429,11 @@ var createEmptyFb = function() {
         createEmptyFb();    
     }
     
-}*/
+}
 //filter for testnet
 
+//filter for mainnet
+/*
 var filter = function(selection) {
     
     let nothing = true;
@@ -476,6 +478,8 @@ var filter = function(selection) {
     }
     
 }
+*/
+//filter for mainnet
 
 var getBtnShowComment = function(fbId) {
     return document.getElementById(fbId).getElementsByClassName('btn-show-comments')[0];
