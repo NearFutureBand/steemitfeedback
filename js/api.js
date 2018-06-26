@@ -7,9 +7,9 @@ var domain = location.hostname;
 // 0 - ideas
 // 1 - problems
 // 2 - questions
-// 3 - offers
+// 3 - thanks
 var tabLabels = [0,0,0,0];
-var tabLabelNames = ['all','idea','problem','question','offer'];
+var tabLabelNames = ['all','idea','problem','question','thanks'];
 var labels = [];
 
 //GENERAL
@@ -47,7 +47,7 @@ var initBootstrapStructure = function() {
 var initTabs = function() {
     let navTabs = document.createElement('div');
     navTabs.className = 'row nav-tab-buttons';
-    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all">All <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea">Ideas <span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem">Problems <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question">Questions <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#offers" data-target="offer">Offers <span class="tab-label">('+tabLabels[3]+')</span></a></li></ul></div></div></div></div></nav></div>';
+    navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all"><span class="icon-radio-unchecked"></span> All <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea"><span class="icon-magic-wand"></span> Ideas <span class="tab-label">('+tabLabels[0]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem"><span class="icon-bug"></span> Problems <span class="tab-label">('+tabLabels[1]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question"><span class="icon-question"></span> Questions <span class="tab-label">('+tabLabels[2]+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#thanks" data-target="thank"><span class="icon-gift"></span> Thanks <span class="tab-label">('+tabLabels[3]+')</span></a></li></ul></div></div></div></div></nav></div>';
     document.querySelector('.' + prefix + 'wrapper').appendChild(navTabs);
     
     //add events for tab buttons
@@ -97,7 +97,7 @@ var clearTabLabels = function() {
 var createFromAddFb = function() {
     let form = document.createElement('div');
     form.className = 'row form frm-add-fb';
-    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Title</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Description</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-offer' value='option3'><label class='form-check-label' for='formRadio3'>Offer</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
+    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Title</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Description</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-thank' value='option3'><label class='form-check-label' for='formRadio3'>Thank</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(form);
     
     
@@ -233,7 +233,7 @@ var loadFbs = function() {
     
     console.log(tagSelector);
     console.log(query.select_tags);
-    golos.api.getDiscussionsByBlog(query, function(err, result) {
+    golos.api.getDiscussionsByCreated(query, function(err, result) {
         console.log(err, result);
         
         //no matching feedbacks
@@ -409,7 +409,6 @@ var filter = function(selection) {
                     if(json.tags[1] == tabLabelNames[j] ) {
                         incData(json.tags[1]);
                         control = true;
-                        console.log('инкрементировано: '+tabLabelNames[j]);
                         break;
                     }
                 }
@@ -494,7 +493,7 @@ var getFbHeader = function(fbId) {
 
 //COMMENTS-------------------------------------------------------------------------------
 var loadComments = function(fbId) {
-    golos.api.getContentReplies(getAuthor(fbId, ''), getPermlink(fbId, ''), function(err, result) {
+    golos.api.getContentReplies(getAuthor(fbId, ''), getPermlink(fbId, ''), 1000, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
             result.forEach(function(item) {
@@ -841,7 +840,6 @@ var checkVoteColor = function(fbId, comId) {
 
 /*Sets the default statement of the json*/
 var clearJsonMetadata = function() {
-    //jsonMetadata = '{"tags":["'+domain+'"],"images":[]}'; - for testnet
     jsonMetadata = '{"tags":["'+domain+'"],"images":[]}';
 }
 
