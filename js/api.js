@@ -2,7 +2,7 @@ var prefix = 'gF';
 var tagSelector = 'all';
 var ckeditor;
 var jsonMetadata = '';
-var domain = location.hostname;
+var domain = (location.hostname == "")? 'localhost' : location.hostname;
 
 // 0 - ideas
 // 1 - problems
@@ -158,6 +158,7 @@ var sendAddFbForm = function() {
             closeAddFbForm();
             removeFbs();
             loadFbs();
+            console.log('sent');
         }
         
         else console.error(err);
@@ -314,7 +315,7 @@ var addEventsForCommentButtons = function(fbId) {
     });
 }
 var expandFb = function(fbId) {
-    golos.api.getContent(getAuthor(fbId,''), getPermlink(fbId,''), function(err, result) {
+    golos.api.getContent(getAuthor(fbId,''), getPermlink(fbId,''), 1000, function(err, result) {
         //console.log(err, result);
         if (!err) {
             removeFbs();
@@ -389,7 +390,7 @@ var createEmptyFb = function() {
 var filter = function(selection) {
     
     let nothing = true;
-    selection.forEach(function(item) {
+    selection.forEach( function(item) {
          
         if(item.parent_permlink == 'fb') {
             
@@ -593,7 +594,6 @@ function createCommentForm(fbId) {
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
         e.preventDefault();
-        
         auth( sendAddComForm.bind(this, fbId), ['posting']);
         return false;
     });
@@ -610,7 +610,8 @@ var sendAddComForm = function(fbId) {
         //console.log(err, result);
         if (!err) {
             console.log('comment', result);
-            getTxtareaCom(fbId).value = '';
+            //getTxtareaCom(fbId).value = '';
+            ckeditor.setData('');
             removeComments(fbId);
             loadComments(fbId);
         }
