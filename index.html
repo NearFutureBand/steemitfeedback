@@ -30,7 +30,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="navbar-right">
                     <li class="nav-item">
                         <button class="btn btn-success my-2 my-sm-0" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button>
                     </li>
@@ -41,15 +41,7 @@
                     <li class="nav-item">
                         <button class="btn btn-primary my-2 my-sm-0" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary my-2 my-sm-0" id="support"><span class="icon-wrench"></span> Support</button>
-                    </li>
                     
-                </ul>
-                <div class="form-inline" id="navbar-right">
-                    <li class="nav-item d-flex align-items-center">
-                        <button class="btn btn-primary my-2 my-sm-0" id="integration"><span class="icon-new-tab"></span> Integration</button>
-                    </li>
                     <a href="https://github.com/NearFutureBand/golosfeedback" class="github-corner" tabindex="-1">
                         <!--<img src="graphics/github-octocat.svg" xmlns="http://www.w3.org/2000/svg" type="image/svg+xml">-->
                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="80px" height="80px" viewBox="0 0 250 250" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"  xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -86,7 +78,7 @@
                             </g>
                         </svg>
                     </a>
-                </div>
+                </ul>
             </div>
         </div>
         </nav>
@@ -97,7 +89,14 @@
     
     <footer class="footer">
         <div class="container">
-            <span class="text-muted">GolosFeedback @ 2018</span>
+            <div class="left-corner">
+                <button class="btn btn-primary my-2 my-sm-0" id="integration"><span class="icon-new-tab"></span> Integration</button>
+                <button class="btn btn-primary my-2 my-sm-0" id="support"><span class="icon-wrench"></span> Support</button>
+            </div>
+            <div class="right-corner">
+                <span class="text-muted">GolosFeedback @ 2018</span>
+            </div>
+               
         </div>
     </footer>
     
