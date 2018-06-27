@@ -30,6 +30,7 @@ var initGolosFeedback = function() {
     loadFbs();
     
     location.hash = 'all';
+    initLang('en');
 }
 document.addEventListener('DOMContentLoaded', initGolosFeedback);
 

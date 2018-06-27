@@ -12,7 +12,6 @@ document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', fu
 document.onreadystatechange = function () { 
 	console.log('<f> doc ready');
 	initVFX();
-    initLang('en');
 }
 
 async function getUrls() {
