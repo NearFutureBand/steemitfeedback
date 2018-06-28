@@ -27,12 +27,8 @@ async function getUrls() {
          /* ---- changed for the GolosFeedback -----*/
        
     } else {
-        golos.api.getContent(username, constPermlik, function(err, result) {
-            result.id == 0 ? swal({
-                html: document.getElementById('no-records-IPFS').innerHTML
-            }) : getPostJson(username, constPermlik, result);
-            if (err) swal(err);
-        });
+        removeFbs();
+        loadMyFbs();
     }
 }
 document.getElementById('golos-urls').onclick = getUrls;
