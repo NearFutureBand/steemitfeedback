@@ -16,11 +16,13 @@ document.onreadystatechange = function () {
 }
 
 async function getUrls() {
+    
     if (wif == '') {
         /* ---- changed for the GolosFeedback -----*/
         await auth(function(){
             removeFbs();
-            loadFbs();
+            loadMyFbs();
+            //loadFbs();
         });
          /* ---- changed for the GolosFeedback -----*/
        

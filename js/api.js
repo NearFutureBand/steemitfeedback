@@ -386,6 +386,24 @@ var createEmptyFb = function() {
     note.innerHTML = "<div class='col-12'><h4>There's no feedbacks in this category yet. You can be the first</h4></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
 }
+var loadMyFbs = function() {
+    /**
+    * getDiscussionsByBlog() receiving posts by author and tag
+    * @param {Object} query - search object that includes the author, tag, limit
+    */
+    var query = {
+        select_authors: [username],
+        select_tags: ['fb'],
+        limit: 100
+    };
+    golos.api.getDiscussionsByBlog(query, function(err, result) {
+        //console.log(err, result);
+        if (!err) {
+            filter(result);
+        }
+        else console.error(err);
+    });
+}
 
 // - filter for testnet
 var filter = function(selection) {
