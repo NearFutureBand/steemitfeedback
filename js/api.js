@@ -9,7 +9,7 @@ var domain = (location.hostname == "")? 'localhost' : location.hostname;
 // 2 - questions
 // 3 - thanks
 var tabLabels = [0,0,0,0];
-var tabLabelNames = ['all','idea','problem','question','thanks'];
+var tabLabelNames = ['all','idea','problem','question','thank'];
 var labels = [];
 
 //GENERAL
@@ -90,6 +90,7 @@ var clearTabLabels = function() {
     for(let i = 0; i < tabLabels.length; i++) {
         tabLabels[i] = 0;
     }
+    updateTabLabels(tabLabels);
 }
 
 
@@ -119,6 +120,7 @@ var createFromAddFb = function() {
         } )
         .catch( err => {
             console.error( err.stack );
+            showError(err.message);
         } );
     
     addEventForFbDone();
@@ -137,20 +139,18 @@ var addEventForFbDone = function() {
         });
  }
 var sendAddFbForm = function() {
-    //wif test3 testnet1 5Hvp79CaQrYUD9d33VvdtWY5BhyimS4t5vMDCBJE1WsTUUPuu1F";
     let parentAuthor = '';
     let parentPermlink = 'fb';
     let author = username;
     let title = document.getElementById('formHeader').value;
     let permlink = urlLit( title, 0 ) + '-' + Date.now().toString();
-    let body = ckeditor.getData();
-    //const body = formText.getData();
-    
+    let body = ckeditor.getData();    
     
     addToJsonMetadata([findCheckedRadio()], "tags");
     console.log(jsonMetadata);
     console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
     console.log(window.wif);
+    
     golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
         //console.log(err, result);
         if ( ! err) {
@@ -160,9 +160,10 @@ var sendAddFbForm = function() {
             removeFbs();
             loadFbs();
             console.log('sent');
+        } else {
+            console.error(err);
+            showError(err.message);
         }
-        
-        else console.error(err);
     });
     
     //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
@@ -179,7 +180,8 @@ var addEventForBtnUploadImg = function() {
                 addToJsonMetadata(files, "image");
                 addImageToTxtarea(files);
             } else {
-                console.error(' IPFS error: ' +err);
+                console.error(err);
+                showError(err.message);
             }
         });
     });
@@ -195,7 +197,6 @@ var openAddFbForm = function() {
     removeFbs();
     createFromAddFb();
     document.querySelector('.' + prefix + 'btn-add-fb').style.display = 'none';
-    
 }
 var closeAddFbForm = function() {
     if(document.querySelector('.' + prefix + 'btn-add-fb').style.display == 'none'){
@@ -222,14 +223,13 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
-    clearTabLabels();
     //let tags = [domain];
     //tags.push('fb');
     //if(tagSelector != 'all') tags.push(tagSelector);
     
     var query = {
         select_tags: ['fb', domain ],
-        select_authors: ['test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
+        select_authors: ['test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
         limit: 100
     };
     
@@ -249,12 +249,13 @@ var loadFbs = function() {
                 
                 //проверить все полученные фидбеки - функция создания фидбека внутри
                 filter(result);
-                
                 updateTabLabels(tabLabels);
             }
                 
+        } else {
+            console.error(err);
+            showError(err.message);
         }
-        else console.error(err);
     });
     
     //загрузка тестового поста через permlink
@@ -337,6 +338,7 @@ var removeFbs = function() {
     });
     closeAddFbForm();
     clearHash();
+    clearTabLabels();
 }
 var checkVoteColor = function(fbId, comId) {
     let state = getVoteState(fbId, comId);
@@ -393,22 +395,26 @@ var loadMyFbs = function() {
     */
     var query = {
         select_authors: [username],
-        select_tags: ['fb'],
+        select_tags: ['fb', domain ],
         limit: 100
     };
-    golos.api.getDiscussionsByBlog(query, function(err, result) {
-        //console.log(err, result);
+    golos.api.getDiscussionsByCreated(query, function(err, result) {
+        console.log(err, result);
         if (!err) {
             filter(result);
-        }
-        else console.error(err);
+        } else {
+            console.error(err);
+            showError(err.message);
+        }   
     });
 }
 
-// - filter for testnet
+/** filter for testnet
+*/
 var filter = function(selection) {
     
     let nothing = true;
+    
     selection.forEach( function(item) {
          
         if(item.parent_permlink == 'fb') {
@@ -449,7 +455,6 @@ var filter = function(selection) {
     }
     
 }
-//filter for testnet
 
 //filter for mainnet
 /*
@@ -520,8 +525,10 @@ var loadComments = function(fbId) {
                 console.log('getContentReplies', item);
                 createComment(formDataCom(item, fbId));
             });
+        } else {
+            console.error(err);
+            showError(err.message);
         }
-        else console.error(err);
     });
 }
 var formDataCom = function(object, fbId) {
@@ -633,8 +640,10 @@ var sendAddComForm = function(fbId) {
             ckeditor.setData('');
             removeComments(fbId);
             loadComments(fbId);
+        } else {
+            console.error(err);
+            showError(err.message);
         }
-        else console.error(err);
     });
 }
 
@@ -668,6 +677,9 @@ var voteForFb = function(fbId, like) {
         if ( ! err) {
             setLblVote(fbId, '', weight/10000, state);
             checkVoteColor(fbId, '');
+        } else {
+            console.error(err);
+            showError(err.message);
         }
     });
 }
@@ -675,11 +687,6 @@ var addEventsForComLikes = function(fbId, comId) {
     getBtnsVote(fbId, comId).forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            /*if(wif.posting) {
-                voteForCom(fbId, comId, isLike);
-            } else {
-                auth(voteForCom.bind(this, fbId, comId, isLike));
-            }*/
             auth( voteForCom.bind(this, fbId, comId, isLike), ['posting']);
         });
     });
@@ -694,6 +701,9 @@ var voteForCom = function(fbId, comId, like) {
         if ( ! err) {
             setLblVote(fbId, comId, weight/10000, state);
             checkVoteColor(fbId, comId);
+        } else {
+            console.error(err);
+            showError(err.message);
         }
     });
 }
@@ -702,7 +712,7 @@ var getBtnVote = function(fbId, comId, isLike) {
     let btn;
     if(comId) {
         btn = getBlockControls(fbId, comId).getElementsByClassName('btn-com-vote')[ 1-isLike ];
-    }else{
+    } else {
         btn = getBlockControls(fbId, '').getElementsByClassName('btn-vote')[ 1-isLike ];
     }
     return btn;
@@ -710,12 +720,17 @@ var getBtnVote = function(fbId, comId, isLike) {
 var getBtnsVote = function(fbId, comId) {
     if(comId) {
         return Array.from( getComment(fbId, comId).getElementsByClassName('btn-com-vote') );
-    }else{
+    } else {
         return Array.from( getBlockControls(fbId, '').getElementsByClassName('btn-vote') );
     }
 }
 
 
+
+//ERRORS----------------------------------------------------------------------------------
+var showError = function(text) {
+    swal("Error!", text, "error");
+}
 
 
 //OTHER FUNCTIONS
