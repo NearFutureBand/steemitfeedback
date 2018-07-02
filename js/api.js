@@ -99,7 +99,7 @@ var clearTabLabels = function() {
 var createFromAddFb = function() {
     let form = document.createElement('div');
     form.className = 'row form frm-add-fb';
-    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>Title</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>Description</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>Idea</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>Question</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>Problem</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-thank' value='option3'><label class='form-check-label' for='formRadio3'>Thank</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> Submit</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> Cancel</button></form></div>";
+    form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>"+document.querySelectorAll('.translate-phrases li')[0].innerHTML+"</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>"+document.querySelectorAll('.translate-phrases li')[1].innerHTML+"</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>"+document.querySelectorAll('.translate-phrases li')[2].innerHTML+"</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>"+document.querySelectorAll('.translate-phrases li')[3].innerHTML+"</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>"+document.querySelectorAll('.translate-phrases li')[4].innerHTML+"</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-thank' value='option3'><label class='form-check-label' for='formRadio3'>"+document.querySelectorAll('.translate-phrases li')[5].innerHTML+"</label></div><button type='submit' class='btn btn-primary btn-add-fb-done mr-2'><span class='icon-checkmark'></span> "+document.querySelectorAll('.translate-phrases li')[6].innerHTML+"</button><button type='button' class='btn btn-primary btn-add-fb-cancel ml-2'><span class='icon-cross'></span> "+document.querySelectorAll('.translate-phrases li')[7].innerHTML+"</button></form></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(form);
     
     
@@ -385,7 +385,7 @@ var createEmptyFb = function() {
     let note = document.createElement('div');
     note.className = 'row fb empty-fb';
     
-    note.innerHTML = "<div class='col-12'><h4>There's no feedbacks in this category yet. You can be the first</h4></div>";
+    note.innerHTML = "<div class='col-12'><h4>"+document.querySelectorAll('.translate-phrases li')[8].innerHTML+"</h4></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
 }
 var loadMyFbs = function() {
@@ -590,7 +590,7 @@ var getAddComForm = function(fbId) {
 function createCommentForm(fbId) {
     var commentForm = document.createElement('div');
     commentForm.className = 'container frm-add-com';
-    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='Type your comment here'></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> Submit</button></form></div></div>";
+    commentForm.innerHTML = "<div class='row'><div class='col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile'><form><div class='form-group'><textarea class='form-control txt-add-com' id='commentBody' rows='3' placeholder='"+document.querySelectorAll('.translate-phrases li')[9].innerHTML+"'></textarea></div><button type='click' class='btn btn-primary btn-add-com-done'><span class='icon-checkmark'></span> "+document.querySelectorAll('.translate-phrases li')[6].innerHTML+"</button></form></div></div>";
     document.getElementById(fbId).appendChild(commentForm);
     
     
