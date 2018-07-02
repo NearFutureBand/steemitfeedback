@@ -15,10 +15,10 @@
     "Sign Up": "Зарэгістравацца",
     "Header": "Загаловак",
     "Type your text here": "Увядзiце ваш тэкст сюды",
-    "ideas": "iдэi",
-    "problems": "праблемы",
-    "questions": "пытаннi",
-    "thanks": "падзякi",
+    "IDEAS": "IДЭI",
+    "PROBLEMS": "ПРАБЛЕМЫ",
+    "QUESTIONS": "ПЫТАННI",
+    "THANKS": "ПАДЗЯКI",
     "idea": "iдэя",
     "question": "пытанне",
     "problem": "праблема",
@@ -26,6 +26,6 @@
     "Submit": "Пацвердзіць",
     "About integration!":"Aб iнтэграцыi!",
     "Cool!": "Крута!",
-    "all": "усе",
+    "ALL": "УСЕ",
     "There's no feedbacks in this category yet. You can be the first" : "У гэтай катэгорыi пакуль няма водгукаy. Вы можаце быць першым"
 }

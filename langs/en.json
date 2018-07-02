@@ -1,8 +1,22 @@
 {
     "Получить мои отзывы":"Get my feedbacks",
     "Добавить отзыв":"Add feedback",
+    
     "О сервисе":"About",
+    "GolosFeedback - это микросервис на блокчейне Голос, который возволяет вам собирать все сообщения с идеями, предложениями и проблемами от ваших клиентов или пользователей. Эта платформа - тонкий клиент, который работает без бэкенда (только фронт-энд и блокчейн) прямо с Github Pages (через CloudFlare).":"GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).",
+    
     "Интеграция":"Integration",
+    "Об интеграции!": "About integration!",
+    "Добавьте JavaScript к вашей HTML-странице": "Add JavaScript in your HTML-page:",
+    "Добавьте кнопку на вашу HTML-страницу":"Add button in your HTML-page:",
+    "Настройте стандартное bootstrap модальное окно":"Set up a standard bootstrap modal window:",
+    "Посетите этот пример интерграции чтобы посмотреть, как это работает!":"Visit this integration example to see how it works!",
+    
+    "Поддержка": "Support",
+    "Если у вас есть какие-либо идеи / проблемы / вопросы, вы можете о них сообщить":"If you have any ideas / problems / questions, you can report it",
+    "На GitHub в Issues":"On GitHub in Issues",
+    "По e-mail":"On e-mail",
+    
     "Чтобы продолжить, вам необходимо войти!":"To continue, you need to login!",
 	"Пожалуйста, введите ваш логин и мастер-пароль":"Please enter your login and master password",
 	"Имя пользователя":"Username",
@@ -13,19 +27,23 @@
     "Оставлять меня в сети":"Keep me logged",
     "Отмена":"Cancel",
     "Зарегистрироваться":"Sign Up",
+    
     "Заголовок":"Header",
     "Введите ваш текст сюда":"Type your text here",
-    "идеи": "ideas",
-    "проблемы": "problems",
-    "вопросы": "questions",
-    "благодарности": "thanks",
+    
+    "ИДЕИ": "IDEAS",
+    "ПРОБЛЕМЫ": "PROBLEMS",
+    "ВОПРОСЫ": "QUESTIONS",
+    "БЛАГОДАРНОСТИ": "THANKS",
+    "ВСЕ": "ALL",
+    
     "идея": "idea",
     "вопрос": "question",
     "проблема": "problem",
     "благодарность": "thank",
+    
     "Подтвердить": "Submit",
-    "Об интеграции!": "About integration!",
+    
     "Круто!": "Cool!",
-    "все": "all",
     "В этой категории пока нет отзывов. Вы можете быть первым" : "There's no feedbacks in this category yet. You can be the first"
 }

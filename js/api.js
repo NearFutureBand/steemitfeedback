@@ -235,7 +235,7 @@ var loadFbs = function() {
     
     console.log(tagSelector);
     console.log(query.select_tags);
-    golos.api.getDiscussionsByCreated(query, function(err, result) {
+    golos.api.getDiscussionsByBlog(query, function(err, result) {
         console.log(err, result);
         
         //no matching feedbacks
@@ -398,7 +398,7 @@ var loadMyFbs = function() {
         select_tags: ['fb', domain ],
         limit: 100
     };
-    golos.api.getDiscussionsByCreated(query, function(err, result) {
+    golos.api.getDiscussionsByBlog(query, function(err, result) {
         console.log(err, result);
         if (!err) {
             filter(result);
