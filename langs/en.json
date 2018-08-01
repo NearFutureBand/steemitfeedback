@@ -1,7 +1,6 @@
 {
     "Получить мои отзывы":"Get my feedbacks",
     "Добавить отзыв":"Add feedback",
-    
     "О сервисе":"About",
     "GolosFeedback - это микросервис на блокчейне Голос, который возволяет вам собирать все сообщения с идеями, предложениями и проблемами от ваших клиентов или пользователей. Эта платформа - тонкий клиент, который работает без бэкенда (только фронт-энд и блокчейн) прямо с Github Pages (через CloudFlare).":"GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).",
     

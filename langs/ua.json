@@ -1,31 +1,50 @@
-{
+{    
 	"Get my feedbacks":"Атрымаць мае водгукi",
 	"Add feedback":"Дадаць водгук",
-	"About":"Пра сэрвic",
-	"Integration":"Интэграцыя",
+    "About":"Пра сэрвic",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback - это микросервис на блокчейне Голос, который возволяет вам собирать все сообщения с идеями, предложениями и проблемами от ваших клиентов или пользователей. Эта платформа - тонкий клиент, который работает без бэкенда (только фронт-энд и блокчейн) прямо с Github Pages (через CloudFlare).",
+    
+    "Integration":"Интэграцыя",
+    "About integration!": "Про інтеграцію!",
+    "Add JavaScript in your HTML-page": "Добавьте JavaScript к вашей HTML-странице",
+    "Add a button in your HTML-page":"Добавьте кнопку на вашу HTML-страницу",
+    "Set up a standard bootstrap modal window":"Настройте стандартное bootstrap модальное окно",
+    "integration example":"пример интерграции",
+    "Visit this":"Посетите этот",
+    "to see how it works!":"чтобы посмотреть, как это работает!",
+	
+    "Support": "Поддержка",
+    "If you have any ideas / problems / questions, you can report it": "Если у вас есть какие-либо идеи / проблемы / вопросы, вы можете о них сообщить",
+    "On GitHub in Issues": "На GitHub в Issues",
+    "On e-mail": "По e-mail",
+    
     "To continue, you need to login!": "Каб працягнуць, вам неабходна увайсцi!",
-    "Please enter your login and master password": "Калi ласка, увядзiце ваш логiн и майстар-пароль",
+    "Please enter your login and master password":"Калi ласка, увядзiце ваш логiн и майстар-пароль",
     "Username": "Iмя карыстальнiка",
-    "Master": "Пароль",
-    "Please enter only your private posting key": "Калi ласка, увядзiце толькi ваш прыватны посцiнг-ключ",
-    "OR": "Або",
-    "Private": "Прыватны посцiнг-ключ",
+    "Master":"Пароль",
+    "Please enter only your private posting key":"Калi ласка, увядзiце толькi ваш прыватны посцiнг-ключ",
+    "OR":"АБО",
+    "Private":"Прыватны посцiнг-ключ",
     "Keep me logged":"Оставлять меня в сети",
-    "Cancel": "Адмена",
-    "Sign Up": "Зарэгістравацца",
-    "Header": "Загаловак",
-    "Type your text here": "Увядзiце ваш тэкст сюды",
+    "Cancel":"Адмена",
+    "Sign Up":"Зарэгістравацца",
+    
+    "Header":"Загаловак",
+    "Type your text here":"Увядзiце ваш тэкст сюды",
+    
     "IDEAS": "IДЭI",
     "PROBLEMS": "ПРАБЛЕМЫ",
     "QUESTIONS": "ПЫТАННI",
     "THANKS": "ПАДЗЯКI",
+    "ALL": "ВСЕ",
+    
     "idea": "iдэя",
-    "question": "питання",
+    "question": "пытанне",
     "problem": "проблема",
     "thank": "подяка",
+    
     "Submit": "Подати",
-    "About integration!":"Про інтеграцію!",
+    
     "Cool!": "Круто!",
-    "ALL": "ВСЕ",
     "There's no feedbacks in this category yet. You can be the first" : "У цій категорії ще немає зворотних зв'язків. Ви можете бути першим"
 }
