@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"Obtenir mes commentaires",
+	"Add feedback":"Ajouter un commentaire",
+    "About":"A propos du service",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback est un microservice sur Golos, qui vous encourage à recueillir tous les messages avec des idées, des suggestions et des problèmes de vos clients ou utilisateurs. Cette plate-forme est un client léger qui fonctionne sans backend (uniquement frontale et bloquante) depuis Github Pages (via CloudFlare).",
+    
+    "Integration":"Intégration",
+    "About integration!": "Sur l'intégration!",
+    "Add JavaScript in your HTML-page": "Ajouter du JavaScript à votre page HTML",
+    "Add a button in your HTML-page":"Ajouter un bouton à votre page HTML",
+    "Set up a standard bootstrap modal window":"Configurer la fenêtre modale bootstrap par défaut",
+    "integration example":"exemple d'intégration",
+    "Visit this":"Visitez ce",
+    "to see how it works!":"pour voir comment ça marche!",
+	
+    "Support": "Soutien",
+    "If you have any ideas / problems / questions, you can report it": "Si vous avez des idées / problèmes / questions, vous pouvez les signaler",
+    "On GitHub in Issues": "Sur les questions de GitHub",
+    "On e-mail": "Par e-mail",
+    
+    "To continue, you need to login!": "Pour continuer, vous devez vous connecter!",
+    "Please enter your login and master password":"Veuillez entrer votre identifiant et votre mot de passe principal",
+    "Username": "Nom d'utilisateur",
+    "Master":"Password",
+    "Please enter only your private posting key":"Veuillez entrer uniquement votre clé de comptabilisation privée",
+    "OR":"OU",
+    "Private":"Clé de publication privée",
+    "Keep me logged":"Laissez-moi en ligne",
+    "Cancel":"Annuler",
+    "Sign Up":"Inscription",
+    
+    "Header":"En-tête",
+    "Type your text here":"Entrez votre texte ici",
+    
+    "IDEAS": "IDÉES",
+    "PROBLEMS": "PROBLÉMES",
+    "QUESTIONS": "QUESTIONS",
+    "THANKS": "REMERCIEMENTS",
+    "ALL": "TOUS",
+    
+    "idea": "idée",
+    "question": "problème",
+    "problem": "un problème",
+    "thank": "gratitude",
+    
+    "Submit": "Confirmer",
+    
+    "Cool!": "Cool!",
+    "There's no feedbacks in this category yet. You can be the first" : "Il n'y a pas de commentaires pour cette catégorie pour le moment. Vous pouvez être le premier"
+}

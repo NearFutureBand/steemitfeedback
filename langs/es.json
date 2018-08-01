@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"Obtener mis comentarios",
+	"Add feedback":"Agregar comentarios",
+    "About":"Sobre el servicio",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback es un microservicio en Golos, que lo alienta a recopilar todos los mensajes con ideas, sugerencias y problemas de sus clientes o usuarios. Esta plataforma es un cliente ligero que funciona sin back-end (solo front-end y bloqueo) directamente desde Github Pages (a través de CloudFlare).",
+    
+    "Integration":"Integración",
+    "About integration!": "En la integración!",
+    "Add JavaScript in your HTML-page": "Agrega JavaScript a tu página HTML",
+    "Add a button in your HTML-page":"Agregue un botón a su página HTML",
+    "Set up a standard bootstrap modal window":"Configurar la ventana modal de arranque predeterminada",
+    "integration example":"ejemplo de integración",
+    "Visit this":"Visita esto",
+    "to see how it works!":"para ver cómo funciona!",
+	
+    "Support": "Apoyo",
+    "If you have any ideas / problems / questions, you can report it": "Si tiene alguna idea / problema / pregunta, puede informarlo",
+    "On GitHub in Issues": "En los problemas de GitHub",
+    "On e-mail": "Por correo electrónico",
+    
+    "To continue, you need to login!": "Para continuar, debes iniciar sesión.",
+    "Please enter your login and master password":"Por favor ingrese su nombre de usuario y contraseña maestra",
+    "Username": "Nombre de usuario",
+    "Master":"Contraseña",
+    "Please enter only your private posting key":"Por favor ingrese solo su clave de publicación privada",
+    "OR":"O",
+    "Private":"Clave de publicación privada",
+    "Keep me logged":"Déjame en línea",
+    "Cancel":"Cancelar",
+    "Sign Up":"Registrarse",
+    
+    "Header":"Encabezado",
+    "Type your text here":"Ingrese su texto aquí",
+    
+    "IDEAS": "IDEAS",
+    "PROBLEMS": "PROBLEMAS",
+    "QUESTIONS": "PREGUNTAS",
+    "THANKS": "AGRADECIMIENTOS",
+    "ALL": "TODO",
+    
+    "idea": "idea",
+    "question": "problema",
+    "problem": "un problema",
+    "thank": "gratitud",
+    
+    "Submit": "Confirmar",
+    
+    "Cool!": "¡Genial!",
+    "There's no feedbacks in this category yet. You can be the first" : "No hay comentarios para esta categoría todavía. Tú puedes ser el primero"
+}
