@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"私のフィードバックを得る",
+	"Add feedback":"フィードバックを追加",
+    "About":"サービスについて",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedbackは、お客様やユーザーからのアイデア、提案、問題を含むすべてのメッセージを収集することを奨励するGolosのマイクロサービスです。 このプラットフォームは、Github Pages（CloudFlare経由）からバックエンド（フロントエンドとブロックのみ）なしで動作するシンクライアントです。",
+    
+    "Integration":"統合",
+    "About integration!": "統合について！",
+    "Add JavaScript in your HTML-page": "HTMLページにJavaScriptを追加する",
+    "Add a button in your HTML-page":"HTMLページにボタンを追加する",
+    "Set up a standard bootstrap modal window":"デフォルトのブートストラップモーダルウィンドウを設定する",
+    "integration example":"統合の例",
+    "Visit this":"これを訪問する",
+    "to see how it works!":"それがどのように動作するか見るために！",
+	
+    "Support": "サポート",
+    "If you have any ideas / problems / questions, you can report it": "アイディア/問題/疑問がある場合は、それらを報告することができます",
+    "On GitHub in Issues": "GitHubの問題について",
+    "On e-mail": "電子メールで",
+    
+    "To continue, you need to login!": "続行するには、サインインする必要があります！",
+    "Please enter your login and master password":"あなたのログインとマスターパスワードを入力してください",
+    "Username": "ユーザー名",
+    "Master":"パスワード",
+    "Please enter only your private posting key":"プライベート投稿キーのみを入力してください",
+    "OR":"または",
+    "Private":"プライベート投稿キー",
+    "Keep me logged":"私をオンラインにしておいてください",
+    "Cancel":"キャンセル",
+    "Sign Up":"サインアップ",
+    
+    "Header":"ヘッダー",
+    "Type your text here":"ここにテキストを入力してください",
+    
+    "IDEAS": "アイデア",
+    "PROBLEMS": "問題",
+    "QUESTIONS": "質問",
+    "THANKS": "謝辞",
+    "ALL": "すべて",
+    
+    "idea": "アイデア",
+    "question": "問題",
+    "problem": "問題",
+    "thank": "感謝",
+    
+    "Submit": "確認",
+    
+    "Cool!": "クール！",
+    "There's no feedbacks in this category yet. You can be the first" : "このカテゴリのレビューはまだありません。 あなたは最初になることができます"
+}

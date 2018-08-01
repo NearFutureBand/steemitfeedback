@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"得到我的反馈",
+	"Add feedback":"添加反馈",
+    "About":"关于服务",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback是Golos的微服务，它鼓励您收集来自客户或用户的想法，建议和问题的所有消息。 这个平台是一个瘦客户端，可以从Github Pages（通过CloudFlare）直接使用后端（只有前端和阻塞）。",
+    
+    "Integration":"积分",
+    "About integration!": "关于整合！",
+    "Add JavaScript in your HTML-page": "将JavaScript添加到您的HTML页面",
+    "Add a button in your HTML-page":"在HTML页面添加一个按钮",
+    "Set up a standard bootstrap modal window":"配置默认引导程序模式窗口",
+    "integration example":"整合的例子",
+    "Visit this":"访问这个",
+    "to see how it works!":"看看它是如何工作的!",
+	
+    "Support": "支持",
+    "If you have any ideas / problems / questions, you can report it": "如果您有任何想法/问题/疑问，可以报告",
+    "On GitHub in Issues": "关于GitHub的问题",
+    "On e-mail": "通过电子邮件",
+    
+    "To continue, you need to login!": "要继续，您需要登录！",
+    "Please enter your login and master password":"请输入您的登录名和主密码",
+    "Username": "用户名",
+    "Master":"密码",
+    "Please enter only your private posting key":"请只输入您的私人发布密钥",
+    "OR":"或",
+    "Private":"私人发布密钥",
+    "Keep me logged":"让我在线",
+    "Cancel":"消除",
+    "Sign Up":"注册",
+    
+    "Header":"头",
+    "Type your text here":"在此输入您的文字",
+    
+    "IDEAS": "主意",
+    "PROBLEMS": "问题",
+    "QUESTIONS": "问题",
+    "THANKS": "谢谢",
+    "ALL": "所有的",
+    
+    "idea": "主意",
+    "question": "问题",
+    "problem": "一个问题",
+    "thank": "谢谢",
+    
+    "Submit": "确认",
+    
+    "Cool!": "太酷了！",
+    "There's no feedbacks in this category yet. You can be the first" : "目前还没有对此类别的评论。 你可以成为第一个"
+}
