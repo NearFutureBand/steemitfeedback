@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"Uzyskaj moją opinię",
+	"Add feedback":"Dodaj opinię",
+    "About":"O usłudze",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback to mikroserwis na Golos, który zachęca do zbierania wszystkich wiadomości z pomysłami, sugestiami i problemami od klientów lub użytkowników. Ta platforma jest cienkim klientem, który działa bez backendu (tylko front-end i blokowanie) bezpośrednio z Github Pages (przez CloudFlare).",
+    
+    "Integration":"Integracja",
+    "About integration!": "Na integracji!",
+    "Add JavaScript in your HTML-page": "Dodaj JavaScript do swojej strony HTML",
+    "Add a button in your HTML-page":"Dodaj przycisk do swojej strony HTML",
+    "Set up a standard bootstrap modal window":"Skonfiguruj domyślne okno modemu ładowania początkowego",
+    "integration example":"przykład integracji",
+    "Visit this":"Odwiedź to",
+    "to see how it works!":"aby zobaczyć, jak to działa!",
+	
+    "Support": "Wsparcie",
+    "If you have any ideas / problems / questions, you can report it": "Jeśli masz jakieś pomysły / problemy / pytania, możesz je zgłosić",
+    "On GitHub in Issues": "W kwestiach GitHub",
+    "On e-mail": "Przez e-mail",
+    
+    "To continue, you need to login!": "Aby kontynuować, musisz się zalogować!",
+    "Please enter your login and master password":"Wprowadź login i hasło główne",
+    "Username": "Nazwa użytkownika",
+    "Master":"Hasło",
+    "Please enter only your private posting key":"Wprowadź tylko swój prywatny klucz księgowania",
+    "OR":"LUB",
+    "Private":"Prywatny klucz pocztowy",
+    "Keep me logged":"Zostaw mnie online",
+    "Cancel":"Anuluj",
+    "Sign Up":"Zarejestruj się",
+    
+    "Header":"Nagłówek",
+    "Type your text here":"Tutaj wpisz swój tekst",
+    
+    "IDEAS": "POMYSŁY",
+    "PROBLEMS": "PROBLEMY",
+    "QUESTIONS": "PYTANIA",
+    "THANKS": "POTWIERDZENIE",
+    "ALL": "WSZYSTKIE",
+    
+    "idea": "pomysł",
+    "question": "kwestia",
+    "problem": "problem",
+    "thank": "wdzięczność",
+    
+    "Submit": "Подтвердить",
+    
+    "Cool!": "Fajnie!",
+    "There's no feedbacks in this category yet. You can be the first" : "Nie ma jeszcze recenzji dla tej kategorii. Możesz być pierwszy"
+}

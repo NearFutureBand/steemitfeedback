@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"의견 보내기",
+	"Add feedback":"피드백 추가",
+    "About":"서비스 정보",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback은 Golos의 마이크로 서비스로 고객이나 사용자의 아이디어, 제안 및 문제가있는 모든 메시지를 수집하도록 권장합니다. 이 플랫폼은 Github Pages (CloudFlare를 통해)에서 백엔드없이 프론트 엔드 및 블로킹없이 바로 작동하는 씬 클라이언트입니다.",
+    
+    "Integration":"통합",
+    "About integration!": "통합시!",
+    "Add JavaScript in your HTML-page": "HTML 페이지에 자바 스크립트 추가",
+    "Add a button in your HTML-page":"HTML 페이지에 버튼 추가하기",
+    "Set up a standard bootstrap modal window":"기본 부트 스트랩 모달 창 구성",
+    "integration example":"통합 사례",
+    "Visit this":"방문",
+    "to see how it works!":"어떻게 작동하는지 확인하십시오!",
+	
+    "Support": "지원",
+    "If you have any ideas / problems / questions, you can report it": "아이디어 / 문제 / 질문이 있으면이를보고 할 수 있습니다.",
+    "On GitHub in Issues": "GitHub의 문제점",
+    "On e-mail": "이메일로",
+    
+    "To continue, you need to login!": "계속하려면 로그인해야합니다.",
+    "Please enter your login and master password":"로그인 및 마스터 비밀번호를 입력하십시오.",
+    "Username": "사용자 이름",
+    "Master":"비밀번호",
+    "Please enter only your private posting key":"비공개 게시 키만 입력하십시오.",
+    "OR":"또는",
+    "Private":"비공개 게시 키",
+    "Keep me logged":"온라인에 남겨주세요.",
+    "Cancel":"취소",
+    "Sign Up":"가입하기",
+    
+    "Header":"헤더",
+    "Type your text here":"여기에 텍스트를 입력하십시오.",
+    
+    "IDEAS": "아이디어",
+    "PROBLEMS": "문제",
+    "QUESTIONS": "질문",
+    "THANKS": "감사의 말",
+    "ALL": "모두",
+    
+    "idea": "아이디어",
+    "question": "문제",
+    "problem": "문제",
+    "thank": "감사",
+    
+    "Submit": "확인",
+    
+    "Cool!": "멋지다!",
+    "There's no feedbacks in this category yet. You can be the first" : "이 카테고리에 대한 평가가 아직 없습니다. 당신은 첫 번째가 될 수 있습니다."
+}

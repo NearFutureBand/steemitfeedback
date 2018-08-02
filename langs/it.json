@@ -1,0 +1,50 @@
+{
+	"Get my feedbacks":"Ricevi il mio feedback",
+	"Add feedback":"Aggiungi feedback",
+    "About":"Informazioni sul servizio",
+    "GolosFeedback - is a microservice on the blockchain Golos that allows you to manage все the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).":"GolosFeedback è un microservizio su Golos, che ti incoraggia a raccogliere tutti i messaggi con idee, suggerimenti e problemi dai tuoi clienti o utenti. Questa piattaforma è un thin client che funziona senza un back-end (solo front-end e blocking) direttamente da Github Pages (tramite CloudFlare).",
+    
+    "Integration":"integrazione",
+    "About integration!": "Sull'integrazione!",
+    "Add JavaScript in your HTML-page": "Aggiungi JavaScript alla tua pagina HTML",
+    "Add a button in your HTML-page":"Aggiungi un pulsante alla tua pagina HTML",
+    "Set up a standard bootstrap modal window":"Configura la finestra modale bootstrap predefinita",
+    "integration example":"esempio di integrazione",
+    "Visit this":"Visita questo",
+    "to see how it works!":"per vedere come funziona!",
+	
+    "Support": "Supporto",
+    "If you have any ideas / problems / questions, you can report it": "Se hai idee / problemi / domande, puoi segnalarli",
+    "On GitHub in Issues": "Su GitHub's Issues",
+    "On e-mail": "Per e-mail",
+    
+    "To continue, you need to login!": "Per continuare, è necessario accedere!",
+    "Please enter your login and master password":"Inserisci il tuo login e la password principale",
+    "Username": "Nome utente",
+    "Master":"Password",
+    "Please enter only your private posting key":"Inserisci solo la tua chiave di registrazione privata",
+    "OR":"OR",
+    "Private":"Chiave di registrazione privata",
+    "Keep me logged":"Lasciami in linea",
+    "Cancel":"Cancellazione",
+    "Sign Up":"Iscriviti",
+    
+    "Header":"Testata",
+    "Type your text here":"Inserisci il tuo testo qui",
+    
+    "IDEAS": "IDEE",
+    "PROBLEMS": "PROBLEMI",
+    "QUESTIONS": "PROBLEMI",
+    "THANKS": "GRAZIE",
+    "ALL": "TUTTI",
+    
+    "idea": "idea",
+    "question": "la questione",
+    "problem": "un problema",
+    "thank": "grazie",
+    
+    "Submit": "Confermare",
+    
+    "Cool!": "Cool!",
+    "There's no feedbacks in this category yet. You can be the first" : "Non ci sono ancora recensioni per questa categoria. Puoi essere il primo"
+}
