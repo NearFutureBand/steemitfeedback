@@ -46,7 +46,7 @@ document.getElementById('aboutGolosFeedbackCallBtn').addEventListener('click', (
     }, false);
 document.getElementById('integration').addEventListener('click', function(e) {
         swal({
-            title: 'About integration!',
+            title: document.querySelectorAll('.translate-phrases li')[16].innerHTML,
             html: document.getElementById('integration-html').innerHTML,
             type: 'info',
             buttonsStyling: false,
