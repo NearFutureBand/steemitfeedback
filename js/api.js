@@ -15,9 +15,12 @@ var labels = [];
 //GENERAL
 
 var initGolosFeedback = function() {
-    
+
     //setting up container-row-col structure
     initBootstrapStructure();
+    
+    
+    initTranslationText();
     
     //initialization of navbar with tabs for sorting feedbacks
     initTabs();
@@ -39,6 +42,14 @@ document.addEventListener('DOMContentLoaded', initGolosFeedback);
 var initBootstrapStructure = function() {
     let wrapper = document.querySelector('.' + prefix + 'wrapper');
     wrapper.classList.add('container');
+}
+
+var initTranslationText = function() {
+    let ul = document.createElement('ul');
+    ul.className = "translate-phrases";
+    ul.style.display = "none";
+    ul.innerHTML = "<li>Title</li>0<li>Description</li>1<li>Idea</li>2<li>Question</li>3<li>Problem</li>4<li>Thank</li>5<li>Submit</li>6<li>Cancel</li>7<li>There's no feedbacks in this category yet. You can be the first</li>8<li>Type your comment here</li>9<li>all</li>10<li>ideas</li>11<li>questions</li>12<li>problems</li>13<li>thanks</li>14<li>Submit</li>15<li>About Integration!</li>16";
+    document.querySelector('.'+prefix+'wrapper').appendChild(ul);
 }
 
 
