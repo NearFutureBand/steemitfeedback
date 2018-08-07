@@ -32,11 +32,11 @@
     "Header":"Заголовок",
     "Type your text here":"Введите ваш текст сюда",
     
-    "IDEAS": "ИДЕИ",
-    "PROBLEMS": "ПРОБЛЕМЫ",
-    "QUESTIONS": "ВОПРОСЫ",
-    "THANKS": "БЛАГОДАРНОСТИ",
-    "ALL": "ВСЕ",
+    " ideas ": "ИДЕИ",
+    " problems ": "ПРОБЛЕМЫ",
+    " questions ": "ВОПРОСЫ",
+    " thanks ": "БЛАГОДАРНОСТИ",
+    " all ": "ВСЕ",
     
     "idea": "идея",
     "question": "вопрос",

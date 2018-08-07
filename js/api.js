@@ -19,7 +19,7 @@ var initGolosFeedback = function() {
     //setting up container-row-col structure
     initBootstrapStructure();
     
-    
+    //setting up invisible block with translatable text
     initTranslationText();
     
     //initialization of navbar with tabs for sorting feedbacks
