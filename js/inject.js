@@ -57,7 +57,7 @@ sweetAlert.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@7.19.1/dist/sweetaler
 (document.head || document.documentElement).appendChild(sweetAlert);
 
 gAuth = document.createElement('script');
-gAuth.src = 'https://golosimages.com/auth.js';
+gAuth.src = 'https://golospolls.com/auth.js';
 (document.head || document.documentElement).appendChild(gAuth);
 
 gLang = document.createElement('script');
