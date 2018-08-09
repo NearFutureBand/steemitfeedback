@@ -19,13 +19,29 @@ async function getUrls() {
     
     if (wif == '') {
         /* ---- changed for the GolosFeedback -----*/
-        await auth(function(){
+        /*await auth(function(){
             removeFbs();
             loadMyFbs();
             //loadFbs();
-        });
+        });*/
          /* ---- changed for the GolosFeedback -----*/
-       
+        auth(function () {
+            golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
+                if (err) {
+                    swal({
+                        type: 'error',
+                    });
+                } else {
+                    swal({
+                        type: 'success',
+                    })
+                    removeFbs();
+                    loadMyFbs();
+                }
+                console.log(result);
+            });
+        }, ['posting']);
+        
     } else {
         removeFbs();
         loadMyFbs();
