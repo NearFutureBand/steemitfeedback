@@ -70,11 +70,48 @@ gApi.src = 'https://golosfeedback.com/js/api.js';
 
 window.addEventListener('load', function() { // init script after page loaded
     
-        golos.config.set('websocket', 'wss://ws.testnet.golos.io');
-        golos.config.set('address_prefix', 'GLS');
-        golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
-        
-	   gFeedbackContainer = document.createElement('div');
+    golos.config.set('websocket', 'wss://ws.testnet.golos.io');
+    golos.config.set('address_prefix', 'GLS');
+    golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+    
+    gFeedbackContainer = document.createElement('div');
+    gFeedbackContainer.className = 'modal fade modal-lg-golos-feedback';
+    gFeedbackContainer.setAttribute('id','golos-feedback-container');
+    gFeedbackContainer.setAttribute('tabindex','-1');
+    gFeedbackContainer.setAttribute('role','dialog');
+    gFeedbackContainer.setAttribute('aria-labelledby','GolosFeedback');
+    gFeedbackContainer.setAttribute('aria-hidden','true');
+    gFeedbackContainer.innerHTML = '<div class="modal-dialog modal-lg .modal-dialog-centered"><div class="modal-content golos-feedback-container"></div></div>';
+    document.querySelector('body').appendChild(gFeedbackContainer);
+    
+    var modalStructure = document.getElementById('golos-feedback-container');
+    var gFeedbackModalWindow = new Modal(modalStructure, {
+        content: '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>',
+        keyboard: false // we don't want to dismiss Modal on pressing Esc key
+    });
+    
+    
+    let button = document.createElement('button');
+    button.className = 'btn btn-primary modal-golos-feedback-toggler';
+    //<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-lg-golos-feedback">Open GolosFeedback</button>
+    button.setAttribute('type','button');
+    button.setAttribute('data-toggle','modal');
+    button.setAttribute('data-target','#golos-feedback-container');
+    button.innerHTML = ' Open Golos Feedback';
+    
+    document.querySelector('body').appendChild(button);
+    
+    document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function(){
+        gFeedbackModalWindow.toggle();
+    });    
+    initGolosFeedback();
+    
+    //add event for btn add feedback
+    document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
+        openAddFbForm();
+    });
+    
+	   /*gFeedbackContainer = document.createElement('div');
         
 	   gFeedbackContainer.className = 'card';
 	   gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
@@ -83,15 +120,6 @@ window.addEventListener('load', function() { // init script after page loaded
 	   
         initGolosFeedback();
         
-        //add event for btn add feedback
-        document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
-            openAddFbForm();
-        });
-    
-    
-    
-    
-    
-    
-    /*Additional methods & overrides*/
+        
+        */
 });
