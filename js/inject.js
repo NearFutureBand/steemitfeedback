@@ -87,13 +87,12 @@ window.addEventListener('load', function() { // init script after page loaded
     var modalStructure = document.getElementById('golos-feedback-container');
     var gFeedbackModalWindow = new Modal(modalStructure, {
         content: '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>',
-        keyboard: false // we don't want to dismiss Modal on pressing Esc key
+        keyboard: false
     });
     
     
     let button = document.createElement('button');
     button.className = 'btn btn-primary modal-golos-feedback-toggler';
-    //<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-lg-golos-feedback">Open GolosFeedback</button>
     button.setAttribute('type','button');
     button.setAttribute('data-toggle','modal');
     button.setAttribute('data-target','#golos-feedback-container');
@@ -104,6 +103,8 @@ window.addEventListener('load', function() { // init script after page loaded
     document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function(){
         gFeedbackModalWindow.toggle();
     });    
+    
+    
     initGolosFeedback();
     
     //add event for btn add feedback
