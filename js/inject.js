@@ -98,6 +98,32 @@ window.addEventListener('load', function() { // init script after page loaded
     button.setAttribute('data-target','#golos-feedback-container');
     button.innerHTML = ' Open Golos Feedback';
     
+    
+    if (window.gFeedbackOptions === undefined) {
+        createDefaultGFeedbackOptions();
+        console.log('Не определено');
+    } else {
+        createDefaultGFeedbackOptions();
+        
+    }
+    
+    /*Applying parameters*/
+    
+    if(gFeedbackOptions.corner == 'right') {
+        button.style.right = '3%';
+    } else if (gFeedbackOptions.corner == 'left') {
+        button.style.left = '3%';
+    }
+    
+    if(gFeedbackOptions.buttonShadow) {
+        button.style.boxShadow = '2px 2px 2px rgba(0,0,0,.5)';
+    }
+    
+    button.style.color = gFeedbackOptions.buttonTextColor;
+    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;
+    
+    /**/
+    
     document.querySelector('body').appendChild(button);
     
     document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function(){
@@ -111,16 +137,18 @@ window.addEventListener('load', function() { // init script after page loaded
     document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
         openAddFbForm();
     });
-    
-	   /*gFeedbackContainer = document.createElement('div');
-        
-	   gFeedbackContainer.className = 'card';
-	   gFeedbackContainer.innerHTML = '<div class="card-header"><img src="https://golosfeedback.com/graphics/logo.svg" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
-        
-        document.querySelector('.golos-feedback-container').appendChild(gFeedbackContainer);
-	   
-        initGolosFeedback();
-        
-        
-        */
 });
+
+var createDefaultGFeedbackOptions = function(
+    corner_ = 'right', 
+    buttonTextColor_ = '#fff',
+    buttonBackgroundColor_ = '#0079a1',
+    buttonShadow_ = true
+) {
+    var gFeedbackOptions = {
+        corner: corner_,
+        buttonTextColor: buttonTextColor_,
+        buttonBackgroundColor: buttonBackgroundColor_,
+        buttonShadow: buttonShadow_
+    };
+}
