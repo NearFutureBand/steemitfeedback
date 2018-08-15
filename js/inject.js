@@ -70,10 +70,12 @@ gApi.src = 'https://golosfeedback.com/js/api.js';
 
 window.addEventListener('load', function() { // init script after page loaded
     
+    /*setting testnet parameters*/
     golos.config.set('websocket', 'wss://ws.testnet.golos.io');
     golos.config.set('address_prefix', 'GLS');
     golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
     
+    /*creating of the html structure for the injecting GolosFeedback*/
     gFeedbackContainer = document.createElement('div');
     gFeedbackContainer.className = 'modal fade modal-lg-golos-feedback';
     gFeedbackContainer.setAttribute('id','golos-feedback-container');
@@ -90,7 +92,7 @@ window.addEventListener('load', function() { // init script after page loaded
         keyboard: false
     });
     
-    
+    /*creating button-toggler*/
     let button = document.createElement('button');
     button.className = 'btn btn-primary modal-golos-feedback-toggler';
     button.setAttribute('type','button');
@@ -98,6 +100,7 @@ window.addEventListener('load', function() { // init script after page loaded
     button.setAttribute('data-target','#golos-feedback-container');
     button.innerHTML = ' Open Golos Feedback';
     
+    /*function*/
     var createDefaultGFeedbackOptions = function(
         corner_ = 'right', 
         buttonTextColor_ = '#fff',
@@ -112,10 +115,9 @@ window.addEventListener('load', function() { // init script after page loaded
         };
     }
     
-    
+    /*definig undefined variable with customizable options*/
     if (window.gFeedbackOptions === undefined) {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
-        console.log('Не определено');
     } else {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
         
@@ -136,15 +138,17 @@ window.addEventListener('load', function() { // init script after page loaded
     button.style.color = gFeedbackOptions.buttonTextColor;
     button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;
     
-    /**/
+    /*the end of applying parameters*/
     
+    /*placing the button on its place*/
     document.querySelector('body').appendChild(button);
     
+    /*controller for the button*/
     document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function(){
         gFeedbackModalWindow.toggle();
     });    
     
-    
+    /*launch the main building algorythm of injecting GolosFeedback*/
     initGolosFeedback();
     
     //add event for btn add feedback
