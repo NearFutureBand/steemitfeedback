@@ -104,7 +104,7 @@ window.addEventListener('load', function() { // init script after page loaded
         buttonBackgroundColor_ = '#0079a1',
         buttonShadow_ = true
     ) {
-        var gFeedbackOptions = {
+        return gFeedbackOptions = {
             corner: corner_,
             buttonTextColor: buttonTextColor_,
             buttonBackgroundColor: buttonBackgroundColor_,
@@ -114,10 +114,10 @@ window.addEventListener('load', function() { // init script after page loaded
     
     
     if (window.gFeedbackOptions === undefined) {
-        createDefaultGFeedbackOptions();
+        var gFeedbackOptions = createDefaultGFeedbackOptions();
         console.log('Не определено');
     } else {
-        createDefaultGFeedbackOptions();
+        var gFeedbackOptions = createDefaultGFeedbackOptions();
         
     }
     
