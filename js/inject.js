@@ -98,6 +98,20 @@ window.addEventListener('load', function() { // init script after page loaded
     button.setAttribute('data-target','#golos-feedback-container');
     button.innerHTML = ' Open Golos Feedback';
     
+    var createDefaultGFeedbackOptions = function(
+        corner_ = 'right', 
+        buttonTextColor_ = '#fff',
+        buttonBackgroundColor_ = '#0079a1',
+        buttonShadow_ = true
+    ) {
+        var gFeedbackOptions = {
+            corner: corner_,
+            buttonTextColor: buttonTextColor_,
+            buttonBackgroundColor: buttonBackgroundColor_,
+            buttonShadow: buttonShadow_
+        };
+    }
+    
     
     if (window.gFeedbackOptions === undefined) {
         createDefaultGFeedbackOptions();
@@ -138,17 +152,3 @@ window.addEventListener('load', function() { // init script after page loaded
         openAddFbForm();
     });
 });
-
-var createDefaultGFeedbackOptions = function(
-    corner_ = 'right', 
-    buttonTextColor_ = '#fff',
-    buttonBackgroundColor_ = '#0079a1',
-    buttonShadow_ = true
-) {
-    var gFeedbackOptions = {
-        corner: corner_,
-        buttonTextColor: buttonTextColor_,
-        buttonBackgroundColor: buttonBackgroundColor_,
-        buttonShadow: buttonShadow_
-    };
-}
