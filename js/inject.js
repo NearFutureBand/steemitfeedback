@@ -1,7 +1,6 @@
 var ckeditor, moment, bootstrapMin, styleInject, golosJs, sweetAlert, gAuth, gFeedbackApi, gFeedbackWidth, gFeedbackContainer , bootstrapNativeGithub, bootstrapNativeCloudflare, i18next, i18nextBackend, i18nextBrowserLD;
 
 
-
 ckeditor = document.createElement('script');
 ckeditor.src = 'https://cdn.ckeditor.com/ckeditor5/10.0.0/classic/ckeditor.js';
 (document.head || document.documentElement).appendChild(ckeditor);
@@ -151,8 +150,14 @@ window.addEventListener('load', function() { // init script after page loaded
     /*launch the main building algorythm of injecting GolosFeedback*/
     initGolosFeedback();
     
-    //add event for btn add feedback
+    // event for btn add feedback
     document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
         openAddFbForm();
+    });
+    
+    // event for getMyFeedbacks button
+    document.getElementById('golos-urls').addEventListener('click', function() {
+        gFeedbackModalWindow.hide();
+        modalAuth.show(); 
     });
 });

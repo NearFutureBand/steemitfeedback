@@ -33,9 +33,9 @@ var initGolosFeedback = function() {
     loadFbs();
     
     location.hash = 'all';
-    
 }
-document.addEventListener('DOMContentLoaded', initGolosFeedback);
+//document.addEventListener('DOMContentLoaded', initGolosFeedback);
+
 
 
 //START---------------------------------------------------------------------------------
