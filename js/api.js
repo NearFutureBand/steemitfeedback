@@ -144,7 +144,6 @@ var addEventForFbDone = function() {
         .addEventListener('submit', function(e) {
             e.preventDefault();
                     
-            //auth( sendAddFbForm, ['posting']);
             auth(function () {
                 golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
                     if (err) {
@@ -284,15 +283,6 @@ var loadFbs = function() {
         }
     });
     
-    //загрузка тестового поста через permlink
-    /*golos.api.getContent('test2', 'post-fb-1523961173281', function(err, result) {
-        //console.log(err, result);
-        if ( ! err) {
-            console.log(result);
-            createFb(formData(result));
-        }
-        else console.error(err);
-    });*/
 }
 var formData = function(object) {
     let data = [];
@@ -415,10 +405,6 @@ var createEmptyFb = function() {
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
 }
 var loadMyFbs = function() {
-    /**
-    * getDiscussionsByBlog() receiving posts by author and tag
-    * @param {Object} query - search object that includes the author, tag, limit
-    */
     var query = {
         select_authors: [username],
         select_tags: ['fb', domain ],
@@ -620,7 +606,6 @@ function createCommentForm(fbId) {
     document.getElementById(fbId).appendChild(commentForm);
     
     
-    
     ClassicEditor
         .create( document.querySelector( '#commentBody' ), {
                 removePlugins: [ 'ImageUpload' ],
@@ -646,7 +631,6 @@ function createCommentForm(fbId) {
 var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
         e.preventDefault();
-        //auth( sendAddComForm.bind(this, fbId), ['posting']);
         auth(function () {
             golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
                 if (err) {
@@ -677,7 +661,6 @@ var sendAddComForm = function(fbId) {
         //console.log(err, result);
         if (!err) {
             console.log('comment', result);
-            //getTxtareaCom(fbId).value = '';
             ckeditor.setData('');
             removeComments(fbId);
             loadComments(fbId);
@@ -694,8 +677,6 @@ var getTxtareaCom = function(fbId) {
 var getBlockFormAddComment = function(fbId) {
     return document.getElementById(fbId).children[ document.getElementById(fbId).childElementCount-1 ];
 }
-
-
 
 
 //VOTING----------------------------------------------------------------------------------
@@ -829,6 +810,7 @@ var updateVoteState = function(fbId, comId, vote) {
     } else {
         document.getElementById(fbId).setAttribute('data-like', res);
     }
+    //TODO что это за строчки?
     //setLblVote(fbId,comId,state,res);
     //checkVoteColor(fbId,comId);
     return res*10000;
@@ -957,7 +939,6 @@ var addImageToTxtarea = function(imageObjects) {
     imageObjects.forEach(function(item) {
         
         text += '<br> <a href="' + item.path + item.hash + '">' + item.path + item.hash + '</a><br>';
-        //text += '<img src="'+item.path+item.hash+'">';
         console.log(text);
     });
     ckeditor.setData(text);

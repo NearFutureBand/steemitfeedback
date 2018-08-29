@@ -119,7 +119,6 @@ window.addEventListener('load', function() { // init script after page loaded
         var gFeedbackOptions = createDefaultGFeedbackOptions();
     } else {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
-        
     }
     
     /*Applying parameters*/
@@ -158,6 +157,6 @@ window.addEventListener('load', function() { // init script after page loaded
     // event for getMyFeedbacks button
     document.getElementById('golos-urls').addEventListener('click', function() {
         gFeedbackModalWindow.hide();
-        modalAuth.show(); 
+        modalAuth.show();
     });
 });

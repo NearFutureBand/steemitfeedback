@@ -13,18 +13,23 @@ document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', fu
 document.onreadystatechange = function () { 
 	console.log('<f> doc ready');
 	initVFX();
+    document.getElementById('integration').addEventListener('click', function(e) {
+        swal({
+            title: document.querySelectorAll('.translate-phrases li')[16].innerHTML,
+            html: document.getElementById('integration-html').innerHTML,
+            type: 'info',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-success btn-lg',
+            confirmButtonText: '<span class="icon-checkmark"></span> Cool!',
+            position: 'top',
+            showCloseButton: true
+        })
+    });
 }
 
 async function getUrls() {
     
     if (wif == '') {
-        /* ---- changed for the GolosFeedback -----*/
-        /*await auth(function(){
-            removeFbs();
-            loadMyFbs();
-            //loadFbs();
-        });*/
-         /* ---- changed for the GolosFeedback -----*/
         auth(function () {
             golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
                 if (err) {
@@ -60,18 +65,7 @@ document.getElementById('aboutGolosFeedbackCallBtn').addEventListener('click', (
             showCloseButton: true
         });
     }, false);
-document.getElementById('integration').addEventListener('click', function(e) {
-        swal({
-            title: document.querySelectorAll('.translate-phrases li')[16].innerHTML,
-            html: document.getElementById('integration-html').innerHTML,
-            type: 'info',
-            buttonsStyling: false,
-            confirmButtonClass: 'btn btn-success btn-lg',
-            confirmButtonText: '<span class="icon-checkmark"></span> Cool!',
-            position: 'top',
-            showCloseButton: true
-        })
-    })
+
 document.getElementById('support').addEventListener('click', () => {
     swal({
         html: document.getElementById('support-body').innerHTML,
