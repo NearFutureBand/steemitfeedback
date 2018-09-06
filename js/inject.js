@@ -163,7 +163,7 @@ window.addEventListener('load', function() { // init script after page loaded
         hideMainModal();
     });
     
-    var hideMainModal = function() {
+    function hideMainModal() {
         gFeedbackModalWindow.hide();
     }
 });
