@@ -53,8 +53,6 @@ var initTranslationText = function() {
 }
 
 
-
-
 //TABS----------------------------------------------------------------------------------
 var initTabs = function() {
     let navTabs = document.createElement('div');
@@ -145,6 +143,7 @@ var addEventForFbDone = function() {
             e.preventDefault();
                     
             auth(function () {
+                hideMainModal();
                 golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
                     if (err) {
                         swal({

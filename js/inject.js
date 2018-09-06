@@ -156,11 +156,14 @@ window.addEventListener('load', function() { // init script after page loaded
     
     // event for getMyFeedbacks button
     document.getElementById('golos-urls').addEventListener('click', function() {
-        this.dispatchEvent(new Event("modalopen"));
-        modalAuth.show();
+        //modalAuth.show();
     });
-    window.addEventListener("modalopen", function(){
-        console.log('modalopen');
+    
+    Array.from( document.querySelectorAll('#golos-urls')).forEach( function() {
+        hideMainModal();
+    });
+    
+    var hideMainModal = function() {
         gFeedbackModalWindow.hide();
-    });
+    }
 });
