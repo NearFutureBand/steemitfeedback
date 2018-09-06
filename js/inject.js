@@ -156,11 +156,7 @@ window.addEventListener('load', function() { // init script after page loaded
     
     // event for getMyFeedbacks button
     document.getElementById('golos-urls').addEventListener('click', function() {
-        //modalAuth.show();
-    });
-    
-    Array.from( document.querySelectorAll('#golos-urls')).forEach( function() {
-        hideMainModal();
+        modalAuth.show();
     });
     
     function hideMainModal() {
