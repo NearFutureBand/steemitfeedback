@@ -150,7 +150,7 @@ window.addEventListener('load', function() { // init script after page loaded
     initGolosFeedback();
     
     // event for btn add feedback
-    document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
+    /*document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
         openAddFbForm();
     });
     
@@ -161,5 +161,5 @@ window.addEventListener('load', function() { // init script after page loaded
     
     function hideMainModal() {
         gFeedbackModalWindow.hide();
-    }
+    }*/
 });
