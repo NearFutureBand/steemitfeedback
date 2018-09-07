@@ -166,7 +166,7 @@ window.addEventListener('load', function() { // init script after page loaded
     document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function() {
         modal.open();    
     });
-    document.getElementsByClassName('background')[0].addEventListener('click', function() {
+    document.getElementsByClassName('close-button-space')[0].addEventListener('click', function() {
         modal.close();
     });
     
