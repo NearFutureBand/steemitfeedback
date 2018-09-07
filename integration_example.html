@@ -69,12 +69,6 @@
         box-shadow: 1px 1px 5px rgba(0,0,0,.4);
         border-radius: 10px;
     }
-    #open-test-modal{
-        position: absolute;
-        top: 200px;
-        left: 50%;
-        opacity: 0.5;
-    }
 </style>
 
 
@@ -115,29 +109,14 @@ var gFeedbackOptions = {
     <div class="modal-test">
        <div class="close-button-space"></div>
         <div class="background">
-            <div class="modal-window">
+            <div class="modal-window" id='modal-window'>
                 
             </div>
         </div>
     </div>
-    <button id="open-test-modal">Open Test Modal</button>
 	
 	<script>
-    var modal = {
-        open: function() {
-            document.getElementsByClassName('modal-test')[0].style.display = 'block';
-        },
-        close: function() {
-            document.getElementsByClassName('modal-test')[0].style.display = 'none';
-        }
-    }
     
-    document.getElementById('open-test-modal').addEventListener('click', function() {
-        modal.open();    
-    });
-    document.getElementsByClassName('background')[0].addEventListener('click', function() {
-        modal.close();
-    })
     
     
     /*var gFeedbackOptions = {
