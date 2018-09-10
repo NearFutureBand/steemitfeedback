@@ -74,37 +74,21 @@ window.addEventListener('load', function() { // init script after page loaded
     golos.config.set('address_prefix', 'GLS');
     golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
     
-    /*creating of the html structure for the injecting GolosFeedback*/
-    /*gFeedbackContainer = document.createElement('div');
-    gFeedbackContainer.className = 'modal fade modal-lg-golos-feedback';
-    gFeedbackContainer.setAttribute('id','golos-feedback-container');
-    gFeedbackContainer.setAttribute('tabindex','-1');
-    gFeedbackContainer.setAttribute('role','dialog');
-    gFeedbackContainer.setAttribute('aria-labelledby','GolosFeedback');
-    gFeedbackContainer.setAttribute('aria-hidden','true');
-    gFeedbackContainer.innerHTML = '<div class="modal-dialog modal-lg .modal-dialog-centered"><div class="modal-content golos-feedback-container"></div></div>';
-    document.querySelector('body').appendChild(gFeedbackContainer);
-    */
-    //var modalStructure = document.getElementById('golos-feedback-container');
-    /*var gFeedbackModalWindow = new Modal(modalStructure, {
-        content: '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>',
-        keyboard: false
-    });*/
+    //setting up the custom modal structure
     
-    var setModalContent = function() {
-        document.getElementById('modal-window').innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
-    }
-    setModalContent();
-    /*creating button-toggler*/
-    /*let button = document.createElement('button');
+    /**/
+    
+    //setting up content of the modal window
+    document.getElementById('modal-window').innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
+    
+    /*creating the button-toggler*/
+    let button = document.createElement('button');
     button.className = 'btn btn-primary modal-golos-feedback-toggler';
     button.setAttribute('type','button');
-    button.setAttribute('data-toggle','modal');
-    button.setAttribute('data-target','#golos-feedback-container');
-    button.innerHTML = ' Open Golos Feedback';*/
+    button.innerHTML = 'Open Golos Feedback';
     
-    /*function*/
-    /*var createDefaultGFeedbackOptions = function(
+    
+    var createDefaultGFeedbackOptions = function(
         corner_ = 'right', 
         buttonTextColor_ = '#fff',
         buttonBackgroundColor_ = '#0079a1',
@@ -119,15 +103,26 @@ window.addEventListener('load', function() { // init script after page loaded
     }
     
     /*definig undefined variable with customizable options*/
-    /*if (window.gFeedbackOptions === undefined) {
+    if (window.gFeedbackOptions === undefined) {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
     } else {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
-    }*/
+    }
     
     /*Applying parameters*/
+    /*Перечислить параметры, которые можно задавать*/
+    /* Example of custom parameters
     
-    /*if(gFeedbackOptions.corner == 'right') {
+        var gFeedbackOptions = {
+            corner: 'right',
+            buttonTextColor: '#fff',
+            buttonBackgroundColor: '#0079a1',
+            buttonShadow: true
+        }
+    
+    */
+    
+    if(gFeedbackOptions.corner == 'right') {
         button.style.right = '3%';
     } else if (gFeedbackOptions.corner == 'left') {
         button.style.left = '3%';
@@ -138,16 +133,12 @@ window.addEventListener('load', function() { // init script after page loaded
     }
     
     button.style.color = gFeedbackOptions.buttonTextColor;
-    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;*/
+    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;
     
     /*the end of applying parameters*/
     
-    /*placing the button on its place*/
-    let button = document.createElement('button');
-    button.className = 'btn btn-primary modal-golos-feedback-toggler';
-    button.setAttribute('type','button');
-    button.innerHTML = 'Open Golos Feedback';
     document.querySelector('body').appendChild(button);
+    
     
     /*controller for the button*/
     /*document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function(){
@@ -174,10 +165,11 @@ window.addEventListener('load', function() { // init script after page loaded
     initGolosFeedback();
     
     // event for btn add feedback
-    /*document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
+    document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
         openAddFbForm();
     });
     
+    /*
     // event for getMyFeedbacks button
     document.getElementById('golos-urls').addEventListener('click', function() {
         modalAuth.show();
