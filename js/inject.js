@@ -105,12 +105,9 @@ window.addEventListener('load', function() { // init script after page loaded
     /*definig undefined variable with customizable options*/
     if (window.gFeedbackOptions === undefined) {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
-    } else {
-        var gFeedbackOptions = createDefaultGFeedbackOptions();
     }
     
     /*Applying parameters*/
-    /*Перечислить параметры, которые можно задавать*/
     /* Example of custom parameters
     
         var gFeedbackOptions = {
@@ -174,8 +171,5 @@ window.addEventListener('load', function() { // init script after page loaded
     document.getElementById('golos-urls').addEventListener('click', function() {
         modalAuth.show();
     });
-    
-    function hideMainModal() {
-        gFeedbackModalWindow.hide();
-    }*/
+    */
 });
