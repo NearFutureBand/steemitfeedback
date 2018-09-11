@@ -79,7 +79,7 @@ window.addEventListener('load', function() { // init script after page loaded
     /**/
     
     //setting up content of the modal window
-    document.getElementById('modal-window').innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
+    document.getElementsByClassName('modal-window')[0].innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
     
     /*creating the button-toggler*/
     let button = document.createElement('button');
@@ -94,7 +94,7 @@ window.addEventListener('load', function() { // init script after page loaded
         buttonBackgroundColor_ = '#0079a1',
         buttonShadow_ = true
     ) {
-        return gFeedbackOptions = {
+        return {
             corner: corner_,
             buttonTextColor: buttonTextColor_,
             buttonBackgroundColor: buttonBackgroundColor_,
@@ -105,6 +105,8 @@ window.addEventListener('load', function() { // init script after page loaded
     /*definig undefined variable with customizable options*/
     if (window.gFeedbackOptions === undefined) {
         var gFeedbackOptions = createDefaultGFeedbackOptions();
+    } else{
+        gFeedbackOptions = createDefaultGFeedbackOptions(gFeedbackOptions);
     }
     
     /*Applying parameters*/
@@ -134,13 +136,7 @@ window.addEventListener('load', function() { // init script after page loaded
     
     /*the end of applying parameters*/
     
-    document.querySelector('body').appendChild(button);
-    
-    
-    /*controller for the button*/
-    /*document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function(){
-        gFeedbackModalWindow.toggle();
-    });*/    
+    document.querySelector('body').appendChild(button);  
     
     var modal = {
         open: function() {
@@ -165,6 +161,8 @@ window.addEventListener('load', function() { // init script after page loaded
     document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
         openAddFbForm();
     });
+    
+    //TODO сделать параметр z-index чтобы его мог задавать пользователь
     
     /*
     // event for getMyFeedbacks button
