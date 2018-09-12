@@ -34,7 +34,6 @@ var initGolosFeedback = function() {
     
     location.hash = 'all';
     
-    console.log(getElementById('golos-urls'));
     document.getElementById('golos-urls').addEventListener('click', function() {
         getUrls();
     });
