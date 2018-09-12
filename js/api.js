@@ -33,6 +33,11 @@ var initGolosFeedback = function() {
     loadFbs();
     
     location.hash = 'all';
+    
+    console.log(getElementById('golos-urls'));
+    document.getElementById('golos-urls').addEventListener('click', function() {
+        getUrls();
+    });
 }
 //document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
@@ -1006,4 +1011,33 @@ var refactorIpfsResult = function(result) {
         out.push(result[i][0]);
     }
     return out;
+}
+
+
+/*ADDITIONAL*/
+
+async function getUrls() {
+    
+    if (wif == '') {
+        auth(function () {
+            golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
+                if (err) {
+                    swal({
+                        type: 'error',
+                    });
+                } else {
+                    swal({
+                        type: 'success',
+                    })
+                    removeFbs();
+                    loadMyFbs();
+                }
+                console.log(result);
+            });
+        }, ['posting']);
+        
+    } else {
+        removeFbs();
+        loadMyFbs();
+    }
 }

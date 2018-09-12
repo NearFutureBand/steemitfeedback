@@ -67,7 +67,9 @@ gApi = document.createElement('script');
 gApi.src = 'https://golosfeedback.com/js/api.js';
 (document.head || document.documentElement).appendChild(gApi);
 
-window.addEventListener('load', function() { // init script after page loaded
+
+// init script after page loaded
+window.addEventListener('load', function() {
     
     /*setting testnet parameters*/
     golos.config.set('websocket', 'wss://ws.testnet.golos.io');
@@ -75,11 +77,12 @@ window.addEventListener('load', function() { // init script after page loaded
     golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
     
     //setting up the custom modal structure
-    
     /**/
     
     //setting up content of the modal window
     document.getElementsByClassName('modal-window')[0].innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
+    
+    //console.log( document.getElementById('golos-urls') );
     
     /*creating the button-toggler*/
     let button = document.createElement('button');
@@ -140,10 +143,10 @@ window.addEventListener('load', function() { // init script after page loaded
     
     var modal = {
         open: function() {
-            document.getElementsByClassName('modal-test')[0].style.display = 'block';
+            document.getElementsByClassName('modal-window-block')[0].style.display = 'block';
         },
         close: function() {
-            document.getElementsByClassName('modal-test')[0].style.display = 'none';
+            document.getElementsByClassName('modal-window-block')[0].style.display = 'none';
         }
     }
     
@@ -164,10 +167,11 @@ window.addEventListener('load', function() { // init script after page loaded
     
     //TODO сделать параметр z-index чтобы его мог задавать пользователь
     
-    /*
+    //document.getElementById('golos-urls').onclick = getUrls;
+    
     // event for getMyFeedbacks button
-    document.getElementById('golos-urls').addEventListener('click', function() {
+    /*document.getElementById('golos-urls').addEventListener('click', function() {
+        //getMyFeedbacks();
         modalAuth.show();
-    });
-    */
+    });*/
 });

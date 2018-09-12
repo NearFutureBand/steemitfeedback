@@ -52,7 +52,8 @@ async function getUrls() {
         loadMyFbs();
     }
 }
-document.getElementById('golos-urls').onclick = getUrls;
+
+//document.getElementById('golos-urls').onclick = getUrls;
 document.getElementById('aboutGolosFeedbackCallBtn').addEventListener('click', () => {
         swal({
             title: document.getElementById('about-html-title').innerHTML,
