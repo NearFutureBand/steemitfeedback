@@ -77,12 +77,13 @@ window.addEventListener('load', function() {
     golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
     
     //setting up the custom modal structure
-    /**/
+    let block = document.createElement('div');
+    block.className = 'modal-window-block';
+    block.innerHTML = '<div class="close-button-space"></div><div class="background"><div class="modal-window"></div></div>';
+    document.querySelector('body').appendChild(block);
     
     //setting up content of the modal window
     document.getElementsByClassName('modal-window')[0].innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
-    
-    //console.log( document.getElementById('golos-urls') );
     
     /*creating the button-toggler*/
     let button = document.createElement('button');
