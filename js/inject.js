@@ -67,64 +67,94 @@ gApi = document.createElement('script');
 gApi.src = 'https://golosfeedback.com/js/api.js';
 (document.head || document.documentElement).appendChild(gApi);
 
-
-// init script after page loaded
 window.addEventListener('load', function() {
     
-    /*setting testnet parameters*/
+    //TODO сделать параметр z-index чтобы его мог задавать пользователь
+    startGolosFeedback(gFeedbackOptions);
+});
+
+var startGolosFeedback = function(parameters) {
+    setTestnetWebsocket();
+    setupModalWindow();
+    setupButton(parameters);
+    
+    addEventsForButton();
+    
+    /*launch the main building algorythm of injecting GolosFeedback*/
+    initGolosFeedback();
+    
+    // event for btn add feedback
+    document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
+        openAddFbForm();
+    });
+}
+
+var setTestnetWebsocket = function() {
     golos.config.set('websocket', 'wss://ws.testnet.golos.io');
     golos.config.set('address_prefix', 'GLS');
     golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+}
     
-    //setting up the custom modal structure
+var setupModalWindow = function() {
     let block = document.createElement('div');
     block.className = 'modal-window-block';
-    block.innerHTML = '<div class="close-button-space"></div><div class="background"><div class="modal-window"></div></div>';
+    block.innerHTML = '<div class="close-button-space"></div><div class="background"><div class="modal-window"><div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div></div></div>';
     document.querySelector('body').appendChild(block);
-    
-    //setting up content of the modal window
-    document.getElementsByClassName('modal-window')[0].innerHTML = '<div class="card"><div class="card-header"><img src="https://golosfeedback.com/graphics/logo.png" width="25" height="25" class="d-inline-block align-top" alt=""><a href="https://golosfeedback.com/" target="_blank">GolosFeedback.com</a></div><div class="card-header-right"><button class="btn btn-primary gFbtn-add-fb"><span class="icon-forward"></span> Add feedback</button><button class="btn btn-success" id="golos-urls"><span class="icon-box-add"></span> Get my feedbacks</button></div><div class="card-body text-dark"><div class="gFwrapper"></div></div></div>';
-    
+}
+
+var setupButton = function(parameters) {
     /*creating the button-toggler*/
     let button = document.createElement('button');
     button.className = 'btn btn-primary modal-golos-feedback-toggler';
     button.setAttribute('type','button');
     button.innerHTML = 'Open Golos Feedback';
+    applyButtonStyle(button, defineButtonStyle(parameters));
+    document.querySelector('body').appendChild(button);  
+}
     
-    
-    var createDefaultGFeedbackOptions = function(
-        corner_ = 'right', 
-        buttonTextColor_ = '#fff',
-        buttonBackgroundColor_ = '#0079a1',
-        buttonShadow_ = true
-    ) {
-        return {
-            corner: corner_,
-            buttonTextColor: buttonTextColor_,
-            buttonBackgroundColor: buttonBackgroundColor_,
-            buttonShadow: buttonShadow_
-        };
+var addEventsForButton = function() {
+    document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function() {
+        modal.open();   
+    });
+    document.getElementsByClassName('close-button-space')[0].addEventListener('click', function() {
+        modal.close();
+    });    
+}
+
+var modal = {
+    open: function() {
+        document.getElementsByClassName('modal-window-block')[0].style.display = 'block';
+    },
+    close: function() {
+        document.getElementsByClassName('modal-window-block')[0].style.display = 'none';
     }
+}
+
+var defineButtonStyle = function(parameters) {
     
-    /*definig undefined variable with customizable options*/
-    if (window.gFeedbackOptions === undefined) {
-        var gFeedbackOptions = createDefaultGFeedbackOptions();
-    } else{
-        gFeedbackOptions = createDefaultGFeedbackOptions(gFeedbackOptions);
-    }
+    /*Default parameters*/
+    gFeedbackOptions = new Object();
+    gFeedbackOptions.corner = 'right';
+    gFeedbackOptions.buttonTextColor = '#fff';
+    gFeedbackOptions.buttonBackgroundColor = '#0079a1';
+    gFeedbackOptions.buttonShadow = true;
     
-    /*Applying parameters*/
-    /* Example of custom parameters
-    
-        var gFeedbackOptions = {
-            corner: 'right',
-            buttonTextColor: '#fff',
-            buttonBackgroundColor: '#0079a1',
-            buttonShadow: true
+    if(parameters != undefined) {
+        for (option in gFeedbackOptions) {
+            for (par in parameters) {
+                if (par == option) {
+                    gFeedbackOptions[option] = parameters[par];
+                    console.log(option);          
+                }
+            }
         }
+    }
     
-    */
-    
+    return gFeedbackOptions;      
+}
+
+var applyButtonStyle = function(button, gFeedbackOptions) {
+
     if(gFeedbackOptions.corner == 'right') {
         button.style.right = '3%';
     } else if (gFeedbackOptions.corner == 'left') {
@@ -136,43 +166,5 @@ window.addEventListener('load', function() {
     }
     
     button.style.color = gFeedbackOptions.buttonTextColor;
-    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;
-    
-    /*the end of applying parameters*/
-    
-    document.querySelector('body').appendChild(button);  
-    
-    var modal = {
-        open: function() {
-            document.getElementsByClassName('modal-window-block')[0].style.display = 'block';
-        },
-        close: function() {
-            document.getElementsByClassName('modal-window-block')[0].style.display = 'none';
-        }
-    }
-    
-    document.querySelector('.modal-golos-feedback-toggler').addEventListener('click', function() {
-        modal.open();    
-    });
-    document.getElementsByClassName('close-button-space')[0].addEventListener('click', function() {
-        modal.close();
-    });
-    
-    /*launch the main building algorythm of injecting GolosFeedback*/
-    initGolosFeedback();
-    
-    // event for btn add feedback
-    document.querySelector('.' + prefix + 'btn-add-fb').addEventListener('click', function(){
-        openAddFbForm();
-    });
-    
-    //TODO сделать параметр z-index чтобы его мог задавать пользователь
-    
-    //document.getElementById('golos-urls').onclick = getUrls;
-    
-    // event for getMyFeedbacks button
-    /*document.getElementById('golos-urls').addEventListener('click', function() {
-        //getMyFeedbacks();
-        modalAuth.show();
-    });*/
-});
+    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;      
+}
