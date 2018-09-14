@@ -38,7 +38,7 @@ var initGolosFeedback = function() {
         getUrls();
     });
 }
-//document.addEventListener('DOMContentLoaded', initGolosFeedback);
+document.addEventListener('DOMContentLoaded', initGolosFeedback);
 
 
 

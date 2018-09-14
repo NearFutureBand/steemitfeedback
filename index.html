@@ -178,17 +178,18 @@
         <div class="text-left">
             1. Add JavaScript in your HTML-page: 
             <pre><code>&lt;script src=&quot;https://golosfeedback.com/js/inject.js&quot;&gt;&lt;/script&gt;</code></pre>
-            2. Add a button in your HTML-page:
-            <pre><code>&lt;button type=&quot;button&quot; data-toggle=&quot;modal&quot; data-target=&quot;.modal-lg-golos-feedback&quot;&gt;Open Golos Feedback&lt;/button&gt;</code></pre>
-            3. Set up a standard bootstrap modal window:
+            <p>2. Script adds all necessary resources to deploy GolosFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with GolosFeedback.</p>
+            3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'gFeedbackOptions'. Check out this example: 
             <div class="text-left"><pre><code>
-&lt;div class=&quot;modal fade modal-lg-golos-feedback&quot; tabindex=&quot;-1&quot; role=&quot;dialog&quot; aria-labelledby=&quot;GolosFeedback&quot; aria-hidden=&quot;true&quot;&gt;
-    &lt;div class=&quot;modal-dialog modal-lg&quot;&gt;
-        &lt;div class=&quot;modal-content golos-feedback-container&quot;&gt;
-            
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
+&lt;script&gt;
+var gFeedbackOptions = {
+    corner: 'right',
+    buttonTextColor: '#fff',
+    buttonBackgroundColor: '#0079a1',
+    buttonShadow: true
+}
+&lt;/script&gt;
+&lt;script src="https://golosfeedback.com/js/inject.js"&gt;&lt;/script&gt;
 </code></pre></div>
             4. Visit this <a style="color:lightblue" href="integration_example.html">integration example</a> to see how it works!
         </div>
