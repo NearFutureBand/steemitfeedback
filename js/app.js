@@ -27,33 +27,9 @@ document.onreadystatechange = function () {
     });
 }
 
-async function getUrls() {
-    
-    if (wif == '') {
-        auth(function () {
-            golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
-                if (err) {
-                    swal({
-                        type: 'error',
-                    });
-                } else {
-                    swal({
-                        type: 'success',
-                    })
-                    removeFbs();
-                    loadMyFbs();
-                }
-                console.log(result);
-            });
-        }, ['posting']);
-        
-    } else {
-        removeFbs();
-        loadMyFbs();
-    }
-}
-
 //document.getElementById('golos-urls').onclick = getUrls;
+
+
 document.getElementById('aboutGolosFeedbackCallBtn').addEventListener('click', () => {
         swal({
             title: document.getElementById('about-html-title').innerHTML,

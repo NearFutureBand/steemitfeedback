@@ -138,6 +138,7 @@ var defineButtonStyle = function(parameters) {
     gFeedbackOptions.buttonTextColor = '#fff';
     gFeedbackOptions.buttonBackgroundColor = '#0079a1';
     gFeedbackOptions.buttonShadow = true;
+    gFeedbackOptions.zIndex = 3;    
     
     if(parameters != undefined) {
         for (option in gFeedbackOptions) {
@@ -166,5 +167,8 @@ var applyButtonStyle = function(button, gFeedbackOptions) {
     }
     
     button.style.color = gFeedbackOptions.buttonTextColor;
-    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;      
+    button.style.backgroundColor = gFeedbackOptions.buttonBackgroundColor;
+    
+    button.style.zIndex = gFeedbackOptions.zIndex;
+    document.querySelector('.modal-window-block .modal-window').style.zIndex = gFeedbackOptions.zIndex + 1;
 }
