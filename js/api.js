@@ -145,7 +145,6 @@ var addEventForFbDone = function() {
             e.preventDefault();
                     
             auth(function () {
-                hideMainModal();
                 golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
                     if (err) {
                         swal({
