@@ -7,9 +7,9 @@
     "Integration":"Интеграция",
     "About integration!": "Об интеграции!",
     "Add JavaScript in your HTML-page": "Добавьте JavaScript к вашей HTML-странице",
-    "Add a button in your HTML-page":"Добавьте кнопку на вашу HTML-страницу",
-    "Set up a standard bootstrap modal window":"Настройте стандартное bootstrap модальное окно",
-    "integration example":"пример интерграции",
+    "Script adds all the necessary resources to deploy GolosFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with GolosFeedback.": "Скрипт добавляет все необходимые ресурсы, чтобы подключить GolosFeedback к вашему сайту или приложению. Весь интерфейс нашего сервиса будет помещен в модальное окно со специальной кнопкой-переключателем. Эта кнопка будет добавлена на вашу страницу поверх всего контента, чтобы любой всегда имел возможность взаимодействовать с GolosFeedback.",
+    "You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'gFeedbackOptions'. Check out this example": "Вы можете настроить различные опции микросервиса, передавая несколько дополнительных параметров. Все что вам нужно - это создать специальную переменную с именем gFeedbackOptions. Посмотрите этот пример",
+    "integration example":"пример интеграции",
     "Visit this":"Посетите этот",
     "to see how it works!":"чтобы посмотреть, как это работает!",
 	
