@@ -15,19 +15,20 @@ To inject GolosFeedback to your webpage you need to make only three simple steps
 ```
 <script src="https://golosfeedback.com/js/inject.js"></script>
 ```
-2. Place the button:
+2. Script adds all necessary resources to deploy GolosFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with GolosFeedback.
+
+3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'gFeedbackOptions'. Check out this example:
 ```
-<button type="button" data-toggle="modal" data-target=".modal-lg-golos-feedback">Open Golos Feedback</button>
-```
-3. Set up a standard bootstrap modal window:
-```
-<div class="modal fade modal-lg-golos-feedback" tabindex="-1" role="dialog" aria-labelledby="GolosFeedback" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content golos-feedback-container">
-            
-        </div>
-    </div>
-</div>
+<script>
+var gFeedbackOptions = {
+    corner: 'right',
+    buttonTextColor: '#fff',
+    buttonBackgroundColor: '#0079a1',
+    buttonShadow: true,
+    zIndex: 7
+}
+</script>
+<script src="https://golosfeedback.com/js/inject.js"></script>
 ```
 This instruction you also can see on the full version of [GolosFeedback](https://golosfeedback.com/) by pressing the button *integration*
 
