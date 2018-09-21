@@ -12,7 +12,12 @@ var tabLabels = [0,0,0,0];
 var tabLabelNames = ['all','idea','problem','question','thank'];
 var labels = [];
 
+//TODO
+//когда открывается список комментов - исчезают количества фидбеков разных типов (цифры во втором навбаре)
+//фидбеки могут загрузиться позже открытой формы создания фидбека
+
 //GENERAL
+
 
 var initGolosFeedback = function() {
 
@@ -145,19 +150,7 @@ var addEventForFbDone = function() {
             e.preventDefault();
                     
             auth(function () {
-                golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
-                    if (err) {
-                        swal({
-                            type: 'error',
-                        });
-                    } else {
-                        swal({
-                            type: 'success',
-                        });
-                        sendAddFbForm();
-                    }
-                    console.log(result);
-                });
+                sendAddFbForm();
             }, ['posting']);
                 
             return false;
@@ -632,19 +625,7 @@ var addEventsForComDone = function(fbId) {
     getAddComForm(fbId).addEventListener('submit', function(e) {
         e.preventDefault();
         auth(function () {
-            golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
-                if (err) {
-                    swal({
-                        type: 'error',
-                    });
-                } else {
-                    swal({
-                        type: 'success',
-                    });
-                    sendAddComForm(fbId);
-                }
-                console.log(result);
-            });
+            sendAddComForm(fbId);
         }, ['posting']);
         return false;
     });
@@ -687,19 +668,7 @@ var addEventsForFbLikes = function(fbId) {
             let isLike = Number(item.getAttribute('data-like'));
             //auth( voteForFb.bind(this, fbId, isLike), ['posting']);
             auth(function () {
-                golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
-                    if (err) {
-                        swal({
-                            type: 'error',
-                        });
-                    } else {
-                        swal({
-                            type: 'success',
-                        });
-                        voteForFb(fbId,isLike);
-                    }
-                    console.log(result);
-                });
+                voteForFb(fbId,isLike);
             }, ['posting']);
         });
     });
@@ -724,21 +693,8 @@ var addEventsForComLikes = function(fbId, comId) {
     getBtnsVote(fbId, comId).forEach(function(item) {
         item.addEventListener('click', function() {
             let isLike = Number(item.getAttribute('data-like'));
-            //auth( voteForCom.bind(this, fbId, comId, isLike), ['posting']);
             auth(function () {
-                golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
-                    if (err) {
-                        swal({
-                            type: 'error',
-                        });
-                    } else {
-                        swal({
-                            type: 'success',
-                        });
-                        voteForCom(fbId,comId,isLike);
-                    }
-                    console.log(result);
-                });
+                voteForCom(fbId,comId,isLike);
             }, ['posting']);
         });
     });
@@ -1012,27 +968,10 @@ var refactorIpfsResult = function(result) {
 
 /*ADDITIONAL*/
 async function getUrls() {
-    
     if (wif == '') {
         auth(function () {
-            golos.broadcast.customJson(wif.posting, [], [username], 'follow', json, (err, result) => {
-                if (err) {
-                    swal({
-                        type: 'error',
-                    });
-                } else {
-                    swal({
-                        type: 'success',
-                    })
-                    removeFbs();
-                    loadMyFbs();
-                }
-                console.log(result);
-            });
+            removeFbs();
+            loadMyFbs();
         }, ['posting']);
-        
-    } else {
-        removeFbs();
-        loadMyFbs();
     }
 }
