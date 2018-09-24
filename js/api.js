@@ -1,9 +1,15 @@
+/* Prefix to avoid conflics with other website's styles*/
 var prefix = 'gF';
+/* For filtering feedbacks while receiving them*/
 var tagSelector = 'all';
+/* Keeper of a text editor entity*/
 var ckeditor;
+/**/
 var jsonMetadata = '';
 var domain = (location.hostname == "")? 'localhost' : location.hostname;
 
+
+/* Numbers that are displayed on the nav panel with tabs*/
 // 0 - ideas
 // 1 - problems
 // 2 - questions
@@ -12,8 +18,7 @@ var tabLabels = [0,0,0,0];
 var tabLabelNames = ['all','idea','problem','question','thank'];
 var labels = [];
 
-//TODO
-//когда открывается список комментов - исчезают количества фидбеков разных типов (цифры во втором навбаре)
+//TODO  
 //фидбеки могут загрузиться позже открытой формы создания фидбека
 
 //GENERAL
@@ -240,6 +245,7 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
+    clearTabLabels();
     
     var query = {
         select_tags: ['fb', domain ],
@@ -252,16 +258,13 @@ var loadFbs = function() {
     golos.api.getDiscussionsByBlog(query, function(err, result) {
         console.log(err, result);
         
-        //no matching feedbacks
-        let nothing = false;
-        
         if ( ! err) {
             if(result == []) {
                 createEmptyFb();
                 
             } else {
-                
                 //проверить все полученные фидбеки - функция создания фидбека внутри
+                
                 filter(result);
                 updateTabLabels(tabLabels);
             }
@@ -343,7 +346,6 @@ var removeFbs = function() {
     });
     closeAddFbForm();
     clearHash();
-    clearTabLabels();
 }
 var checkVoteColor = function(fbId, comId) {
     let state = getVoteState(fbId, comId);
