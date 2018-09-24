@@ -38,10 +38,16 @@
     " thanks ": " GRAZIE ",
     " all ": " TUTTI ",
     
-    "idea": "idea",
-    "question": "la questione",
-    "problem": "un problema",
-    "thank": "grazie",
+    "Title": "Titolo",
+    "Description": "Descrizione",
+    "Paragraph": "Paragrafo",
+    "Heading 1": "Intestazione 1",
+    "Heading 2": "Intestazione 2",
+    "Heading 3": "Intestazione 3",
+    "Idea": "Idea",
+    "Question": "La questione",
+    "Problem": "Un problema",
+    "Thank": "Grazie",
     
     "Submit": "Confermare",
     

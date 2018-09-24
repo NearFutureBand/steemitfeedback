@@ -38,10 +38,16 @@
     " thanks ": " 감사의 말 ",
     " all ": " 모두 ",
     
-    "idea": "아이디어",
-    "question": "문제",
-    "problem": "문제",
-    "thank": "감사",
+    "Title": "표제",
+    "Description": "기술",
+    "Paragraph": "절",
+    "Heading 1": "표제 1",
+    "Heading 2": "표제 2",
+    "Heading 3": "표제 3",
+    "Idea": "아이디어",
+    "Question": "문제",
+    "Problem": "문제",
+    "Thank": "감사",
     
     "Submit": "확인",
     

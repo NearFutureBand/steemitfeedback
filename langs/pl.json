@@ -38,10 +38,16 @@
     " thanks ": " POTWIERDZENIE ",
     " all ": " WSZYSTKIE ",
     
-    "idea": "pomysł",
-    "question": "kwestia",
-    "problem": "problem",
-    "thank": "wdzięczność",
+    "Title": "Tytuł",
+    "Description": "Opis",
+    "Paragraph": "Ustęp",
+    "Heading 1": "Nagłówek 1",
+    "Heading 2": "Nagłówek 2",
+    "Heading 3": "Nagłówek 3",
+    "Idea": "Pomysł",
+    "Question": "Kwestia",
+    "Problem": "Problem",
+    "Thank": "Wdzięczność",
     
     "Submit": "Подтвердить",
     

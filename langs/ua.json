@@ -38,10 +38,16 @@
     " thanks ": " ПОДЯКИ ",
     " all ": " УСЕ ",
     
-    "idea": "ідея",
-    "question": "питання",
-    "problem": "проблема",
-    "thank": "подяка",
+    "Title": "Назва",
+    "Description": "Опис",
+    "Paragraph": "Абзац",
+    "Heading 1": "Заголовок 1",
+    "Heading 2": "Заголовок 2",
+    "Heading 3": "Заголовок 3",
+    "Idea": "Iдея",
+    "Question": "Питання",
+    "Problem": "Проблема",
+    "Thank": "Подяка",
     
     "Submit": "Подати",
     

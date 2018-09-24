@@ -38,10 +38,16 @@
     " thanks ": " 谢谢 ",
     " all ": " 所有的 ",
     
-    "idea": "主意",
-    "question": "问题",
-    "problem": "一个问题",
-    "thank": "谢谢",
+    "Title": "標題",
+    "Description": "描述",
+    "Paragraph": "段",
+    "Heading 1": "標題1",
+    "Heading 2": "標題2",
+    "Heading 3": "標題3",
+    "Idea": "主意",
+    "Question": "问题",
+    "Problem": "一个问题",
+    "Thank": "谢谢",
     
     "Submit": "确认",
     

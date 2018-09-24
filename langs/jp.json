@@ -38,10 +38,16 @@
     " thanks ": " 謝辞 ",
     " all ": " すべて ",
     
-    "idea": "アイデア",
-    "question": "問題",
-    "problem": "問題",
-    "thank": "感謝",
+    "Title": "タイトル",
+    "Description": "説明",
+    "Paragraph": "段落",
+    "Heading 1": "見出し 1",
+    "Heading 2": "見出し 2",
+    "Heading 3": "見出し 3",
+    "Idea": "アイデア",
+    "Question": "問題",
+    "Problem": "問題",
+    "Thank": "感謝",
     
     "Submit": "確認",
     

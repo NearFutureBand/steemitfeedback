@@ -38,10 +38,16 @@
     " thanks ": " AGRADECIMIENTOS ",
     " all ": " TODO ",
     
-    "idea": "idea",
-    "question": "problema",
-    "problem": "un problema",
-    "thank": "gratitud",
+    "Title": "Título",
+    "Description": "Descripción",
+    "Paragraph": "Párrafo",
+    "Heading 1": "Título 1",
+    "Heading 2": "Título 2",
+    "Heading 3": "Título 3",
+    "Idea": "Idea",
+    "Question": "Problema",
+    "Problem": "Un problema",
+    "Thank": "Gratitud",
     
     "Submit": "Confirmar",
     

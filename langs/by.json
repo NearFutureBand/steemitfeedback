@@ -38,10 +38,16 @@
     " thanks ": " ПАДЗЯКI ",
     " all ": " УСЕ ",
     
-    "idea": "iдэя",
-    "question": "пытанне",
-    "problem": "праблема",
-    "thank": "падзяка",
+    "Title": "Загаловак",
+    "Description": "Апісанне",
+    "Paragraph": "Абзац",
+    "Heading 1": "Загаловак 1",
+    "Heading 2": "Загаловак 2",
+    "Heading 3": "Загаловак 3",
+    "Idea": "Iдэя",
+    "Question": "Пытанне",
+    "Problem": "Праблема",
+    "Thank": "Падзяка",
     
     "Submit": "Пацвердзіць",
     

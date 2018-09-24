@@ -30,8 +30,8 @@ var initGolosFeedback = function() {
     //initialization of the navbar with tabs for sorting feedbacks
     initTabs();
     
-    //в полной версии подразумевается, что навбар уже на странице есть, и нужно только привязать событие к кнопке (как здесь)
-    //в виджете навбара нет и кнопка будет создаваться отдельно
+    //Navbar 1 is already on the page in full version of the service so is only needed to add an event for buttons there 
+    //In injecting version there is no navbar so the button will be created at first
     
     //loading posts according to current tag selector
     loadFbs();
