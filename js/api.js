@@ -88,8 +88,8 @@ var updateTabLabels = function(data) {
     let i;
     let sum = 0;
     for(i = labels.length; i > 1; i--) {
-        labels[i-1].innerHTML = '(' + data[i-2] + ')';
-        sum += data[i-2];
+        labels[i - 1].innerHTML = '(' + data[i - 2] + ')';
+        sum += data[i - 2];
     }
     labels[0].innerHTML = '(' + sum + ')';
 }
@@ -118,7 +118,6 @@ var createFromAddFb = function() {
     form.innerHTML = "<div class='col-lg-12 tile'><form><div class='form-group'><label for='formHeader'>"+document.querySelectorAll('.translate-phrases li')[0].innerHTML+"</label><input type='text' class='form-control' id='formHeader' name='inptHeader' aria-describedby='formHeader' required></div><div class='form-group'><label for='formTex'>"+document.querySelectorAll('.translate-phrases li')[1].innerHTML+"</label><textarea class='form-control' id='formText' name='txtBody' rows='3'></textarea></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-idea' value='option1' checked><label class='form-check-label' for='formRadio0'>"+document.querySelectorAll('.translate-phrases li')[2].innerHTML+"</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-question' value='option2'><label class='form-check-label' for='formRadio1'>"+document.querySelectorAll('.translate-phrases li')[3].innerHTML+"</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-problem' value='option3'><label class='form-check-label' for='formRadio2'>"+document.querySelectorAll('.translate-phrases li')[4].innerHTML+"</label></div><div class='form-check'><input class='form-check-input' type='radio' name='exampleRadios' id='radio-thank' value='option3'><label class='form-check-label' for='formRadio3'>"+document.querySelectorAll('.translate-phrases li')[5].innerHTML+"</label></div><button type='submit' class='btn btn-success btn-add-fb-done mr-2'><span class='icon-checkmark'></span> "+document.querySelectorAll('.translate-phrases li')[6].innerHTML+"</button><button type='button' class='btn btn-danger btn-add-fb-cancel ml-2'><span class='icon-cross'></span> "+document.querySelectorAll('.translate-phrases li')[7].innerHTML+"</button></form></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(form);
     
-    
     ClassicEditor
         .create( document.querySelector( '#formText' ), {
                 removePlugins: [ 'ImageUpload' ],
@@ -141,7 +140,7 @@ var createFromAddFb = function() {
     
     addEventForFbDone();
     addEventForFbCancel();
-    clearJsonMetadata();// = JSON.stringify(tagList);//add tagList to json
+    clearJsonMetadata();
 }
 var addEventForFbDone = function() {
     document.querySelector('.' + prefix + 'wrapper .frm-add-fb')
@@ -241,9 +240,6 @@ var getBlockAddFb = function() {
 
 //FEEDBACKS------------------------------------------------------------------------------
 var loadFbs = function() {
-    //let tags = [domain];
-    //tags.push('fb');
-    //if(tagSelector != 'all') tags.push(tagSelector);
     
     var query = {
         select_tags: ['fb', domain ],
