@@ -243,17 +243,17 @@ var findCheckedRadio = function() {
 var validateSendingData = function(innerText, title) {
     let itsOkay = true;
     
-    /*if( innerText.length > 5000 ) {
+    if( innerText.length > 7000 ) {
         showError('Text is too long. You may use only less then 5000 characters');
         itsOkay = false;
     }
     
     if( typeof title != undefined ) {
-        if( title.length > 200 ) {
+        if( title.length > 100 ) {
             showError('Title is too long. It can be less then 200 characters');
             itsOkay = false;
         }
-    }*/
+    }
     
     return itsOkay;
 }
@@ -329,7 +329,7 @@ var createFb = function(data, expanded) {
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
     note.setAttribute('data-like', data[9]);
-    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>" + (expanded? data[2] : cutText(data[2]) ) + "</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='photo'><img src='http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg'></div><div class='date'><small>"+moment(data[5]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
+    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>" + (expanded? data[1] : cutTitle(data[1]) ) + "</h3><p>" + (expanded? data[2] : cutText(data[2]) ) + "</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='photo'><img src='http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg'></div><div class='date'><small>"+moment(data[5]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
     checkVoteColor(data[0], '');
     
@@ -987,8 +987,13 @@ var refactorIpfsResult = function(result) {
     return out;
 }
 
-/**/
+/*Cuts text and adds "..." if the text has length more than 400 characters*/
 var cutText = function(text) {
     if( text.length > 400) text = text.slice(0, 399) + '...';
     return text;
+}
+/*The same thing*/
+var cutTitle = function(title) {
+    if( title.length > 60) title = title.slice(0, 59) + '...';
+    return title;
 }
