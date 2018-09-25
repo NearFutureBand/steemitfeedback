@@ -44,7 +44,10 @@ var initGolosFeedback = function() {
     location.hash = 'all';
     
     document.getElementById('golos-urls').addEventListener('click', function() {
-        getUrls();
+        auth(function () {
+            removeFbs();
+            loadMyFbs();
+        }, ['posting']);
     });
 }
 document.addEventListener('DOMContentLoaded', initGolosFeedback);
@@ -166,29 +169,30 @@ var sendAddFbForm = function() {
     let author = username;
     let title = document.getElementById('formHeader').value;
     let permlink = urlLit( title, 0 ) + '-' + Date.now().toString();
-    let body = ckeditor.getData();    
+    let body = ckeditor.getData();
     
-    addToJsonMetadata([findCheckedRadio()], "tags");
-    console.log(jsonMetadata);
-    console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
-    console.log(window.wif);
+    if( validateSendingData(body, title) ) {
+        addToJsonMetadata([findCheckedRadio()], "tags");
     
-    golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
-        //console.log(err, result);
-        if ( ! err) {
-            document.getElementById('formHeader').value = '';
-            ckeditor.setData('');
-            closeAddFbForm();
-            removeFbs();
-            loadFbs();
-            console.log('sent');
-        } else {
-            console.error(err);
-            showError(err.message);
-        }
-    });
-    
-    //SHOW MESSAGE ABOUT SUCCESSFUL SENDING
+        console.log(jsonMetadata);
+        console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
+        console.log(window.wif);
+        
+        golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+            //console.log(err, result);
+            if ( ! err) {
+                document.getElementById('formHeader').value = '';
+                ckeditor.setData('');
+                closeAddFbForm();
+                removeFbs();
+                loadFbs();
+                console.log('sent');
+            } else {
+                console.error(err);
+                showError(err.message);
+            }
+        });
+    }
 }
 var addEventForBtnUploadImg = function() {
     
@@ -235,6 +239,23 @@ var findCheckedRadio = function() {
         }
     });
     return res;
+}
+var validateSendingData = function(innerText, title) {
+    let itsOkay = true;
+    
+    if( innerText.length > 5000 ) {
+        showError('Text is too long. You may use only less then 5000 characters');
+        itsOkay = false;
+    }
+    
+    if( typeof title != undefined ) {
+        if( title.length > 200 ) {
+            showError('Title is too long. It can be less then 200 characters');
+            itsOkay = false;
+        }
+    }
+    
+    return itsOkay;
 }
 
 var getBlockAddFb = function() {
@@ -635,19 +656,23 @@ var sendAddComForm = function(fbId) {
     let permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
     let title = '';
     let body = ckeditor.getData();
-    console.log('comment to note '+fbId+'. Body: '+body);
-    golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
-        //console.log(err, result);
-        if (!err) {
-            console.log('comment', result);
-            ckeditor.setData('');
-            removeComments(fbId);
-            loadComments(fbId);
-        } else {
-            console.error(err);
-            showError(err.message);
-        }
-    });
+    
+    if( validateSendingData(body)) {
+        console.log('comment to note '+fbId+'. Body: '+body);
+        golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata,     function(err, result) {
+            //console.log(err, result);
+            if (!err) {
+                console.log('comment', result);
+                ckeditor.setData('');
+                removeComments(fbId);
+                loadComments(fbId);
+            } else {
+                console.error(err);
+                showError(err.message);
+            }
+        }); 
+    }
+    
 }
 
 var getTxtareaCom = function(fbId) {
@@ -966,10 +991,5 @@ var refactorIpfsResult = function(result) {
 
 /*ADDITIONAL*/
 async function getUrls() {
-    if (wif == '') {
-        auth(function () {
-            removeFbs();
-            loadMyFbs();
-        }, ['posting']);
-    }
+    
 }
