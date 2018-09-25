@@ -243,7 +243,7 @@ var findCheckedRadio = function() {
 var validateSendingData = function(innerText, title) {
     let itsOkay = true;
     
-    if( innerText.length > 5000 ) {
+    /*if( innerText.length > 5000 ) {
         showError('Text is too long. You may use only less then 5000 characters');
         itsOkay = false;
     }
@@ -253,7 +253,7 @@ var validateSendingData = function(innerText, title) {
             showError('Title is too long. It can be less then 200 characters');
             itsOkay = false;
         }
-    }
+    }*/
     
     return itsOkay;
 }
@@ -316,21 +316,20 @@ var formData = function(object) {
     data.push(likes);//6 likes
     //их нужно вынести в функцию
     
-    
     data.push(dislikes);//7 dislikes
     data.push(object.permlink);//8 permlink
     
     data.push(getVoteStateOnload(object)/10000);//9 vote of this user
     return data;
 }
-var createFb = function(data) {
+var createFb = function(data, expanded) {
     let note = document.createElement('div');
     note.className = 'row fb';
     note.setAttribute('id',data[0]);
     note.setAttribute('data-permlink',data[8]);
     note.setAttribute('data-opened',0);
-    note.setAttribute('data-like',data[9]);
-    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>"+data[2]+"</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='photo'><img src='http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg'></div><div class='date'><small>"+moment(data[5]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
+    note.setAttribute('data-like', data[9]);
+    note.innerHTML = "<div class='container body-fb tile'><div class='row'><div class='col-lg-9 col-md-9 text'><h3>"+data[1]+"</h3><p>" + (expanded? data[2] : cutText(data[2]) ) + "</p><div class='buttons'><button type='button' class='btn btn-dark btn-show-comments'><span class='badge badge-light'>"+data[3]+"</span><span class='icon-message-square'></span><span class='icon-arrow-left hidden'></span><span class='hidden'> Back</span></button></div></div><div class='col-lg-3 col-md-3 controls'><div class='controls-wrapper'><div class='name'><h6>"+data[4]+"</h6></div><div class='photo'><img src='http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg'></div><div class='date'><small>"+moment(data[5]).format('MMMM Do YYYY, h:mm:ss a')+"</small></div><div class='likes'><button type='button' class='btn btn-secondary btn-vote' data-like='1'><span class='badge badge-dark'>"+data[6]+"</span><span class='icon-thumbs-up'></span></button><button type='button' class='btn btn-secondary btn-vote' data-like='0'><span class='icon-thumbs-down'></span><span class='badge badge-dark'>"+data[7]+"</span></button></div></div></div></div></div><div class='container comments'></div>";
     document.querySelector('.'+prefix+'wrapper').appendChild(note);
     checkVoteColor(data[0], '');
     
@@ -351,7 +350,7 @@ var expandFb = function(fbId) {
         if (!err) {
             removeFbs();
             console.log(result);
-            createFb(formData(result));
+            createFb(formData(result), true);
             toggleBtnCom(fbId);
             document.getElementById(fbId).setAttribute('data-opened', 1);
             loadComments(fbId);
@@ -466,7 +465,7 @@ var filter = function(selection) {
                 //если текущий таб тоже совпадает - вывести фидбек
                 if( (json.tags[1] == tagSelector || tagSelector == 'all') && control ) {
                     console.log(item);
-                    createFb( formData(item) );
+                    createFb( formData(item), false);
                     nothing = false;
                 }
                 
@@ -742,9 +741,9 @@ var voteForCom = function(fbId, comId, like) {
 var getBtnVote = function(fbId, comId, isLike) {
     let btn;
     if(comId) {
-        btn = getBlockControls(fbId, comId).getElementsByClassName('btn-com-vote')[ 1-isLike ];
+        btn = getBlockControls(fbId, comId).getElementsByClassName('btn-com-vote')[ 1 - isLike ];
     } else {
-        btn = getBlockControls(fbId, '').getElementsByClassName('btn-vote')[ 1-isLike ];
+        btn = getBlockControls(fbId, '').getElementsByClassName('btn-vote')[ 1 - isLike ];
     }
     return btn;
 }
@@ -988,8 +987,8 @@ var refactorIpfsResult = function(result) {
     return out;
 }
 
-
-/*ADDITIONAL*/
-async function getUrls() {
-    
+/**/
+var cutText = function(text) {
+    if( text.length > 400) text = text.slice(0, 399) + '...';
+    return text;
 }
