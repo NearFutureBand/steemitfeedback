@@ -128,6 +128,7 @@ var createFromAddFb = function() {
     
     ClassicEditor
         .create( document.querySelector( '#formText' ), {
+                language: detectLang(),
                 removePlugins: [ 'ImageUpload' ],
             } )
         .then( editor => {
@@ -619,6 +620,7 @@ function createCommentForm(fbId) {
     
     ClassicEditor
         .create( document.querySelector( '#commentBody' ), {
+                language: detectLang(),
                 removePlugins: [ 'ImageUpload' ],
             } )
         .then( editor => {
