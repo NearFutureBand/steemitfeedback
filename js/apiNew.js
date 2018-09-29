@@ -27,6 +27,8 @@ class FilterTab {
         return document.querySelector('.' + this.GFCLASS + ' a.nav-link.tab[data-target="'+ this.key +'"]');
     }
     
+    /*Events*/
+    
 }
 
 /*Navigation bar with tabs with counters for filtering incoming feedbacks*/
@@ -43,6 +45,7 @@ class Filter {
     
     init() {
         this.place();
+        this.addEvntClk();
     }
     
     makeHTML() {
@@ -72,26 +75,37 @@ class Filter {
         return exportHTML;
     }
     
-    getThisEl() {
-        return document.querySelector('.'+ this.GFCLASS +' .row.'+ this.className);
-    }
-    
     place() {
         let el = document.createElement('div');
         el.className = 'row ' + this.className;
+        //el.innerHTML = ''
         document.querySelector('.' + this.GFCLASS).appendChild(el);
-        this.restate(el);
+        this.restate();
     }
     
-    restate(el) {
+    restate() {
+        let el = this.getThisEl();
         if( el.innerHTML != '') el.innerHTML = '';
         el.innerHTML = this.makeHTML();
+        
+        this.addEvntClk();
     }
     
     /*Events*/
-    
+    addEvntClk() {
+        let $ = this;
+        for( let i = 0; i < this.tabs.length; i++) {
+            this.tabs[i].getThisEl().addEventListener('click', function() {
+                $.makeTabActive(i);
+                $.restate();
+            });
+        }
+    }
     
     /*Incapsulated*/
+    getThisEl() {
+        return document.querySelector('.'+ this.GFCLASS +' .row.'+ this.className);
+    }
     createFilterTabs(GFCLASS) {
         this.tabs.push( new FilterTab('All', 'all', 'icon-radio-unchecked', GFCLASS));
         this.tabs.push( new FilterTab('Ideas', 'idea', 'icon-magic-wand', GFCLASS));
@@ -100,6 +114,9 @@ class Filter {
         this.tabs.push( new FilterTab('Thanks', 'thank', 'icon-gift', GFCLASS));
     }
     makeTabActive(index) {
+        for(let i = 0; i < this.tabs.length; i++) {
+            this.tabs[i].active = false;
+        }
         this.tabs[index].active = true;
         this.activeTab = index;
         this.currentFbSelector[0] = this.tabs[index].key;
@@ -111,6 +128,16 @@ class Filter {
         console.log('getTabByKey function error: not found element with this key');
         return null;
     }
+}
+
+class Feedback {
+
+}
+class Comment {
+    
+}
+class ControlPanel {
+    
 }
 
 class GolosFeedback {
