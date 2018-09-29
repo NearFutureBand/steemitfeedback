@@ -1,17 +1,137 @@
-var mountBlockName = 'golos-feedback-container';
-var initBootstrapStructure = function() {
-    let wrapper = document.querySelector('.' + mountBlockName);
-    wrapper.classList.add('container');
-}();
-
-var Filter = {
+/*
+    makeHTML() - returns HTML code of the exemplar to build in it somewhere
+    getThisEl() - returns js variable of the exemplar by using querySelector
+    place() - places the exemplar to the DOM structure, it is executing only one time
+    restate() - rebuilds the structure of the exemplar with updated dynamic parameters
     
-    render: function() {
-        let navTabs = document.createElement('div');
-        navTabs.className = 'row nav-tab-buttons';
-        navTabs.innerHTML = '<div class="col-12"><nav class="navbar navbar-expand-lg tabs"><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs"><div class="container"><div class="row"><div class="col-12 tabs"><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link tab active" href="#all" data-target="all"><span class="icon-radio-unchecked"> All </span> <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#ideas" data-target="idea"><span class="icon-magic-wand"></span> Tab <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#problems" data-target="problem"><span class="icon-bug"></span>  <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#questions" data-target="question"><span class="icon-question"></span> Tab <span class="tab-label">('+0+')</span></a></li><li class="nav-item"><a class="nav-link tab" href="#thanks" data-target="thank"><span class="icon-gift"></span> Tab <span class="tab-label">('+0+')</span></a></li></ul></div></div></div></div></nav></div>';
-        document.querySelector('.' + mountBlockName).appendChild(navTabs);
+*/
+
+class FilterTab {
+    constructor(name, key, icon, GFCLASS) {
+        this.name = name;
+        this.key = key;
+        this.counter = 0;
+        this.icon = icon;
+        this.active = false;
+        this.GFCLASS = GFCLASS;
+    }
+    
+    makeHTML() {
+        return '<a class="nav-link tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+
+                    '<span class="'+ this.icon +'"></span> '+ this.name +
+                    ' <span class="tab-label"> ('+ this.counter +') </span>' +
+                '</a>';
+    }
+    
+    getThisEl() {
+        return document.querySelector('.' + this.GFCLASS + ' a.nav-link.tab[data-target="'+ this.key +'"]');
+    }
+    
+}
+
+/*Navigation bar with tabs with counters for filtering incoming feedbacks*/
+class Filter {
+    constructor(GFCLASS) {
+        this.GFCLASS = GFCLASS;
+        this.tabs = [];
+        this.createFilterTabs(this.GFCLASS);
+        this.activeTab = null;
+        this.className = 'nav-filter';
+        this.currentFbSelector = [''];
+        this.makeTabActive(0);
+    }
+    
+    init() {
+        this.place();
+    }
+    
+    makeHTML() {
+        let exportHTML = 
+            '<div class="col-12">'+
+                '<nav class="navbar navbar-expand-lg tabs">'+
+                    '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">'+
+                        '<span class="navbar-toggler-icon"></span>'+
+                    '</button>'+
+                    '<div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs">'+
+                        '<div class="container">'+
+                            '<div class="row">'+
+                                '<div class="col-12 tabs">'+
+                                    '<ul class="nav nav-tabs">';
+        this.tabs.forEach( function(tab) {
+            exportHTML += ('<li class="nav-item">'+ tab.makeHTML() + '</li>');
+        });
+        exportHTML += (
+                                    '</ul>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</nav>'+
+            '</div>'
+        );
+        return exportHTML;
+    }
+    
+    getThisEl() {
+        return document.querySelector('.'+ this.GFCLASS +' .row.'+ this.className);
+    }
+    
+    place() {
+        let el = document.createElement('div');
+        el.className = 'row ' + this.className;
+        document.querySelector('.' + this.GFCLASS).appendChild(el);
+        this.restate(el);
+    }
+    
+    restate(el) {
+        if( el.innerHTML != '') el.innerHTML = '';
+        el.innerHTML = this.makeHTML();
+    }
+    
+    /*Events*/
+    
+    
+    /*Incapsulated*/
+    createFilterTabs(GFCLASS) {
+        this.tabs.push( new FilterTab('All', 'all', 'icon-radio-unchecked', GFCLASS));
+        this.tabs.push( new FilterTab('Ideas', 'idea', 'icon-magic-wand', GFCLASS));
+        this.tabs.push( new FilterTab('Problems', 'problem', 'icon-bug', GFCLASS));
+        this.tabs.push( new FilterTab('Questions', 'question', 'icon-question', GFCLASS));
+        this.tabs.push( new FilterTab('Thanks', 'thank', 'icon-gift', GFCLASS));
+    }
+    makeTabActive(index) {
+        this.tabs[index].active = true;
+        this.activeTab = index;
+        this.currentFbSelector[0] = this.tabs[index].key;
+    }
+    getTabByKey(key) {
+        for( let i = 0; i < this.tabs.length; i++) {
+            if( this.tabs[i].key == key) return this.tabs[i];
+        }
+        console.log('getTabByKey function error: not found element with this key');
+        return null;
     }
 }
 
-Filter.render();
+class GolosFeedback {
+    constructor() {
+        this.className = 'golos-feedback-container';
+        this.initBootstrapStructure();
+        this.navbar2 = new Filter(this.className);
+    }
+    
+    init() {
+        this.navbar2.init();
+    }
+    
+    initBootstrapStructure() {
+        this.getThisEl().classList.add('container');
+    }
+    
+    getThisEl() {
+        return document.querySelector('.' + this.className);
+    }
+}
+
+var GF = new GolosFeedback();
+GF.init();
