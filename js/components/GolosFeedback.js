@@ -14,7 +14,7 @@ class GolosFeedback {
     
     init() {
         this.navbar2.init();
-        this.formAddFb.place();
+        //this.formAddFb.place();
         //this.feedbacks[0].place();
         //this.feedbacks[1].place();
         this.addEventListeners();
@@ -37,8 +37,11 @@ class GolosFeedback {
             $.hashController.setHash($.navbar2.tabs[$.navbar2.activeTab].name);
         })
         this.getThisEl().addEventListener('formAddFbDelete', function() {
-            $.formAddFb = undefined;
-        })
+            //$.formAddFb = undefined;
+        });
+        document.querySelector('.btn-add-fb').addEventListener('click', function() {
+            $.formAddFb.place();
+        });
     }
     
     getThisEl() {
