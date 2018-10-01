@@ -108,4 +108,9 @@ class Filter {
         }
         this.tabs[0].counter = sum;
     }
+    resetCounters() {
+        for(let i=1; i<this.tabs.length; i++) {
+            this.tabs[i].counter = 0;
+        }
+    }
 }
