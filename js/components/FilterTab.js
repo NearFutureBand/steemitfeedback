@@ -24,4 +24,7 @@ class FilterTab {
         this.active = true;
         return this.key;
     }
+    
+    
+    /*Not Interesting*/
 }

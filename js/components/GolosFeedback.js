@@ -17,21 +17,19 @@ class GolosFeedback {
     init() {
         
         this.navbar2.init();
-        
-        //this.feedbacks[0].place();
-        //this.feedbacks[1].place();
         this.addEventListeners();
+        this.loadFbs();
     }
     
     
     addEventListeners() {
         let $ = this;
-        this.getThisEl().addEventListener('fbSelectorChange', function() { 
-            //close form-add-fb if it is opened
+        this.getThisEl().addEventListener('fbSelectorChange', function() {
             //close expanded feedback
             //download feedbacks
             $.formAddFb.delete();
-            
+            $.removeFbs();
+            $.loadFbs();
         });
         this.getThisEl().addEventListener('hashChange', function() {
             $.hashController.setHash($.navbar2.tabs[$.navbar2.activeTab].name);
@@ -50,7 +48,6 @@ class GolosFeedback {
     
     loadFbs() {
         let $ = this;
-        //clearTabLabels();
     
         var query = {
             select_tags: ['fb', this.domain ],
@@ -62,28 +59,35 @@ class GolosFeedback {
             console.log(err, result);
             
             if ( ! err) {
-                //filter results - validate json-metadata
-                //check result if it's empty
-                //create feedbacks
-
-                result.forEach( function( item) {
-                    $.feedbacks.push( new Feedback(
-                        item.id,
-                        item.permlink,
-                        'default',
-                        item.title,
-                        item.body,
-                        item.author,
-                        item.created,
-                        $.className
-                        )
-                    );    
-                });
-            $.feedbacks.forEach( function(fb) {
-                fb.place();
-            });
-                
+                if( result.length != 0) {
+                    result.forEach( function(fb) {
+                        if( $.filterFb(fb) ) {
+                            $.feedbacks.push( new Feedback(
+                                fb.id,
+                                fb.permlink,
+                                'default',
+                                fb.title,
+                                fb.body,
+                                fb.author,
+                                fb.created,
+                                $.className
+                                //TODO: pass votes
+                            )
+                            );
+                        }
+                    });
                     
+                    if($.feedbacks.length == 0) {
+                        //create empty fb
+                        console.log('Create empty fb');
+                    } else {
+                        $.placeFbs();
+                    }
+                } else {
+                    //create empty fb
+                    console.log('Create empty fb');
+                }
+                
             } else {
                 console.error(err);
                 //showError(err.message);
@@ -92,6 +96,50 @@ class GolosFeedback {
         
     }
     
+    placeFbs() {
+        this.feedbacks.forEach( function(fb) {
+            fb.place();
+        });
+        this.navbar2.restate();
+    }
+    removeFbs() {
+        
+    }
+    
+    
+    filterFb(fb) {
+        let $ = this;
+        if(fb.parent_permlink != 'fb') {
+            return false;
+        } else {
+            let json = JSON.parse(fb.json_metadata);
+            if(json.tags[0] != $.domain) {
+                return false;
+            } else {
+                /*//переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
+                //var control = false;
+                
+                //проверить по всем типам фидбеков
+                for(let j = 0; j < navbar2.tabs.length; j++) {
+                    
+                    //инкрементировать лейбл
+                    if(json.tags[1] == tabLabelNames[j] ) {
+                        //incData(json.tags[1]);
+                        control = true;
+                        break;
+                    }
+                }*/
+                
+                $.navbar2.incCounter( json.tags[1] );
+                
+                if( (json.tags[1] == $.navbar2.currentFbSelector[0] || $.navbar2.currentFbSelector[0] == 'all') ) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    /*Not interesting*/
     initBootstrapStructure() {
         this.getThisEl().classList.add('container');
     }

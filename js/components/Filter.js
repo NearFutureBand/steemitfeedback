@@ -4,7 +4,7 @@ class Filter {
         this.GFCLASS = GFCLASS;
         this.tabs = [];
         this.createFilterTabs(this.GFCLASS);
-        this.activeTab = null;
+        this.activeTab = null; //Int 
         this.className = 'nav-filter';
         this.currentFbSelector = [''];
         this.makeTabActive(0);
@@ -51,6 +51,8 @@ class Filter {
     restate() {
         let el = this.getDynBlock();
         if( el.innerHTML != '') el.innerHTML = '';
+        
+        this.setCounterAll();
         el.innerHTML = this.makeDynHTML();
         this.addEvntClk();
     }
@@ -91,7 +93,19 @@ class Filter {
         this.activeTab = index;
         this.currentFbSelector[0] = this.tabs[index].click();
     }
-    incCounter(index) {
-        
+    incCounter(key) {
+        this.getTabByKey(key).counter++;
     }    
+    getTabByKey(key) {
+        for(let i=0; i<this.tabs.length; i++) {
+            if( this.tabs[i].key == key) return this.tabs[i];
+        }
+    }
+    setCounterAll() {
+        let sum = 0;
+        for(let i=1; i<this.tabs.length; i++) {
+            sum += this.tabs[i].counter;
+        }
+        this.tabs[0].counter = sum;
+    }
 }

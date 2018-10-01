@@ -26,7 +26,7 @@ class Feedback {
                 '<div class="row">'+
                     '<div class="col-lg-9 col-md-9 text">'+
                         '<h3>'+ this.heading +'</h3>'+
-                        '<p>'+ this.body +'</p>'+
+                        '<p>'+ (this.expanded ? this.cutText(this.body) : this.body) +'</p>'+
                         '<div class="buttons">'+
                             '<button type="button" class="btn btn-dark btn-show-comments">'+
                                 '<span class="badge badge-light">'+ this.comments.length +'</span>'+
@@ -41,5 +41,10 @@ class Feedback {
             '</div>'+
             '<div class="container comments"></div>';
         document.querySelector('.' + this.GFCLASS).appendChild(el);
+    }
+    
+    cutText(text) {
+        if( text.length > 400) text = text.slice(0, 399) + '...';
+        return text;
     }
 }
