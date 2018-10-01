@@ -5,6 +5,7 @@ class FormAddFeedback {
         this.tabs = tabs;
         this.opened = false;
         this.editor = null;
+        this.dataToSend = {};
     }
     
     place() {
@@ -80,9 +81,37 @@ class FormAddFeedback {
     }
     
     send() {
-        
-    }
     
+        //if( validateSendingData(body, title) ) {
+        //addToJsonMetadata([findCheckedRadio()], "tags");
+    
+        //console.log(jsonMetadata);
+        //console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+jsonMetadata);
+        //console.log(window.wif);
+        
+        /*golos.broadcast.comment(wif.posting,
+                                '',
+                                'fb',
+                                username,
+                                urlLit( title, 0 ) + '-' + Date.now().toString(),
+                                document.getElementById('formHeader').value,
+                                ckeditor.getData(),
+                                jsonMetadata,
+                                function(err, result) {
+                                    if ( ! err) {
+                                        document.getElementById('formHeader').value = '';
+                                        ckeditor.setData('');
+                                        closeAddFbForm();
+                                        removeFbs();
+                                        loadFbs();
+                                        console.log('sent');
+                                    } else {
+                                        console.error(err);
+                                        showError(err.message);
+                                    }
+                                });
+        }*/
+    }
     delete() {
         if (this.opened) {
             this.opened = false;
@@ -97,6 +126,10 @@ class FormAddFeedback {
         let $ = this;
         this.getThisEl().querySelector(' .btn-add-fb-done').addEventListener('click', function(){
             console.log('sending add-fb-form');
+            /*if( $.validate()) {
+                $.send();
+            }*/
+            
         });
         this.getThisEl().querySelector(' .btn-add-fb-cancel').addEventListener('click', function(){
             $.delete();
