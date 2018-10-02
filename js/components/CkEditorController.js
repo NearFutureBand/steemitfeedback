@@ -1,7 +1,7 @@
 class CkEditor() {
-    constructor() {
+    constructor(place) {
         this.language;
-        this.
+        this.place = place;
     }
     
     place() {

@@ -37,6 +37,13 @@ class GolosFeedback {
         this.getThisEl().addEventListener('formAddFbDelete', function() {
             
         });
+        this.getThisEl().addEventListener('expandFb', function(e) {
+            let targetId = e.detail.id;
+            console.log(targetId);
+            $.expandFb(id);
+            //recieve id of the target feedback
+        });
+        
         document.querySelector('.btn-add-fb').addEventListener('click', function() {
             $.formAddFb.place();
         });
@@ -95,6 +102,10 @@ class GolosFeedback {
         });
         
     }
+    getOneFb() {
+        //getContent()
+        //this.feedbacks.push( new Feedback() );
+    }
     
     placeFbs() {
         this.feedbacks.forEach( function(fb) {
@@ -110,6 +121,11 @@ class GolosFeedback {
         this.navbar2.resetCounters();
     }
     
+    expandFb(id) {
+        let targetFeedback = this.getFeedbackById(id);
+        this.removeFbs();
+        targetFeedback.expand();
+    }
     
     filterFb(fb) {
         let $ = this;
@@ -151,5 +167,10 @@ class GolosFeedback {
         golos.config.set('websocket', 'wss://ws.testnet.golos.io');
         golos.config.set('address_prefix', 'GLS');
         golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+    }
+    getFeedbackById(id) {
+        for( let i = 0; i < this.feedbacks.length; i++) {
+            if( this.feedbacks[i].id == id ) return this.feedbacks[i];
+        }
     }
 }

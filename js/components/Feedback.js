@@ -44,10 +44,48 @@ class Feedback {
             '</div>'+
             '<div class="container comments"></div>';
         document.querySelector('.' + this.GFCLASS).appendChild(el);
+        
+        this.placeComments();
     }
     remove() {
         this.getThisEl().remove();
     }
+    expand() {
+        this.expanded = true;
+        console.log('placing the following feedback: ');
+        console.log(this);
+        //this.restate();
+    }
+    
+    addEventListeners() {
+        let $ = this;
+        
+        //TODO одинаковые события на разные кнопки
+        //Comments button down
+        this.getThisEl().querySelector('.btn-show-comments').addEventListener('click', function() {
+            document.querySelector('.' + this.GFCLASS)
+                .dispatchEvent( new CustomEvent("expandFb", {
+                    detail: {
+                        $.id
+                    }
+                }
+                ))
+        });
+        
+        this.getThisEl().querySelector('.text>h3').addEventListener('click', function() {
+            document.querySelector('.' + this.GFCLASS)
+                .dispatchEvent( new CustomEvent("expandFb", {
+                    detail: {
+                        $.id
+                    }
+                }
+                ))
+        });
+    }
+    
+    
+    
+    /*Not Interested*/
     cutText(text) {
         if( text.length > 400) text = text.slice(0, 399) + '...';
         return text;
