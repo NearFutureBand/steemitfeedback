@@ -26,7 +26,7 @@ class Comment {
             '<div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment">'+
                 '<div class="row">'+
                     '<div class="col-lg-9 col-md-9 text">'+
-                        '<p>'++'</p>'+
+                        '<p>' + this.body + '</p>'+
                     '</div>'+
                     this.controlPanel.makeHTML() +
                 '</div>'+

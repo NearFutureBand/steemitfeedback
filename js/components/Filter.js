@@ -66,7 +66,7 @@ class Filter {
                 console.log($.currentFbSelector);
                 $.restate();
                 
-                document.querySelector('.' + $.GFCLASS).dispatchEvent(new CustomEvent('fbSelectorChange'));
+                document.querySelector('.' + $.GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
                 document.querySelector('.' + $.GFCLASS).dispatchEvent(new CustomEvent('hashChange'));
             });
         }

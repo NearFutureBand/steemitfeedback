@@ -24,12 +24,11 @@ class GolosFeedback {
     
     addEventListeners() {
         let $ = this;
-        this.getThisEl().addEventListener('fbSelectorChange', function() {
+        this.getThisEl().addEventListener('reloadFeedbacks', function() {
             //close expanded feedback
             
             $.formAddFb.delete();
-            $.removeFbs();
-            $.loadFbs();
+            $.reloadFbs();
         });
         this.getThisEl().addEventListener('hashChange', function() {
             $.hashController.setHash($.navbar2.tabs[$.navbar2.activeTab].name);
@@ -38,10 +37,7 @@ class GolosFeedback {
             
         });
         this.getThisEl().addEventListener('expandFb', function(e) {
-            let targetId = e.detail.id;
-            console.log(targetId);
-            $.expandFb(id);
-            //recieve id of the target feedback
+            $.expandFb(e.detail.id);
         });
         
         document.querySelector('.btn-add-fb').addEventListener('click', function() {
@@ -62,6 +58,7 @@ class GolosFeedback {
             limit: 100
         };
         
+        //TODO make a function createFb(fb)
         golos.api.getDiscussionsByBlog(query, function(err, result) {
             console.log(err, result);
             
@@ -77,6 +74,7 @@ class GolosFeedback {
                                 fb.body,
                                 fb.author,
                                 fb.created,
+                                fb.replies.length,
                                 $.className
                                 //TODO: pass votes
                             )
@@ -102,10 +100,14 @@ class GolosFeedback {
         });
         
     }
-    getOneFb() {
+    reloadFbs() {
+        this.removeFbs();
+        this.loadFbs();
+    }
+    /*getOneFb() {
         //getContent()
         //this.feedbacks.push( new Feedback() );
-    }
+    }*/
     
     placeFbs() {
         this.feedbacks.forEach( function(fb) {
@@ -120,11 +122,11 @@ class GolosFeedback {
         this.feedbacks = [];
         this.navbar2.resetCounters();
     }
-    
     expandFb(id) {
         let targetFeedback = this.getFeedbackById(id);
         this.removeFbs();
         targetFeedback.expand();
+        this.feedbacks.push(targetFeedback);
     }
     
     filterFb(fb) {

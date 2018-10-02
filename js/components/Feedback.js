@@ -1,5 +1,5 @@
 class Feedback {
-    constructor(id, permlink, type, heading, body, author, date, GFCLASS) {
+    constructor(id, permlink, type, heading, body, author, date, commentCount, GFCLASS) {
         this.className = 'fb';
         this.expanded = false;
         this.yourVote = 0;
@@ -11,6 +11,7 @@ class Feedback {
         this.heading = heading;
         this.date = date;
         this.author = author;
+        this.commentCount = commentCount;
         this.comments = [];
         this.likes = 0;
         this.dislikes = 0;
@@ -32,7 +33,7 @@ class Feedback {
                         '<p>'+ (this.expanded ? this.body : this.cutText(this.body)) +'</p>'+
                         '<div class="buttons">'+
                             '<button type="button" class="btn btn-dark btn-show-comments">'+
-                                '<span class="badge badge-light">'+ this.comments.length +'</span>'+
+                                '<span class="badge badge-light">'+ this.commentCount +'</span>'+
                                 '<span class="icon-message-square"></span>'+
                                 '<span class="icon-arrow-left hidden"></span>'+
                                 '<span class="hidden"> Back</span>'+
@@ -44,7 +45,7 @@ class Feedback {
             '</div>'+
             '<div class="container comments"></div>';
         document.querySelector('.' + this.GFCLASS).appendChild(el);
-        
+        this.addEventListeners();        
         this.placeComments();
     }
     remove() {
@@ -52,9 +53,15 @@ class Feedback {
     }
     expand() {
         this.expanded = true;
-        console.log('placing the following feedback: ');
-        console.log(this);
+        //getContentReplies - get comments entities to show them
+        //update commentCount variable
         //this.restate();
+        this.place();
+    }
+    placeComments() {
+        if(this.comments.length != 0) {
+            //console.log('placing comments');
+        }
     }
     
     addEventListeners() {
@@ -63,31 +70,39 @@ class Feedback {
         //TODO одинаковые события на разные кнопки
         //Comments button down
         this.getThisEl().querySelector('.btn-show-comments').addEventListener('click', function() {
-            document.querySelector('.' + this.GFCLASS)
-                .dispatchEvent( new CustomEvent("expandFb", {
-                    detail: {
-                        $.id
-                    }
-                }
-                ))
+            $.sendExpandFbEvent($.id);
         });
         
+        //Click on the feedback's header
         this.getThisEl().querySelector('.text>h3').addEventListener('click', function() {
-            document.querySelector('.' + this.GFCLASS)
-                .dispatchEvent( new CustomEvent("expandFb", {
-                    detail: {
-                        $.id
-                    }
-                }
-                ))
+           $.sendExpandFbEvent($.id);
         });
     }
     
     
     
-    /*Not Interested*/
+    /*Not Interesting*/
     cutText(text) {
         if( text.length > 400) text = text.slice(0, 399) + '...';
         return text;
+    }
+    sendExpandFbEvent(id) {
+        if( this.expanded == false) {
+            document.querySelector('.' + this.GFCLASS)
+                .dispatchEvent( new CustomEvent("expandFb", {
+                    detail: {
+                        id: id
+                    }
+                }
+            ))
+        } else {
+            document.querySelector('.' + this.GFCLASS)
+                .dispatchEvent( new CustomEvent("reloadFeedbacks", {
+                    detail: {
+                        id: id
+                    }
+                }
+            ))
+        }
     }
 }
