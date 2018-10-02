@@ -16,6 +16,9 @@ class Feedback {
         this.dislikes = 0;
         this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, this.likes, this.dislikes);
     }
+    getThisEl() {
+        return document.querySelector('#fb-' + this.id + '.row' + '.' + this.className)
+    }
     place() {
         let el = document.createElement('div');
         el.className = 'row ' + this.className;
@@ -26,7 +29,7 @@ class Feedback {
                 '<div class="row">'+
                     '<div class="col-lg-9 col-md-9 text">'+
                         '<h3>'+ this.heading +'</h3>'+
-                        '<p>'+ this.body +'</p>'+
+                        '<p>'+ (this.expanded ? this.body : this.cutText(this.body)) +'</p>'+
                         '<div class="buttons">'+
                             '<button type="button" class="btn btn-dark btn-show-comments">'+
                                 '<span class="badge badge-light">'+ this.comments.length +'</span>'+
@@ -41,5 +44,12 @@ class Feedback {
             '</div>'+
             '<div class="container comments"></div>';
         document.querySelector('.' + this.GFCLASS).appendChild(el);
+    }
+    remove() {
+        this.getThisEl().remove();
+    }
+    cutText(text) {
+        if( text.length > 400) text = text.slice(0, 399) + '...';
+        return text;
     }
 }
