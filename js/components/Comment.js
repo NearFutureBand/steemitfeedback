@@ -36,6 +36,9 @@ class Comment {
         addEventsForComLikes(data[1], data[0]);
         console.log("comment has been created: " + data[1] + " " + data[0]);*/
     }
+    remove() {
+        this.getThisEl().remove();
+    }
     addEventListeners() {
         
     }

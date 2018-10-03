@@ -16,9 +16,13 @@ class Feedback {
         this.likes = 0;
         this.dislikes = 0;
         this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, this.likes, this.dislikes);
+        this.commentForm = null;
     }
     getThisEl() {
         return document.querySelector('#fb-' + this.id + '.row' + '.' + this.className)
+    }
+    getDynBlock() {
+        return this.getThisEl().querySelector('.text');
     }
     place() {
         let el = document.createElement('div');
@@ -29,38 +33,61 @@ class Feedback {
             '<div class="container body-fb tile">'+
                 '<div class="row">'+
                     '<div class="col-lg-9 col-md-9 text">'+
-                        '<h3>'+ this.heading +'</h3>'+
-                        '<p>'+ (this.expanded ? this.body : this.cutText(this.body)) +'</p>'+
-                        '<div class="buttons">'+
-                            '<button type="button" class="btn btn-dark btn-show-comments">'+
-                                '<span class="badge badge-light">'+ this.commentCount +'</span>'+
-                                '<span class="icon-message-square"></span>'+
-                                '<span class="icon-arrow-left hidden"></span>'+
-                                '<span class="hidden"> Back</span>'+
-                            '</button>'+
-                        '</div>'+
+                        
                     '</div>'+
                     this.controlPanel.makeHTML() + 
                 '</div>'+
             '</div>'+
             '<div class="container comments"></div>';
-        document.querySelector('.' + this.GFCLASS).appendChild(el);
-        this.addEventListeners();        
+        document.querySelector('.' + this.GFCLASS).appendChild(el);      
+        this.restate();
+    }
+    restate() {
+        let el = this.getDynBlock();
+        if( el.innerHTML != '') el.innerHTML = '';
+        
+        el.innerHTML = this.makeDynHTML();
+        this.addEventListeners();
         this.placeComments();
+        this.placeCommentForm();
+    }
+    makeDynHTML() {
+        let exportHTML =
+            '<h3>'+ this.heading +'</h3>'+
+            '<p>'+ (this.expanded ? this.body : this.cutText(this.body)) +'</p>'+
+            '<div class="buttons">'+
+                '<button type="button" class="btn btn-dark btn-show-comments">'+
+                    '<span class="badge badge-light">'+ this.commentCount +'</span>'+
+                    '<span class="icon-message-square"></span>'+
+                    '<span class="icon-arrow-left hidden"></span>'+
+                    '<span class="hidden"> Back</span>'+
+                '</button>'+
+            '</div>';
+        return exportHTML;
     }
     remove() {
         this.getThisEl().remove();
+        
     }
     expand() {
         this.expanded = true;
         //getContentReplies - get comments entities to show them
         //update commentCount variable
         //this.restate();
-        this.place();
+        //this.place();
+        this.restate();
     }
     placeComments() {
         if(this.comments.length != 0) {
             //console.log('placing comments');
+        }
+    }
+    removeComments() {
+        if(this.comments.length != 0) {
+            this.comments.forEach( function(com) {
+                com.remove();
+            });
+            this.comments = [];
         }
     }
     
@@ -79,7 +106,20 @@ class Feedback {
         });
     }
     
-    
+    placeCommentForm() {
+        if(this.expanded == true) {
+            this.commentForm = new FormAddComment(this.GFCLASS);
+            this.commentForm.place();
+        }
+                
+    }
+    removeCommentForm() {
+        if( this.commentForm != null) {
+            this.commentForm().getThisEl().remove();
+            this.commentForm = null;
+        }
+        
+    }
     
     /*Not Interesting*/
     cutText(text) {

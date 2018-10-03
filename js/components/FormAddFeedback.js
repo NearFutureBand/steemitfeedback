@@ -94,7 +94,7 @@ class FormAddFeedback {
                                 });
         }*/
     }
-    delete() {
+    remove() {
         if (this.opened) {
             this.opened = false;
             this.getThisEl().remove();

@@ -1,4 +1,4 @@
-class FormAddComment() {
+class FormAddComment {
     constructor(GFCLASS) {
         this.className = 'frm-add-com';
         this.editor = null;
@@ -17,10 +17,10 @@ class FormAddComment() {
                 '<div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile">'+
                     '<form>'+
                         '<div class="form-group">'+
-                            '<textarea class="form-control txt-add-com" id="commentBody" rows="3" placeholder='++'></textarea>'+
+                            '<textarea class="form-control txt-add-com" id="commentBody" rows="3" placeholder="comment text"></textarea>'+
                         '</div>'+
                         '<button type="click" class="btn btn-primary btn-add-com-done">'+
-                            '<span class="icon-checkmark"></span>'++
+                            '<span class="icon-checkmark"></span> Done'
                         '</button>'+
                     '</form>'+
                 '</div>'+
@@ -49,6 +49,10 @@ class FormAddComment() {
     
     addEventsForComDone(fbId);
     clearJsonMetadata();*/
+    }
+    
+    remove() {
+        this.getThisEl().remove();
     }
     
 }

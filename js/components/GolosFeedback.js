@@ -9,9 +9,6 @@ class GolosFeedback {
         this.formAddFb = new FormAddFeedback(this.className, this.navbar2.tabs);
         this.hashController = new HashController(this.navbar2.tabs);
         this.feedbacks = [];
-        
-        //this.feedbacks.push( new Feedback(0,'blablabla','idea' ,'title','Lorem ipsum dolor sit amet, consectetur adipiscing elit.','author', '28-04-2018', this.className));
-        //this.feedbacks.push( new Feedback(1,'eeeeeeeeeee','thank' ,'feedback here','Aliquam eget mi dapibus, consequat mauris eget, rutrum diam.','Vasya', '03-06-2018', this.className));
     }
     
     init() {
@@ -25,9 +22,7 @@ class GolosFeedback {
     addEventListeners() {
         let $ = this;
         this.getThisEl().addEventListener('reloadFeedbacks', function() {
-            //close expanded feedback
-            
-            $.formAddFb.delete();
+            $.formAddFb.remove();
             $.reloadFbs();
         });
         this.getThisEl().addEventListener('hashChange', function() {
@@ -41,6 +36,7 @@ class GolosFeedback {
         });
         
         document.querySelector('.btn-add-fb').addEventListener('click', function() {
+            $.removeFbs();
             $.formAddFb.place();
         });
     }
@@ -66,19 +62,7 @@ class GolosFeedback {
                 if( result.length != 0) {
                     result.forEach( function(fb) {
                         if( $.filterFb(fb) ) {
-                            $.feedbacks.push( new Feedback(
-                                fb.id,
-                                fb.permlink,
-                                'default',
-                                fb.title,
-                                fb.body,
-                                fb.author,
-                                fb.created,
-                                fb.replies.length,
-                                $.className
-                                //TODO: pass votes
-                            )
-                            );
+                            $.createFb(fb);
                         }
                     });
                     
@@ -125,8 +109,24 @@ class GolosFeedback {
     expandFb(id) {
         let targetFeedback = this.getFeedbackById(id);
         this.removeFbs();
-        targetFeedback.expand();
         this.feedbacks.push(targetFeedback);
+        this.placeFbs();
+        targetFeedback.expand();
+    }
+    createFb(fb) {
+        this.feedbacks.push( new Feedback(
+                                fb.id,
+                                fb.permlink,
+                                JSON.parse(fb.json_metadata).tags[1],
+                                fb.title,
+                                fb.body,
+                                fb.author,
+                                fb.created,
+                                fb.replies.length,
+                                this.className
+                                //TODO: pass votes
+                            )
+                            );
     }
     
     filterFb(fb) {
