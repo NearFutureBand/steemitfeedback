@@ -1,13 +1,15 @@
 class CkEditor() {
     constructor(place) {
-        this.language;
+        this.language = detectLang();
         this.place = place;
+        this.editor = null;
     }
     
     place() {
+        let $ = this;
         ClassicEditor
             .create( document.querySelector( '#formText' ), {
-                    //language: detectLang(),
+                    language: $.language,
                     removePlugins: [ 'ImageUpload' ],
                 } )
             .then( editor => {
@@ -23,7 +25,7 @@ class CkEditor() {
             } )
             .catch( err => {
                 console.error( err.stack );
-                showError(err.message);
+                //showError(err.message);
             } );
     }
 }
