@@ -1,11 +1,10 @@
 /*Navigation bar with tabs with counters for filtering incoming feedbacks*/
 class Filter {
-    constructor(GFCLASS) {
-        this.GFCLASS = GFCLASS;
+    constructor() {
         this.tabs = [];
-        this.createFilterTabs(this.GFCLASS);
+        this.createFilterTabs();
         this.activeTab = null; //Int 
-        this.className = 'nav-filter';
+        this.className = 'filter';
         this.currentFbSelector = [''];
         this.makeTabActive(0);
     }
@@ -14,37 +13,30 @@ class Filter {
         this.place();
     }
     
+    getThisEl() {
+        return document.querySelector(GFCLASS +' .col-12.'+ this.className);
+    }
+    getDynBlock() {
+        return document.querySelector('.'+ GFCLASS +' .col-12.'+ this.className +' .wrapper.tile');
+    }
     makeDynHTML() {
         let exportHTML = '';
         this.tabs.forEach( function(tab) {
-            exportHTML += ('<li class="nav-item">'+ tab.makeHTML() + '</li>');
+            exportHTML += ( tab.makeHTML() );
         });
         return exportHTML;
     }
     
     place() {
         let el = document.createElement('div');
-        el.className = 'row ' + this.className;
+        el.className = 'col-12 ' + this.className;
         el.innerHTML = 
-            '<div class="col-12">'+
-                '<nav class="navbar navbar-expand-lg tabs">'+
-                    '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavFeedbackTabs" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">'+
-                        '<span class="navbar-toggler-icon"></span>'+
-                    '</button>'+
-                    '<div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavFeedbackTabs">'+
-                        '<div class="container">'+
-                            '<div class="row">'+
-                                '<div class="col-12 tabs">'+
-                                    '<ul class="nav nav-tabs">'+
-                                        
-                                    '</ul>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
+            '<div class="col-12 filter">'+
+                '<div class="wrapper tile">'+
+                    
                     '</div>'+
-                '</nav>'+
-            '</div>';
-        document.querySelector('.' + this.GFCLASS).appendChild(el);
+                '</div>';
+        document.querySelector(MP).appendChild(el);
         this.restate();
     }
     
@@ -66,25 +58,19 @@ class Filter {
                 console.log($.currentFbSelector);
                 $.restate();
                 
-                document.querySelector('.' + $.GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
-                document.querySelector('.' + $.GFCLASS).dispatchEvent(new CustomEvent('hashChange'));
+                document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
+                document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('hashChange'));
             });
         }
     }
     
     /*Incapsulated*/
-    getThisEl() {
-        return document.querySelector('.'+ this.GFCLASS +' .row.'+ this.className);
-    }
-    getDynBlock() {
-        return document.querySelector('.'+ this.GFCLASS +' .row.'+ this.className +' ul.nav.nav-tabs');
-    }
-    createFilterTabs(GFCLASS) {
-        this.tabs.push( new FilterTab('All', 'all', 'icon-radio-unchecked', GFCLASS));
-        this.tabs.push( new FilterTab('Ideas', 'idea', 'icon-magic-wand', GFCLASS));
-        this.tabs.push( new FilterTab('Problems', 'problem', 'icon-bug', GFCLASS));
-        this.tabs.push( new FilterTab('Questions', 'question', 'icon-question', GFCLASS));
-        this.tabs.push( new FilterTab('Thanks', 'thank', 'icon-gift', GFCLASS));
+    createFilterTabs() {
+        this.tabs.push( new FilterTab('All', 'all', 'icon-radio-unchecked'));
+        this.tabs.push( new FilterTab('Ideas', 'idea', 'icon-magic-wand'));
+        this.tabs.push( new FilterTab('Problems', 'problem', 'icon-bug'));
+        this.tabs.push( new FilterTab('Questions', 'question', 'icon-question'));
+        this.tabs.push( new FilterTab('Thanks', 'thank', 'icon-gift'));
     }
     makeTabActive(index) {
         for(let i = 0; i < this.tabs.length; i++) {

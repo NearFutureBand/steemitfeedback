@@ -1,9 +1,8 @@
 class Feedback {
-    constructor(id, permlink, type, heading, body, author, date, commentCount, GFCLASS) {
-        this.className = 'fb';
+    constructor(id, permlink, type, heading, body, author, date, commentCount) {
+        this.className = 'feedback';
         this.expanded = false;
         this.yourVote = 0;
-        this.GFCLASS = GFCLASS;
         this.id = id;
         this.type = type;
         this.permlink = permlink;
@@ -19,27 +18,25 @@ class Feedback {
         this.commentForm = null;
     }
     getThisEl() {
-        return document.querySelector('#fb-' + this.id + '.row' + '.' + this.className)
+        return document.querySelector('#fb-' + this.id + '.col-12.' + this.className)
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.text');
     }
     place() {
         let el = document.createElement('div');
-        el.className = 'row ' + this.className;
+        el.className = 'col-12 ' + this.className;
         el.setAttribute('id', 'fb-' + this.id);
         
         el.innerHTML = 
-            '<div class="container body-fb tile">'+
-                '<div class="row">'+
-                    '<div class="col-lg-9 col-md-9 text">'+
-                        
-                    '</div>'+
-                    this.controlPanel.makeHTML() + 
-                '</div>'+
+            '<div class="feedback-wrapper tile">'+
+                '<div class="text">'+
+                
+                '</div>'
+                this.controlPanel.makeHTML() + 
             '</div>'+
-            '<div class="container comments"></div>';
-        document.querySelector('.' + this.GFCLASS).appendChild(el);      
+            '<div class="row comments"></div>';
+        document.querySelector(MP).appendChild(el);      
         this.restate();
     }
     restate() {
@@ -47,36 +44,34 @@ class Feedback {
         if( el.innerHTML != '') el.innerHTML = '';
         
         el.innerHTML = this.makeDynHTML();
-        this.addEventListeners();
-        this.placeComments();
-        this.placeCommentForm();
+        //this.addEventListeners();
+        //this.placeComments();
+        //this.placeCommentForm();
     }
     makeDynHTML() {
         let exportHTML =
-            '<h3>'+ this.heading +'</h3>'+
-            '<p>'+ (this.expanded ? this.body : this.cutText(this.body)) +'</p>'+
-            '<div class="buttons">'+
-                '<button type="button" class="btn btn-dark btn-show-comments">'+
-                    '<span class="badge badge-light">'+ this.commentCount +'</span>'+
-                    '<span class="icon-message-square"></span>'+
-                    '<span class="icon-arrow-left hidden"></span>'+
-                    '<span class="hidden"> Back</span>'+
-                '</button>'+
+            '<div class="text-block">'
+                '<div class="title">'+
+                    '<span class="feedback-title">'+ this.heading +'</span>'+
+                '</div>'+
+                '<div class="body">'+ this.body +'</div>'+
+            '</div>'+
+            '<div class="utility">'+
+                '<button class="btn btn-dark open-comments">Comments</button>'+
             '</div>';
         return exportHTML;
     }
     remove() {
         this.getThisEl().remove();
-        
     }
-    expand() {
+    /*expand() {
         this.expanded = true;
         //getContentReplies - get comments entities to show them
         //update commentCount variable
         //this.restate();
         //this.place();
         this.restate();
-    }
+    }*/
     placeComments() {
         if(this.comments.length != 0) {
             //console.log('placing comments');
@@ -128,7 +123,7 @@ class Feedback {
     }
     sendExpandFbEvent(id) {
         if( this.expanded == false) {
-            document.querySelector('.' + this.GFCLASS)
+            document.querySelector('.' + GFCLASS)
                 .dispatchEvent( new CustomEvent("expandFb", {
                     detail: {
                         id: id
@@ -136,7 +131,7 @@ class Feedback {
                 }
             ))
         } else {
-            document.querySelector('.' + this.GFCLASS)
+            document.querySelector('.' + GFCLASS)
                 .dispatchEvent( new CustomEvent("reloadFeedbacks", {
                     detail: {
                         id: id

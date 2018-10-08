@@ -1,22 +1,18 @@
 class FilterTab {
-    constructor(name, key, icon, GFCLASS) {
+    constructor(name, key, icon) {
         this.name = name;
         this.key = key;
         this.counter = 0;
         this.icon = icon;
         this.active = false;
-        this.GFCLASS = GFCLASS;
     }
     
     makeHTML() {
-        return '<a class="nav-link tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+
-                    '<span class="'+ this.icon +'"></span> '+ this.name +
-                    ' <span class="tab-label"> ('+ this.counter +') </span>' +
-                '</a>';
+        return '<div class="tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+this.name+' <span class="badge badge-light couter">0</span></div>';
     }
     
     getThisEl() {
-        return document.querySelector('.' + this.GFCLASS + ' a.nav-link.tab[data-target="'+ this.key +'"]');
+        return document.querySelector('.' + GFCLASS + ' div.tab[data-target="'+ this.key +'"]');
     }
     
     /*Events*/

@@ -1,6 +1,6 @@
 class GolosFeedback {
     constructor() {
-        this.className = 'golos-feedback-container';
+        this.className = GFCLASS;
         this.initBootstrapStructure();
         this.domain = (location.hostname == "")? 'localhost' : location.hostname;
         this.setTestnetWebsocket();
@@ -14,7 +14,7 @@ class GolosFeedback {
     init() {
         
         this.navbar2.init();
-        this.addEventListeners();
+        //this.addEventListeners();
         this.loadFbs();
     }
     
@@ -163,7 +163,10 @@ class GolosFeedback {
     
     /*Not interesting*/
     initBootstrapStructure() {
-        this.getThisEl().classList.add('container');
+        this.getThisEl().innerHTML = 
+            '<div class="container golos-feedback-container-wrapper">'+
+                '<div class="row mount-place"></div>'+
+            '</div>';
     }
     setTestnetWebsocket() {
         golos.config.set('websocket', 'wss://ws.testnet.golos.io');

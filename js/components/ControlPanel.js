@@ -5,32 +5,23 @@ class ControlPanel {
         this.date = date;
         this.likes = likes;
         this.dislikes = dislikes;
-        this.className = 'controls';
+        this.className = 'control-panel';
     }
     
     makeHTML() {
-        return '<div class="col-lg-3 col-md-3 '+ this.className +'" id="ctrl-'+ this.id +'">'+
-                   '<div class="controls-wrapper">'+
-                       '<div class="name">'+
-                           '<h6>'+ this.author +'</h6>'+
-                       '</div>'+
-                       '<div class="photo">'+
-                           '<img src="http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg">'+
-                       '</div>'+
-                       '<div class="date">'+
-                           '<small>'+ this.date +'</small>'+
-                       '</div>'+
-                       '<div class="likes">'+
-                           '<button type="button" class="btn btn-secondary btn-vote" data-like="1">'+
-                               '<span class="badge badge-dark">'+ this.likes +'</span>'+
-                               '<span class="icon-thumbs-up"></span>'+
-                           '</button>'+
-                           '<button type="button" class="btn btn-secondary btn-vote" data-like="0">'+
-                               '<span class="icon-thumbs-down"></span>'+
-                               '<span class="badge badge-dark">'+ this.dislikes +'</span>'+
-                           '</button>'+
-                       '</div>'+
-                   '</div>'+
-                '</div>';
+        return
+            '<div class="'+ this.className +'"'+
+                '<div class="control-panel-wrapper">'+
+                    '<div class="author">'+ this.author +'</div>'+
+                    '<div class="avatar">'+
+                        '<div class="avatar-holder" style="background-image: url("http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg")"></div>'+
+                    '</div>'+
+                    '<div class="created">'+ this.date +'</div>'+
+                    '<div class="vote-buttons">'+
+                        '<button class="btn btn-light vote-like">Like <span class="badge badge-dark couter">'+ this.likes +'</span></button>'+
+                        '<button class="btn btn-light vote-dislike">Dislike <span class="badge badge-dark couter">'+ this.dislikes +'</span></button>'+
+                    '</div>'+
+                '</div>'+
+            '</div>';
     }
 }
