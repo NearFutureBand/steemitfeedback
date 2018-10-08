@@ -1,10 +1,12 @@
 @paddingStock: 10px;
+@bgCol: #eee;
 
 body {
-    background-color: #333;
+    background-color: @bgCol;
 }
 
 .golos-feedback-container {
+    font-family: 'Open-sans', sans-serif;
     width: 100%;
     display: flex!important;
     justify-content: center!important;
@@ -83,6 +85,7 @@ body {
                         }
 
                         .body {
+                            text-align: justify;
                             width: 100%;
                         }
                     }
@@ -147,6 +150,61 @@ body {
             margin-top: @paddingStock/2;
             margin-bottom: @paddingStock/2;
             padding: @paddingStock;
+        }
+        
+        .form-add-feedback, .form-add-comment{
+            .wrapper{
+                .form-title, .form-text, .form-type{
+                    display: flex;
+                    flex-flow: column;
+                    padding-bottom: @paddingStock;
+                }
+                input, textarea {
+                    padding: @paddingStock/4;
+                }
+            }
+        }
+        
+        .filter {
+            .wrapper{
+                display: flex;
+                flex-flow: row;
+                justify-content: flex-start;
+                .tab{
+                    padding: @paddingStock;
+                    margin-right: @paddingStock;
+                    margin-light: @paddingStock;
+                }
+                .tab:hover{
+                    cursor: pointer;
+                    background-color: @bgCol;
+                }
+            }
+            .tile{
+                padding-bottom: 0;
+            }
+        }
+        
+        .navigation, .footer{
+            .wrapper{
+                display: flex;
+                flex-flow: row;
+                justify-content: space-between;
+                .buttons{
+                    button.btn{
+                        margin-right: @paddingStock;
+                        margin-left: @paddingStock;
+                    }
+                }
+                .copyright, .logo{
+                    img{
+                        max-width: 25px;
+                        margin: 0 @paddingStock;
+                    }
+                    display: flex;
+                    align-items: center;
+                }
+            }
         }
     }
 }

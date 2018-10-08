@@ -15,6 +15,30 @@
 
         <div class="container golos-feedback-container-wrapper">
             <div class="row">
+               
+                <nav class="col-12 navigation">
+                    <div class="wrapper tile">
+                        <div class="logo">
+                            <img src="graphics/logo.png">
+                             GolosFeedback
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="btn btn-primary button-get-my-feedbacks">Get my feedbacks</button>
+                            <button type="button" class="btn btn-primary button-add-feedback">Add feedback</button>
+                            <button type="button" class="btn btn-primary button-about">About</button>
+                            <button type="button" class="btn btn-primary button-language">Language</button>
+                        </div>
+                    </div>
+                </nav>
+               
+                <div class="col-12 filter">
+                    <div class="wrapper tile">
+                        <div class="tab">Ideas <span class="badge badge-light couter">0</span></div>
+                        <div class="tab">Questions <span class="badge badge-light couter">0</span></div>
+                        <div class="tab">Problems <span class="badge badge-light couter">0</span></div>
+                        <div class="tab">Thanks <span class="badge badge-light couter">0</span></div>
+                    </div>
+                </div>
 
                 <div class="col-12 feedback" id='fb-43'>
                     <div class="feedback-wrapper tile">
@@ -44,8 +68,8 @@
                                 </div>
                                 <div class="created">28-04-2018</div>
                                 <div class="vote-buttons">
-                                    <button class="btn btn-light vote-like">Like</button>
-                                    <button class="btn btn-light vote-dislike">Dislike</button>
+                                    <button class="btn btn-light vote-like">Like <span class="badge badge-dark couter">0</span></button>
+                                    <button class="btn btn-light vote-dislike">Dislike <span class="badge badge-dark couter">0</span></button>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +78,7 @@
 
                     <div class="row comments">
 
-                        <div class="col-12 comment" id="com-43-1">
+                        <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 comment" id="com-43-1">
                             <div class="comment-wrapper tile">
 
                                 <div class="text">
@@ -84,7 +108,7 @@
                             </div>
                         </div>
                         
-                        <div class="col-12 comment" id="com-43-2">
+                        <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 comment" id="com-43-2">
                             <div class="comment-wrapper tile">
 
                                 <div class="text">
@@ -113,9 +137,21 @@
 
                             </div>
                         </div>
-
-
-
+                    </div>
+                    
+                    <div class="row form-add-comment">
+                        <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">
+                            <div class="wrapper tile">
+                                <div class="form-text">
+                                    <span class="title">Text</span>
+                                    <textarea placeholder="My comment is ..." required rows="5"></textarea>
+                                </div>
+                                <div class="utility">
+                                    <button class="btn btn-success" type="submit">Submit</button>
+                                    <button class="btn btn-danger" type="button">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -158,7 +194,7 @@
 
                     <div class="row comments">
                         
-                        <div class="col-12 comment" id="com-44-1">
+                        <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 comment" id="com-44-1">
                             <div class="comment-wrapper tile">
 
                                 <div class="text">
@@ -194,7 +230,54 @@
 
                 </div>
                 
-
+                <div class="col-12 form-add-feedback">
+                    <div class="wrapper tile">
+                        <div class="form-title">
+                            <span class="title">Header</span>
+                            <input type="text" placeholder="My title is ..." required>
+                        </div>
+                        <div class="form-text">
+                            <span class="title">Text</span>
+                            <textarea placeholder="My feedback is ..." required rows="5"></textarea>
+                        </div>
+                        <div class="form-type">
+                            <div class="check">
+                                <input type="radio" data-type="question" checked>
+                                <span class="label">Question</span>
+                            </div>
+                            <div class="check">
+                                <input type="radio" data-type="idea">
+                                <span class="label">Idea</span>
+                            </div>
+                            <div class="check">
+                                <input type="radio" data-type="problem">
+                                <span class="label">Problem</span>
+                            </div>
+                            <div class="check">
+                                <input type="radio" data-type="thank">
+                                <span class="label">Thank</span>
+                            </div>
+                            
+                        </div>
+                        <div class="utility">
+                            <button class="btn btn-success" type="submit">Submit</button>
+                            <button class="btn btn-danger" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer class="col-12 footer">
+                    <div class="wrapper tile">
+                        <div class="buttons">
+                            <button type="button" class="btn btn-primary button-integration">Integration</button>
+                            <button type="button" class="btn btn-primary button-support">Support</button>
+                        </div>
+                        
+                        <div class="copyright">
+                            GolosFeedback @ 2018
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
