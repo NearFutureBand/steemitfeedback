@@ -1,15 +1,15 @@
-class CkEditor() {
-    constructor(place) {
-        this.language = detectLang();
-        this.place = place;
+class TextEditor {
+    constructor(mountPlace) {
+        //this.language = detectLang();
+        this.mountPlace = mountPlace;
         this.editor = null;
     }
     
     place() {
         let $ = this;
         ClassicEditor
-            .create( document.querySelector( '#formText' ), {
-                    language: $.language,
+            .create( document.querySelector( $.mountPlace ), {
+                    /*language: $.language,*/
                     removePlugins: [ 'ImageUpload' ],
                 } )
             .then( editor => {
@@ -21,7 +21,7 @@ class CkEditor() {
                 but.id = "upload";
                 but.type = "button";
                 document.querySelector('div.ck.ck-toolbar').appendChild(but);
-                addEventForBtnUploadImg();
+                //addEventForBtnUploadImg();
             } )
             .catch( err => {
                 console.error( err.stack );

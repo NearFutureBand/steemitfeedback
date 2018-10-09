@@ -55,7 +55,6 @@ class Filter {
                 $.restate();
                 
                 document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
-                document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('hashChange'));
             });
         }
     }

@@ -3,7 +3,8 @@ class FormAddFeedback {
         this.className = 'form-add-feedback';
         this.tabs = tabs;
         this.opened = false;
-        this.editor = null;
+        this.chosenType = 1;
+        this.textEditor = null;
         this.dataToSend = {};
     }
     
@@ -28,21 +29,21 @@ class FormAddFeedback {
                     '</div>'+
                     '<div class="form-text">'+
                         '<span class="title">Text</span>'+
-                        '<textarea placeholder="My feedback is ..." required rows="5"></textarea>'+
+                        '<textarea placeholder="My feedback is ..." required rows="5" id="feedback-body"></textarea>'+
                     '</div>'+
                     '<div class="form-type">'+
                         
                     '</div>'+
                     '<div class="utility">'+
-                        '<button class="btn btn-success" type="submit">Submit</button>'+
-                        '<button class="btn btn-danger" type="button">Cancel</button>'+
+                        '<button class="btn btn-success button-send-form" type="submit">Submit</button>'+
+                        '<button class="btn btn-danger button-cancel-form" type="button">Cancel</button>'+
                     '</div>'+
                 '</div>';
             document.querySelector(MP).appendChild(el);
             
-            //setting up CkEditor
-            
-            //this.addEventListeners();
+            this.textEditor = new TextEditor('#feedback-body');
+            this.textEditor.place();
+            this.restate();
         }
     }
     restate() {
@@ -50,17 +51,19 @@ class FormAddFeedback {
         if( el.innerHTML != '') el.innerHTML = '';
         
         el.innerHTML = this.makeDynHTML();
+        this.addEventListeners();
     }
     
     makeDynHTML() {
         let exportHTML = '';
-        this.tabs.forEach( function(tab) {
+        
+        for( let i = 1; i < this.tabs.length; i++) {
             exportHTML += (
-                '<div class="check">'+
-                    '<input type="radio" data-type="'+ tab.key +'" checked>'+
-                    '<span class="label">'+ tab.name +'</span>'+
-                '</div>');
-        });
+                    '<div class="check">'+
+                        '<input type="radio" name="type" value="'+ this.tabs[i].key +'" '+ ((i == this.chosenType)? 'checked' : '') +'>'+
+                        '<span class="label">'+ this.tabs[i].name +'</span>'+
+                    '</div>');
+        }
         return exportHTML;
     }
     
@@ -104,21 +107,21 @@ class FormAddFeedback {
         if (this.opened) {
             this.opened = false;
             this.getThisEl().remove();
-            document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('formAddFbDelete'));
         }
     }
     
     addEventListeners() {
         let $ = this;
-        this.getThisEl().querySelector(' .btn-add-fb-done').addEventListener('click', function(){
+        this.getThisEl().querySelector(' .button-send-form').addEventListener('click', function(){
             console.log('sending add-fb-form');
             /*if( $.validate()) {
                 $.send();
             }*/
             
         });
-        this.getThisEl().querySelector(' .btn-add-fb-cancel').addEventListener('click', function(){
-            $.delete();
+        this.getThisEl().querySelector(' .button-cancel-form').addEventListener('click', function(){
+            $.remove();
+            document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
         });
     }
     

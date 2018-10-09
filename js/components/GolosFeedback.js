@@ -6,8 +6,8 @@ class GolosFeedback {
         this.setTestnetWebsocket();
         
         
-        this.navbar2 = new Filter(this.className);
-        this.formAddFb = new FormAddFeedback(this.className, this.navbar2.tabs);
+        this.navbar2 = new Filter();
+        this.formAddFb = new FormAddFeedback(this.navbar2.tabs);
         this.hashController = new HashController(this.navbar2.tabs);
         this.feedbacks = [];
     }
@@ -26,12 +26,6 @@ class GolosFeedback {
             $.formAddFb.remove();
             $.reloadFbs();
         });
-        this.getThisEl().addEventListener('hashChange', function() {
-            $.hashController.setHash($.navbar2.tabs[$.navbar2.activeTab].name);
-        })
-        this.getThisEl().addEventListener('formAddFbDelete', function() {
-            
-        });
         this.getThisEl().addEventListener('expandFb', function(e) {
             console.log('expanding fb with id: ' + e.detail.id);
             $.expandFb(e.detail.id);
@@ -48,9 +42,11 @@ class GolosFeedback {
     }
     
     loadFbs() {
+        this.navbar2.resetCounters();
         let $ = this;
-        this.feedbacks.push( new Feedback(43, 'permlink', 'idea', 'Title of the feedback', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi iusto ex aperiam facere, explicabo odit dolore doloremque officia et quasi!', 'author-43', '28-04-2018', 0) );
-        this.placeFbs();
+        /*this.feedbacks.push( new Feedback(43, 'permlink', 'idea', 'Title of the feedback', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi iusto ex aperiam facere, explicabo odit dolore doloremque officia et quasi!', 'author-43', '28-04-2018', 0) );
+        this.placeFbs();*/
+        
         var query = {
             select_tags: ['fb', this.domain ],
             select_authors: ['test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
@@ -106,7 +102,6 @@ class GolosFeedback {
             fb.remove();
         });
         this.feedbacks = [];
-        this.navbar2.resetCounters();
     }
     expandFb(id) {
         let targetFeedback = this.getFeedbackById(id);

@@ -8,7 +8,7 @@ class FilterTab {
     }
     
     makeHTML() {
-        return '<a class="tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+this.name+' <span class="badge badge-light couter">0</span></a>';
+        return '<a class="tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+this.name+' <span class="badge badge-light couter">'+ this.counter +'</span></a>';
     }
     
     getThisEl() {
