@@ -32,7 +32,7 @@ class Feedback {
             '<div class="feedback-wrapper tile">'+
                 '<div class="text">'+
                 
-                '</div>'
+                '</div>'+
                 this.controlPanel.makeHTML() + 
             '</div>'+
             '<div class="row comments"></div>';
@@ -44,13 +44,14 @@ class Feedback {
         if( el.innerHTML != '') el.innerHTML = '';
         
         el.innerHTML = this.makeDynHTML();
+        console.log(this.makeDynHTML());
         //this.addEventListeners();
         //this.placeComments();
         //this.placeCommentForm();
     }
     makeDynHTML() {
         let exportHTML =
-            '<div class="text-block">'
+            '<div class="text-block">'+
                 '<div class="title">'+
                     '<span class="feedback-title">'+ this.heading +'</span>'+
                 '</div>'+

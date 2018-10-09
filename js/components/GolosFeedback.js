@@ -47,8 +47,9 @@ class GolosFeedback {
     
     loadFbs() {
         let $ = this;
-    
-        var query = {
+        this.feedbacks.push( new Feedback(43, 'permlink', 'idea', 'Title of the feedback', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi iusto ex aperiam facere, explicabo odit dolore doloremque officia et quasi!', 'author-43', '28-04-2018', 0) );
+        this.placeFbs();
+        /*var query = {
             select_tags: ['fb', this.domain ],
             select_authors: ['test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
             limit: 100
@@ -81,7 +82,7 @@ class GolosFeedback {
                 console.error(err);
                 //showError(err.message);
             }
-        });
+        });*/
         
     }
     reloadFbs() {

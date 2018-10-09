@@ -9,12 +9,12 @@ class ControlPanel {
     }
     
     makeHTML() {
-        return
-            '<div class="'+ this.className +'"'+
+        let exportHTML = 
+            '<div class="'+ this.className +'">'+
                 '<div class="control-panel-wrapper">'+
                     '<div class="author">'+ this.author +'</div>'+
                     '<div class="avatar">'+
-                        '<div class="avatar-holder" style="background-image: url("http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg")"></div>'+
+                        '<div class="avatar-holder" style="background-image: url(\'http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg\')"></div>'+
                     '</div>'+
                     '<div class="created">'+ this.date +'</div>'+
                     '<div class="vote-buttons">'+
@@ -23,5 +23,6 @@ class ControlPanel {
                     '</div>'+
                 '</div>'+
             '</div>';
+        return exportHTML;
     }
 }
