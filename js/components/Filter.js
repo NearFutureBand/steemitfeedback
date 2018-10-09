@@ -30,7 +30,11 @@ class Filter {
     place() {
         let el = document.createElement('div');
         el.className = 'col-12 ' + this.className;
+<<<<<<< HEAD
         el.innerHTML = 
+=======
+        el.innerHTML =
+>>>>>>> 17846d5e399be5cace16e33659561983b8f8abb6
                 '<div class="wrapper tile">'+
                     
                 '</div>';
