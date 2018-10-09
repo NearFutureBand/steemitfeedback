@@ -1,11 +1,17 @@
 class FormAddFeedback {
-    constructor(GFCLASS, tabs) {
-        this.className = 'frm-add-fb';
-        this.GFCLASS = GFCLASS;
+    constructor(tabs) {
+        this.className = 'form-add-feedback';
         this.tabs = tabs;
         this.opened = false;
         this.editor = null;
         this.dataToSend = {};
+    }
+    
+    getThisEl() {
+        return document.querySelector('.' + GFCLASS + ' .col-12.' + this.className);
+    }
+    getDynBlock() {
+        return this.getThisEl().querySelector('.form-type');
     }
     
     place() {
@@ -13,50 +19,50 @@ class FormAddFeedback {
         if(!this.opened) {
             this.opened = true;
             let el = document.createElement('div');
-            el.className = 'row ' + this.className;
-            el.innerHTML = 
-                '<div class="col-lg-12 tile">'+
-                    '<form>'+
-                        '<div class="form-group">'+
-                            '<label for="formHeader">Header</label>'+
-                            '<input type="text" class="form-control" id="formHeader" name="inptHeader" aria-describedby="formHeader" required>'+
-                        '</div>'+
-                        '<div class="form-group">'+
-                            '<label for="formTex">Text</label>'+
-                            '<textarea class="form-control" id="formText" name="txtBody" rows="3"></textarea>'+
-                        '</div>'+
-                        '<div class="form-check">'+
-                            '<input class="form-check-input" type="radio" name="exampleRadios" id="radio-'+ this.tabs[1].key +'" value="option1" checked>'+
-                            '<label class="form-check-label" for="formRadio0">'+ this.tabs[1].name +'</label>'+
-                        '</div>'+
-                        '<div class="form-check">'+
-                            '<input class="form-check-input" type="radio" name="exampleRadios" id="radio-'+ this.tabs[2].key +'" value="option2">'+
-                            '<label class="form-check-label" for="formRadio1">'+ this.tabs[2].name +'</label>'+
-                        '</div>'+
-                        '<div class="form-check">'+
-                            '<input class="form-check-input" type="radio" name="exampleRadios" id="radio-'+ this.tabs[3].key +'" value="option3">'+
-                            '<label class="form-check-label" for="formRadio2">'+ this.tabs[3].name +'</label>'+
-                        '</div>'+
-                        '<div class="form-check">'+
-                            '<input class="form-check-input" type="radio" name="exampleRadios" id="radio-'+ this.tabs[4].key +'" value="option3">'+
-                            '<label class="form-check-label" for="formRadio3">'+ this.tabs[4].name +'</label>'+
-                        '</div>'+
-                        '<button type="submit" class="btn btn-success btn-add-fb-done mr-2">'+
-                            '<span class="icon-checkmark"></span> Submit'+
-                        '</button>'+
-                        '<button type="button" class="btn btn-danger btn-add-fb-cancel ml-2">'+
-                            '<span class="icon-cross"></span> Cancel'+
-                        '</button>'+
-                    '</form>'+
+            el.className = 'col-12 ' + this.className;
+            el.innerHTML =
+                '<div class="wrapper tile">'+
+                    '<div class="form-title">'+
+                        '<span class="title">Header</span>'+
+                        '<input type="text" placeholder="My title is ..." required>'+
+                    '</div>'+
+                    '<div class="form-text">'+
+                        '<span class="title">Text</span>'+
+                        '<textarea placeholder="My feedback is ..." required rows="5"></textarea>'+
+                    '</div>'+
+                    '<div class="form-type">'+
+                        
+                    '</div>'+
+                    '<div class="utility">'+
+                        '<button class="btn btn-success" type="submit">Submit</button>'+
+                        '<button class="btn btn-danger" type="button">Cancel</button>'+
+                    '</div>'+
                 '</div>';
-            document.querySelector('.' + this.GFCLASS).appendChild(el);
+            document.querySelector(MP).appendChild(el);
             
             //setting up CkEditor
             
-            this.addEventListeners();
+            //this.addEventListeners();
         }
     }
+    restate() {
+        let el = this.getDynBlock();
+        if( el.innerHTML != '') el.innerHTML = '';
         
+        el.innerHTML = this.makeDynHTML();
+    }
+    
+    makeDynHTML() {
+        let exportHTML = '';
+        this.tabs.forEach( function(tab) {
+            exportHTML += (
+                '<div class="check">'+
+                    '<input type="radio" data-type="'+ tab.key +'" checked>'+
+                    '<span class="label">'+ tab.name +'</span>'+
+                '</div>');
+        });
+        return exportHTML;
+    }
     
     validate() {
         
@@ -98,12 +104,10 @@ class FormAddFeedback {
         if (this.opened) {
             this.opened = false;
             this.getThisEl().remove();
-            document.querySelector('.' + this.GFCLASS).dispatchEvent(new CustomEvent('formAddFbDelete'));
+            document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('formAddFbDelete'));
         }
     }
-    getThisEl() {
-        return document.querySelector('.row.' + this.className);
-    }
+    
     addEventListeners() {
         let $ = this;
         this.getThisEl().querySelector(' .btn-add-fb-done').addEventListener('click', function(){
