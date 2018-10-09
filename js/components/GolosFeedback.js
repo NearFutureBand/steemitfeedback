@@ -1,9 +1,10 @@
 class GolosFeedback {
     constructor() {
         this.className = GFCLASS;
-        this.initBootstrapStructure();
+        this.setBootstrapStructure();
         this.domain = (location.hostname == "")? 'localhost' : location.hostname;
         this.setTestnetWebsocket();
+        
         
         this.navbar2 = new Filter(this.className);
         this.formAddFb = new FormAddFeedback(this.className, this.navbar2.tabs);
@@ -12,9 +13,9 @@ class GolosFeedback {
     }
     
     init() {
-        
+        this.setNavigationBar();
         this.navbar2.init();
-        //this.addEventListeners();
+        this.addEventListeners();
         this.loadFbs();
     }
     
@@ -32,10 +33,11 @@ class GolosFeedback {
             
         });
         this.getThisEl().addEventListener('expandFb', function(e) {
+            console.log('expanding fb with id: ' + e.detail.id);
             $.expandFb(e.detail.id);
         });
         
-        document.querySelector('.btn-add-fb').addEventListener('click', function() {
+        document.querySelector('.button-add-feedback').addEventListener('click', function() {
             $.removeFbs();
             $.formAddFb.place();
         });
@@ -49,13 +51,12 @@ class GolosFeedback {
         let $ = this;
         this.feedbacks.push( new Feedback(43, 'permlink', 'idea', 'Title of the feedback', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi iusto ex aperiam facere, explicabo odit dolore doloremque officia et quasi!', 'author-43', '28-04-2018', 0) );
         this.placeFbs();
-        /*var query = {
+        var query = {
             select_tags: ['fb', this.domain ],
             select_authors: ['test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
             limit: 100
         };
         
-        //TODO make a function createFb(fb)
         golos.api.getDiscussionsByBlog(query, function(err, result) {
             console.log(err, result);
             
@@ -82,17 +83,17 @@ class GolosFeedback {
                 console.error(err);
                 //showError(err.message);
             }
-        });*/
+        });
         
     }
     reloadFbs() {
         this.removeFbs();
         this.loadFbs();
     }
-    /*getOneFb() {
+    getOneFb() {
         //getContent()
         //this.feedbacks.push( new Feedback() );
-    }*/
+    }
     
     placeFbs() {
         this.feedbacks.forEach( function(fb) {
@@ -113,6 +114,7 @@ class GolosFeedback {
         this.feedbacks.push(targetFeedback);
         this.placeFbs();
         targetFeedback.expand();
+        
     }
     createFb(fb) {
         this.feedbacks.push( new Feedback(
@@ -163,11 +165,26 @@ class GolosFeedback {
     }
     
     /*Not interesting*/
-    initBootstrapStructure() {
+    setBootstrapStructure() {
         this.getThisEl().innerHTML = 
             '<div class="container golos-feedback-container-wrapper">'+
                 '<div class="row mount-place"></div>'+
             '</div>';
+    }
+    setNavigationBar() {
+        this.getThisEl().querySelector(MP).innerHTML = 
+            '<nav class="col-12 navigation">'+
+                '<div class="wrapper tile">'+
+                    '<div class="logo">'+
+                        '<img src="graphics/logo.png">GolosFeedback'+
+                    '</div>'+
+                    '<div class="buttons">'+
+                        '<button type="button" class="btn btn-primary button-get-my-feedbacks">Get my feedbacks</button>'+
+                        '<button type="button" class="btn btn-primary button-add-feedback">Add feedback</button>'+
+                        '<button type="button" class="btn btn-primary button-about">About</button>'+
+                    '</div>'+
+                '</div>'+
+            '</nav>';
     }
     setTestnetWebsocket() {
         golos.config.set('websocket', 'wss://ws.testnet.golos.io');

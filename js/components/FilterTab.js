@@ -8,11 +8,11 @@ class FilterTab {
     }
     
     makeHTML() {
-        return '<div class="tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+this.name+' <span class="badge badge-light couter">0</span></div>';
+        return '<a class="tab '+ (this.active ? 'active' : '') +'" href="#'+ this.key +'" data-target="'+ this.key +'">'+this.name+' <span class="badge badge-light couter">0</span></a>';
     }
     
     getThisEl() {
-        return document.querySelector('.' + GFCLASS + ' div.tab[data-target="'+ this.key +'"]');
+        return document.querySelector('.' + GFCLASS + ' a.tab[data-target="'+ this.key +'"]');
     }
     
     /*Events*/

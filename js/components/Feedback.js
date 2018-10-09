@@ -44,10 +44,9 @@ class Feedback {
         if( el.innerHTML != '') el.innerHTML = '';
         
         el.innerHTML = this.makeDynHTML();
-        console.log(this.makeDynHTML());
-        //this.addEventListeners();
-        //this.placeComments();
-        //this.placeCommentForm();
+        this.addEventListeners();
+        this.placeComments();
+        this.placeCommentForm();
     }
     makeDynHTML() {
         let exportHTML =
@@ -58,21 +57,22 @@ class Feedback {
                 '<div class="body">'+ this.body +'</div>'+
             '</div>'+
             '<div class="utility">'+
-                '<button class="btn btn-dark open-comments">Comments</button>'+
+                '<button class="btn btn-dark open-comments">Comments <span class="bagde badge-light counter">'+ this.commentCount +'</span></button>'+
             '</div>';
         return exportHTML;
     }
     remove() {
         this.getThisEl().remove();
     }
-    /*expand() {
+    expand() {
         this.expanded = true;
         //getContentReplies - get comments entities to show them
         //update commentCount variable
         //this.restate();
         //this.place();
         this.restate();
-    }*/
+    }
+    
     placeComments() {
         if(this.comments.length != 0) {
             //console.log('placing comments');
@@ -89,25 +89,22 @@ class Feedback {
     
     addEventListeners() {
         let $ = this;
-        
-        //TODO одинаковые события на разные кнопки
         //Comments button down
-        this.getThisEl().querySelector('.btn-show-comments').addEventListener('click', function() {
+        this.getThisEl().querySelector('.open-comments').addEventListener('click', function() {
             $.sendExpandFbEvent($.id);
         });
         
         //Click on the feedback's header
-        this.getThisEl().querySelector('.text>h3').addEventListener('click', function() {
+        this.getThisEl().querySelector('.feedback-title').addEventListener('click', function() {
            $.sendExpandFbEvent($.id);
         });
     }
     
     placeCommentForm() {
         if(this.expanded == true) {
-            this.commentForm = new FormAddComment(this.GFCLASS);
+            this.commentForm = new FormAddComment('#fb-' + this.id + '.col-12.' + this.className);
             this.commentForm.place();
         }
-                
     }
     removeCommentForm() {
         if( this.commentForm != null) {

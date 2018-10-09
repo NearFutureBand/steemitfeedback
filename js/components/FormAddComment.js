@@ -1,8 +1,8 @@
 class FormAddComment {
-    constructor(GFCLASS) {
-        this.className = 'frm-add-com';
+    constructor(mountPlace) {
+        this.className = 'form-add-comment';
         this.editor = null;
-        this.GFCLASS = GFCLASS;
+        this.mountPlace = mountPlace;
     }
     
     getThisEl() {
@@ -11,21 +11,21 @@ class FormAddComment {
     
     place() {
         let el = document.createElement('div');
-        el.className = 'container ' + this.className;
+        el.className = 'row ' + this.className;
         el.innerHTML = 
-            '<div class="row">'+
-                '<div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile">'+
-                    '<form>'+
-                        '<div class="form-group">'+
-                            '<textarea class="form-control txt-add-com" id="commentBody" rows="3" placeholder="comment text"></textarea>'+
-                        '</div>'+
-                        '<button type="click" class="btn btn-primary btn-add-com-done">'+
-                            '<span class="icon-checkmark"></span> Done'
-                        '</button>'+
-                    '</form>'+
+            '<div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">'+
+                '<div class="wrapper tile">'+
+                    '<div class="form-text">'+
+                        '<span class="title">Text</span>'+
+                        '<textarea placeholder="My comment is ..." required rows="5"></textarea>'+
+                    '</div>'+
+                    '<div class="utility">'+
+                        '<button class="btn btn-success" type="submit">Submit</button>'+
+                        '<button class="btn btn-danger" type="button">Cancel</button>'+
+                    '</div>'+
                 '</div>'+
             '</div>';
-        document.querySelector('.' + this.GFCLASS).appendChild(el);
+        document.querySelector(this.mountPlace).appendChild(el);
         
     /*ClassicEditor
         .create( document.querySelector( '#commentBody' ), {
