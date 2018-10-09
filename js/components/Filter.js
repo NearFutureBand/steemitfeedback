@@ -30,11 +30,9 @@ class Filter {
     place() {
         let el = document.createElement('div');
         el.className = 'col-12 ' + this.className;
-        el.innerHTML = 
-            '<div class="col-12 filter">'+
+        el.innerHTML =
                 '<div class="wrapper tile">'+
                     
-                    '</div>'+
                 '</div>';
         document.querySelector(MP).appendChild(el);
         this.restate();
