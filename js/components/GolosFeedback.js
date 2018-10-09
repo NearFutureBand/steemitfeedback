@@ -112,6 +112,7 @@ class GolosFeedback {
         
     }
     createFb(fb) {
+        let votes = this.getVotes(fb.active_votes);
         this.feedbacks.push( new Feedback(
                                 fb.id,
                                 fb.permlink,
@@ -121,8 +122,8 @@ class GolosFeedback {
                                 fb.author,
                                 fb.created,
                                 fb.replies.length,
-                                this.className
-                                //TODO: pass votes
+                                votes.l,
+                                votes.d
                             )
                             );
     }
@@ -190,5 +191,14 @@ class GolosFeedback {
         for( let i = 0; i < this.feedbacks.length; i++) {
             if( this.feedbacks[i].id == id ) return this.feedbacks[i];
         }
+    }
+    getVotes(votesArray) {
+        let likes = 0;
+        let dislikes = 0;
+        votesArray.forEach( function( item ) {
+            if(item.percent > 0) likes++;
+            else if(item.percent < 0) dislikes++;
+        });
+        return {l: likes, d: dislikes};
     }
 }

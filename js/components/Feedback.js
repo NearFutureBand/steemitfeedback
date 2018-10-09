@@ -1,5 +1,5 @@
 class Feedback {
-    constructor(id, permlink, type, heading, body, author, date, commentCount) {
+    constructor(id, permlink, type, heading, body, author, date, commentCount, likes, dislikes) {
         this.className = 'feedback';
         this.expanded = false;
         this.yourVote = 0;
@@ -12,8 +12,8 @@ class Feedback {
         this.author = author;
         this.commentCount = commentCount;
         this.comments = [];
-        this.likes = 0;
-        this.dislikes = 0;
+        this.likes = likes;
+        this.dislikes = dislikes;
         this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, this.likes, this.dislikes);
         this.commentForm = null;
     }
