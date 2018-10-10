@@ -7,7 +7,7 @@ class GolosFeedback {
         
         
         this.navbar2 = new Filter();
-        this.formAddFb = new FormAddFeedback(this.navbar2.tabs);
+        this.formAddFb = new FormAddFeedback(this.navbar2.tabs, this.domain);
         this.hashController = new HashController(this.navbar2.tabs);
         this.feedbacks = [];
     }
@@ -31,6 +31,12 @@ class GolosFeedback {
             $.expandFb(e.detail.id);
         });
         
+        document.querySelector('.button-get-my-feedbacks').addEventListener('click', function() {
+            auth(function () {
+                $.removeFbs();
+                $.loadFbs('test3');
+            }, ['posting']);
+        });
         document.querySelector('.button-add-feedback').addEventListener('click', function() {
             $.removeFbs();
             $.formAddFb.place();
@@ -41,7 +47,7 @@ class GolosFeedback {
         return document.querySelector('.' + this.className);
     }
     
-    loadFbs() {
+    loadFbs(customUsername) {
         this.navbar2.resetCounters();
         let $ = this;
         /*this.feedbacks.push( new Feedback(43, 'permlink', 'idea', 'Title of the feedback', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi iusto ex aperiam facere, explicabo odit dolore doloremque officia et quasi!', 'author-43', '28-04-2018', 0) );
@@ -52,6 +58,11 @@ class GolosFeedback {
             select_authors: ['test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9'],
             limit: 100
         };
+        
+        if(customUsername != undefined) {
+            //console.log(customUsername);
+            query.select_authors = [customUsername];
+        }
         
         golos.api.getDiscussionsByBlog(query, function(err, result) {
             console.log(err, result);
