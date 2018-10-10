@@ -2,7 +2,6 @@ class Feedback {
     constructor(id, permlink, type, heading, body, author, date, commentCount, likes, dislikes) {
         this.className = 'feedback';
         this.expanded = false;
-        this.yourVote = 0;
         this.id = id;
         this.type = type;
         this.permlink = permlink;
@@ -12,13 +11,11 @@ class Feedback {
         this.author = author;
         this.commentCount = commentCount;
         this.comments = [];
-        this.likes = likes;
-        this.dislikes = dislikes;
-        this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, this.likes, this.dislikes);
+        this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, likes, dislikes, 0, 'feedback-wrapper');
         this.commentForm = null;
     }
     getThisEl() {
-        return document.querySelector('#fb-' + this.id + '.col-12.' + this.className)
+        return document.querySelector('#fb-' + this.id + '.col-12.' + this.className);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.text');
@@ -33,10 +30,11 @@ class Feedback {
                 '<div class="text">'+
                 
                 '</div>'+
-                this.controlPanel.makeHTML() + 
+                 
             '</div>'+
             '<div class="row comments"></div>';
-        document.querySelector(MP).appendChild(el);      
+        document.querySelector(MP).appendChild(el);  
+        this.controlPanel.place();
         this.restate();
     }
     restate() {
@@ -52,9 +50,9 @@ class Feedback {
         let exportHTML =
             '<div class="text-block">'+
                 '<div class="title">'+
-                    '<span class="feedback-title">'+ this.heading +'</span>'+
+                    '<span class="feedback-title">'+ (this.expanded? this.heading : this.cutText(this.heading, 'title')) +'</span>'+
                 '</div>'+
-                '<div class="body">'+ this.body +'</div>'+
+                '<div class="body">'+ (this.expanded? this.body : this.cutText(this.body, 'body')) +'</div>'+
             '</div>'+
             '<div class="utility">'+
                 '<button class="btn btn-dark open-comments">Comments <span class="bagde badge-light counter">'+ this.commentCount +'</span></button>'+
@@ -115,8 +113,9 @@ class Feedback {
     }
     
     /*Not Interesting*/
-    cutText(text) {
-        if( text.length > 400) text = text.slice(0, 399) + '...';
+    cutText(text, type) {
+        if( text.length > 400 && type == 'body') text = text.slice(0, 399) + '...';
+        if( text.length > 60 && type == 'title') text = text.slice(0, 59) + '...';
         return text;
     }
     sendExpandFbEvent(id) {
