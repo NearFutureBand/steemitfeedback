@@ -132,7 +132,7 @@ class GolosFeedback {
                                 fb.body,
                                 fb.author,
                                 fb.created,
-                                fb.replies.length,
+                                fb.children,
                                 votes.l,
                                 votes.d
                             )

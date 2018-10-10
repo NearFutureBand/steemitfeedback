@@ -75,11 +75,8 @@ class FormAddFeedback {
             this.textEditor.editor.getData().length < this.maxFeedbackSymbols
             && this.getTitle().value.length < this.maxTitleSymbols
           ) {
-            console.log('ok');
             return true;
-            
         } else {
-            console.log('not');
             return false;
         }
     }
@@ -128,9 +125,7 @@ class FormAddFeedback {
     addEventListeners() {
         this.getThisEl().querySelector(' .button-send-form').addEventListener('click', () => {
             console.log('sending form');
-            if( this.validate()) {
-                this.send();
-            }
+            if( this.validate() ) this.send();
         });
         
         this.getThisEl().querySelector(' .button-cancel-form').addEventListener('click', () => {
@@ -147,6 +142,7 @@ class FormAddFeedback {
     getTitle() {
         return this.getThisEl().querySelector('.form-title>input');
     }
+    
     /*Translates russian letters to translit form*/
     urlLit(w, v) { // cyrilic-to-translit-function
         let tr = 'a b v g d e ["zh","j"] z i y k l m n o p r s t u f h c ch sh ["shh","shch"] ~ y ~ e yu ya ~ ["jo","e"]'.split(' ');

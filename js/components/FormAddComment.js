@@ -1,8 +1,11 @@
 class FormAddComment {
-    constructor(mountPlace) {
+    constructor(mountPlace, parentAuthor, parentPermlink) {
         this.className = 'form-add-comment';
         this.textEditor = null;
         this.mountPlace = mountPlace;
+        this.parentAuthor = parentAuthor;
+        this.parentPermlink = parentPermlink;
+        this.jsonMetadata = {};
         this.maxCommentSymbols = 2000;
     }
     
@@ -45,39 +48,38 @@ class FormAddComment {
     validate() {
         if( this.textEditor.editor.getData().length < this.maxCommentSymbols ) {
             return true;
+        } else {
+            console.log('something wrong');
+            return false;
         }
     }
     
     send() {
-        /*let parentAuthor = getAuthor(fbId, '');
-        let parentPermlink = getPermlink(fbId, '');
+        let parentAuthor = this.parentAuthor;
+        let parentPermlink = this.parentPermlink;
         let author = username;
         let permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
         let title = '';
-        let body = ckeditor.getData();
+        let body = this.textEditor.editor.getData();
         
-        if( validateSendingData(body)) {
-            console.log('comment to note '+fbId+'. Body: '+body);
-            golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata,     function(err, result) {
-                //console.log(err, result);
-                if (!err) {
-                    console.log('comment', result);
-                    ckeditor.setData('');
-                    removeComments(fbId);
-                    loadComments(fbId);
-                } else {
-                    console.error(err);
-                    showError(err.message);
-                }
-            }); 
-        }
-        */
+        
+        golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, JSON.stringify(this.jsonMetadata), (err, result) => {
+            //console.log(err, result);
+            if (!err) {
+                console.log('comment', result);
+                this.textEditor.editor.setData('');
+                
+                //restate feedback
+                
+            } else {
+                console.error(err);
+                ErrorController.showError(err.message);
+            }
+        }); 
     }
-    
     
     remove() {
         this.getThisEl().remove();
     }
-    
     
 }

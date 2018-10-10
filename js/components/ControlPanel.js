@@ -31,7 +31,6 @@ class ControlPanel {
                         
                     '</div>'+
                 '</div>';
-        console.log(this.mountPlace);
         document.querySelector(this.mountPlace).appendChild(el);
         this.restate();
     }

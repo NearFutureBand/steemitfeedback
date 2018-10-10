@@ -1,5 +1,5 @@
 class Comment {
-    constructor(fbId, id, permlink, body, author, created, GFCLASS) {
+    constructor(fbId, id, permlink, body, author, created, likes, dislikes, myVote, mountPlace) {
         this.id = id;
         this.fbId = fbId;
         this.permlink = permlink;
@@ -7,11 +7,10 @@ class Comment {
         this.author = author;
         this.created = created;
         this.className = 'comment';
-        this.GFCLASS = GFCLASS;
-        this.yourVote = 0;
+        this.myVote = 0;
         this.likes = 0;
         this.dislikes;
-        this.controlPanel = new ControlPanel('com-' + this.id, this.author, this.created, this.likes, this.dislikes );
+        this.controlPanel = new ControlPanel('com-' + this.id, this.author, this.created, this.likes, this.dislikes, this.myVote, 'comment-wrapper');
     }
     
     getThisEl() {
@@ -19,22 +18,27 @@ class Comment {
     }
     place() {
         let el = document.createElement('div');
-        el.className = 'row ' + this.className;
+        el.className = 'col-lg-10 offset-lg-1 col-md-10 offset-md-1 ' + this.className;
         el.setAttribute('id', 'com-' + this.fbId + '-' + this.id);
         
-        comment.innerHTML = 
-            '<div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 tile body-comment">'+
-                '<div class="row">'+
-                    '<div class="col-lg-9 col-md-9 text">'+
-                        '<p>' + this.body + '</p>'+
+        el.innerHTML = 
+            '<div class="comment-wrapper tile">'+
+                '<div class="text">'+
+                    '<div class="text-block">'+
+                        '<div class="body">'+ this.body +'</div>'+
                     '</div>'+
-                    this.controlPanel.makeHTML() +
                 '</div>'+
+            
             '</div>';
+        document.querySelector(this.mountPlace).appendChild(el);
+        this.controlPanel.place();
+        this.restate();
         /*getBlockComments(data[1]).appendChild(comment);
         checkVoteColor(data[1], data[0]);
         addEventsForComLikes(data[1], data[0]);
         console.log("comment has been created: " + data[1] + " " + data[0]);*/
+        
+        //ставить в row comments
     }
     remove() {
         this.getThisEl().remove();

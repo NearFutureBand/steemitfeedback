@@ -71,6 +71,36 @@ class Feedback {
         this.restate();
     }
     
+    getComments() {
+        golos.api.getContentReplies(this.author, this.permlink, 1000, (err, result) => {
+            console.log(err, result);
+            /*if ( ! err) {
+                result.forEach(function(item) {
+                    console.log('getContentReplies', item);
+                    createComment(formDataCom(item, fbId));
+                });
+            } else {
+                console.error(err);
+                showError(err.message);
+            }*/
+        });
+    }
+    createComment(data) {
+        let votes = this.getVotes(data.active_votes);
+        this.comments.push( new Comment(
+            this.id, 
+            data.id, 
+            data.permlink, 
+            data.body, 
+            data.author, 
+            data.created, 
+            votes.likes, 
+            votes.dislikes, 
+            0,
+            '#fb-' + this.id + '.col-12.' + this.className + '.row.comments'
+            ) 
+            );
+    }
     placeComments() {
         if(this.comments.length != 0) {
             //console.log('placing comments');
@@ -100,7 +130,7 @@ class Feedback {
     
     placeCommentForm() {
         if(this.expanded == true) {
-            this.commentForm = new FormAddComment('#fb-' + this.id + '.col-12.' + this.className);
+            this.commentForm = new FormAddComment('#fb-' + this.id + '.col-12.' + this.className, this.author, this.permlink);
             this.commentForm.place();
         }
     }
@@ -136,5 +166,14 @@ class Feedback {
                 }
             ))
         }
+    }
+    getVotes(votesArray) {
+        let likes = 0;
+        let dislikes = 0;
+        votesArray.forEach( function( item ) {
+            if(item.percent > 0) likes++;
+            else if(item.percent < 0) dislikes++;
+        });
+        return {l: likes, d: dislikes};
     }
 }
