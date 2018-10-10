@@ -94,26 +94,26 @@ class FormAddFeedback {
         console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+ JSON.stringify(this.jsonMetadata));
         console.log(window.wif);
         
-        golos.broadcast.comment(wif.posting,
-                                '', /*parentAuthor*/
-                                'fb', /*parentPermlink*/
-                                username, /*Author*/
-                                this.urlLit( title, 0 ) + '-' + Date.now().toString(), /*Permlink*/
-                                this.getTitle().value, /*Title*/
-                                this.textEditor.editor.getData(), /*Body*/
-                                JSON.stringify(this.jsonMetadata),
-                                (err, result) => {
-                                    if ( ! err) {
-                                        this.getTitle.value = '';
-                                        this.textEditor.editor.setData('');
-                                        document.querySelector('.' + GFCLASS).dispatchEvent( new CustomEvent('reloadFeedbacks'));
-                                        
-                                        console.log('sent');
-                                    } else {
-                                        console.error(err);
-                                        //showError(err.message);
-                                    }
-                                });
+        golos.broadcast.comment(
+            wif.posting,
+            '', /*parentAuthor*/
+            'fb', /*parentPermlink*/
+            username, /*Author*/
+            this.urlLit( title, 0 ) + '-' + Date.now().toString(), /*Permlink*/
+            this.getTitle().value, /*Title*/
+            this.textEditor.editor.getData(), /*Body*/
+            JSON.stringify(this.jsonMetadata),
+            (err, result) => {
+                if ( ! err) {
+                    this.getTitle.value = '';
+                    this.textEditor.editor.setData('');
+                    document.querySelector('.' + GFCLASS).dispatchEvent( new CustomEvent('reloadFeedbacks'));
+                    console.log(result);
+                } else {
+                    console.error(err);
+                    ErrorController.showError(err.message);
+                }
+            });
     }
     remove() {
         if (this.opened) {
@@ -124,8 +124,9 @@ class FormAddFeedback {
     
     addEventListeners() {
         this.getThisEl().querySelector(' .button-send-form').addEventListener('click', () => {
-            console.log('sending form');
-            if( this.validate() ) this.send();
+            auth(function () {
+                if( this.validate() ) this.send();
+            }, ['posting']);
         });
         
         this.getThisEl().querySelector(' .button-cancel-form').addEventListener('click', () => {

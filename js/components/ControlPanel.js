@@ -44,11 +44,11 @@ class ControlPanel {
     makeDynHTML() {
         let exportHTML = 
             '<button class="btn btn-light vote-like">'+
-                'Like '+
+                '<span class="icon-thumbs-up"></span>'+
                 '<span class="badge badge-dark counter">'+ this.likes +'</span>'+
             '</button>'+
             '<button class="btn btn-light vote-dislike">'+
-                'Dislike '+
+                '<span class="icon-thumbs-down"></span>'+
                 '<span class="badge badge-dark counter">'+ this.dislikes +'</span>'+
             '</button>';
         return exportHTML;
@@ -59,18 +59,44 @@ class ControlPanel {
     
     addEventListeners() {
         this.getThisEl().querySelector('button.vote-like').addEventListener('click', () => {
-            //like
-            //если лайк еще не был нажатым
-            //this.resetMyVote();
-            //this.likes++;
-            //this.myVote = 1;
-            //если лайк уже был нажатым - this.likes--; this.myVote = 0;
+            
+            auth(function () {
+                
+                /*Отмена лайка*/
+                if( this.myVote == 1 ) {
+                    this.likes--;
+                    this.myVote = 0;
+                    //окрасить в серый 
+                    
+                /*Поставить лайк*/
+                } else {
+                    this.resetMyVote();
+                    this.likes++;
+                    this.myVote = 1;
+                    //окрасить в зеленый
+                }
+            }, ['posting']);
+            
         });
         this.getThisEl().querySelector('button.vote-dislike').addEventListener('click', () => {
-            //dislike
-            //this.resetMyVote();
-            //this.dislikes++;
-            //this.myVote = -1;
+            
+            auth(function () {
+                
+                /*Отмена дизлайка*/
+                if( this.myVote == -1 ) {
+                    this.dislikes--;
+                    this.myVote = 0;
+                    //окрасить в серый
+                    
+                /*Поставить дизлайк*/
+                } else {
+                    this.resetMyVote();
+                    this.dislikes++;
+                    this.myVote = -1;
+                    //окрасить в красный
+                }
+            }, ['posting']);
+            
         });
     }
     

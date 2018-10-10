@@ -38,11 +38,10 @@ class FormAddComment {
     }
     
     addEventListeners() {
-        let $ = this;
-        this.getThisEl().querySelector('.send-comment-form').addEventListener('click', function() {
-            
-            //проверка auth()
-            if( $.validate() ) $.send();
+        this.getThisEl().querySelector('.send-comment-form').addEventListener('click', () => {
+            auth(function () {
+                if( this.validate() ) this.send();
+            }, ['posting']);
         });
     }
     validate() {

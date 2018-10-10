@@ -33,12 +33,6 @@ class Comment {
         document.querySelector(this.mountPlace).appendChild(el);
         this.controlPanel.place();
         this.restate();
-        /*getBlockComments(data[1]).appendChild(comment);
-        checkVoteColor(data[1], data[0]);
-        addEventsForComLikes(data[1], data[0]);
-        console.log("comment has been created: " + data[1] + " " + data[0]);*/
-        
-        //ставить в row comments
     }
     remove() {
         this.getThisEl().remove();

@@ -74,15 +74,14 @@ class Feedback {
     getComments() {
         golos.api.getContentReplies(this.author, this.permlink, 1000, (err, result) => {
             console.log(err, result);
-            /*if ( ! err) {
-                result.forEach(function(item) {
-                    console.log('getContentReplies', item);
-                    createComment(formDataCom(item, fbId));
+            if ( ! err) {
+                result.forEach( (item) => {
+                    this.createComment(item);
                 });
             } else {
                 console.error(err);
-                showError(err.message);
-            }*/
+                ErrorController.showError(err.message);
+            }
         });
     }
     createComment(data) {
@@ -103,7 +102,9 @@ class Feedback {
     }
     placeComments() {
         if(this.comments.length != 0) {
-            //console.log('placing comments');
+            this.comments.forEach( (com) => {
+                com.place();    
+            });
         }
     }
     removeComments() {

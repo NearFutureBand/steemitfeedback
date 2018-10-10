@@ -186,9 +186,9 @@ class GolosFeedback {
                         '<img src="graphics/logo.png">GolosFeedback'+
                     '</div>'+
                     '<div class="buttons">'+
-                        '<button type="button" class="btn btn-primary button-get-my-feedbacks">Get my feedbacks</button>'+
-                        '<button type="button" class="btn btn-primary button-add-feedback">Add feedback</button>'+
-                        '<button type="button" class="btn btn-primary button-about">About</button>'+
+                        '<button type="button" class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>'+
+                        '<button type="button" class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>'+
+                        '<button type="button" class="btn btn-primary button-about"><span class="icon-info"></span> About</button>'+
                     '</div>'+
                 '</div>'+
             '</nav>';
