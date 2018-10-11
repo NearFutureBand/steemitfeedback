@@ -1,8 +1,11 @@
-var LoadVFX = {
+var VFX = {
+    getThisEl: () => {
+        return document.querySelector('.vfx');
+    },
     showVFX: () => {
-        document.querySelector('.lding').style.display = 'block';
+        VFX.getThisEl().style.display = 'block';
     },
     hideVFX: () => {
-		document.querySelector('.lding').style.display = 'none';
+		VFX.getThisEl().style.display = 'none';
     }
 }

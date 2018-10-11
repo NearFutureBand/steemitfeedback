@@ -37,7 +37,7 @@ class GolosFeedback {
             this.expandFb(e.detail.id);
         });
         
-        document.querySelector('.button-about').addEventListener('click', () => {
+        document.querySelector(`.${this.className} .button-about`).addEventListener('click', () => {
             swal({
                 title: `About!`,
                 html: `<p class="float-left text-left">
@@ -63,17 +63,66 @@ class GolosFeedback {
             });    
         });
         
-        document.querySelector('.button-get-my-feedbacks').addEventListener('click', () => {
+        document.querySelector(`.${this.className} .button-get-my-feedbacks`).addEventListener('click', () => {
             auth( () => {
                 this.removeFbs();
                 this.loadFbs('test3');
             }, ['posting']);
         });
         
-        document.querySelector('.button-add-feedback').addEventListener('click', () => {
+        document.querySelector(`.${this.className} .button-add-feedback`).addEventListener('click', () => {
             this.removeFbs();
             this.formAddFb.place();
         });
+        
+        document.querySelector(`.${this.className} .button-integration`).addEventListener('click', () => {
+            swal({
+                title: 'About Integration!',
+                html: `
+                    <div class="text-left">
+                    1. Add JavaScript in your HTML-page: 
+                    <pre><code>&lt;script src=&quot;https://golosfeedback.com/js/inject.js&quot;&gt;&lt;/script&gt;</code></pre>
+                    2. Script adds all the necessary resources to deploy GolosFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with GolosFeedback.<br>
+                    3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'gFeedbackOptions'. Check out this example: 
+                    <div class="text-left"><pre><code>
+&lt;script&gt;
+var gFeedbackOptions = {
+    corner: 'right',
+    buttonTextColor: '#fff',
+    buttonBackgroundColor: '#0079a1',
+    buttonShadow: true,
+    zIndex: 7
+}
+&lt;/script&gt;
+&lt;script src="https://golosfeedback.com/js/inject.js"&gt;&lt;/script&gt;
+                    </code></pre>
+                    </div>
+                    4. Visit this <a style="color:lightblue" href="integration_example.html">integration example</a> to see how it works!
+                    </div>
+                `,
+                type: 'info',
+                buttonsStyling: false,
+                confirmButtonClass: 'btn btn-success btn-lg',
+                confirmButtonText: '<span class="icon-checkmark"></span> Cool!',
+                position: 'top',
+                showCloseButton: true
+            })
+        });
+                                                                                          
+        document.querySelector(`.${this.className} .button-support`).addEventListener('click', () => {
+            swal({
+                html: `
+                    <div class="text-left"><h3><strong>If you have any ideas / problems / questions, you can report it:</strong></h3></div>
+                    <div class="text-left">
+                        <p>1. On GitHub in Issues: <strong><a href="https://github.com/NearFutureBand/golosfeedback/issues" target="_blank"> https://github.com/NearFutureBand/golosfeedback/issues</a></strong></p>
+                        <p>2. On e-mail:<strong><a href="info@golosfeedback.com" target="_blank"> info@golosfeedback.com</a></strong></p>
+                    </div>`,
+                showCloseButton: true,
+                width: 600,
+                type: 'question'
+            })
+        });
+                                                                                          
     }
     
     getThisEl() {
@@ -83,8 +132,6 @@ class GolosFeedback {
     loadFbs(customUsername) {
         this.navbar2.resetCounters();
         let $ = this;
-        /*this.feedbacks.push( new Feedback(43, 'permlink', 'idea', 'Title of the feedback', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi iusto ex aperiam facere, explicabo odit dolore doloremque officia et quasi!', 'author-43', '28-04-2018', 0) );
-        this.placeFbs();*/
         
         var query = {
             select_tags: ['fb', this.domain ],
@@ -93,7 +140,6 @@ class GolosFeedback {
         };
         
         if(customUsername != undefined) {
-            //console.log(customUsername);
             query.select_authors = [customUsername];
         }
         
@@ -122,7 +168,7 @@ class GolosFeedback {
                 console.error(err);
                 //showError(err.message);
             }
-            LoadVFX.hideVFX();
+            VFX.hideVFX();
         });
         
     }
