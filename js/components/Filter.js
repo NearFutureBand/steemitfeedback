@@ -15,10 +15,10 @@ class Filter {
     }
     
     getThisEl() {
-        return document.querySelector(GFCLASS +' .col-12.'+ this.className);
+        return document.querySelector(`.${GFCLASS} .col-12.${this.className}`);
     }
     getDynBlock() {
-        return document.querySelector('.'+ GFCLASS +' .col-12.'+ this.className +' .wrapper.tile');
+        return this.getThisEl().querySelector('.wrapper.tile');
     }
     makeDynHTML() {
         let exportHTML = '';
@@ -30,8 +30,8 @@ class Filter {
     
     place() {
         let el = document.createElement('div');
-        el.className = 'col-12 ' + this.className;
-        el.innerHTML = '<div class="wrapper tile"></div>';
+        el.className = `col-12 ${this.className}`;
+        el.innerHTML = `<div class="wrapper tile"></div>`;
         document.querySelector(MP).appendChild(el);
         this.restate();
     }
@@ -54,7 +54,7 @@ class Filter {
                 console.log($.currentFbSelector);
                 $.restate();
                 
-                document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
+                document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
             });
         }
     }

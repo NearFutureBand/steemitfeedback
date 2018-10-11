@@ -15,19 +15,20 @@ class FormAddComment {
     
     place() {
         let el = document.createElement('div');
-        el.className = 'row ' + this.className;
-        el.innerHTML = 
-            '<div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">'+
-                '<div class="wrapper tile">'+
-                    '<div class="form-text">'+
-                        '<span class="title">Text</span>'+
-                        '<textarea placeholder="My comment is ..." required rows="5" id="comment-body"></textarea>'+
-                    '</div>'+
-                    '<div class="utility">'+
-                        '<button class="btn btn-success send-comment-form" type="button">Submit</button>'+
-                    '</div>'+
-                '</div>'+
-            '</div>';
+        el.className = `row ${this.className}`;
+        el.innerHTML = `
+            <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">
+                <div class="wrapper tile">
+                    <div class="form-text">
+                        <span class="title">Text</span>
+                        <textarea placeholder="My comment is ..." required rows="5" id="comment-body"></textarea>
+                    </div>
+                    <div class="utility">
+                        '<button class="btn btn-success send-comment-form" type="button">Submit</button>
+                    </div>
+                </div>
+            </div>
+        `;
         document.querySelector(this.mountPlace).appendChild(el);
         
         this.textEditor = new TextEditor('#comment-body');
@@ -59,7 +60,7 @@ class FormAddComment {
         let parentAuthor = this.parentAuthor;
         let parentPermlink = this.parentPermlink;
         let author = username;
-        let permlink = 're-' + parentAuthor + '-' + parentPermlink + '-' + Date.now();
+        let permlink = `re-${parentAuthor}-${parentPermlink}-${Date.now()}`;
         let title = '';
         let body = this.textEditor.editor.getData();
         
@@ -77,7 +78,7 @@ class FormAddComment {
         }); 
     }
     
-    remove() {
+    delete() {
         this.getThisEl().remove();
     }
     

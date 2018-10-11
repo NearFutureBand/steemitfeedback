@@ -11,28 +11,29 @@ class Feedback {
         this.author = author;
         this.commentCount = commentCount;
         this.comments = [];
-        this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, this.permlink, likes, dislikes, 0, 'feedback-wrapper');
+        this.controlPanel = new ControlPanel(`fb-${this.id}`, this.author, this.date, this.permlink, likes, dislikes, 0, 'feedback-wrapper');
         this.commentForm = null;
     }
     getThisEl() {
-        return document.querySelector('#fb-' + this.id + '.col-12.' + this.className);
+        return document.querySelector(`#fb-${this.id}.col-12.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.text');
     }
     place() {
         let el = document.createElement('div');
-        el.className = 'col-12 ' + this.className;
-        el.setAttribute('id', 'fb-' + this.id);
+        el.className = `col-12 ${this.className}`;
+        el.setAttribute('id', `fb-${this.id}`);
         
-        el.innerHTML = 
-            '<div class="feedback-wrapper tile">'+
-                '<div class="text">'+
+        el.innerHTML = `
+            <div class="feedback-wrapper tile">
+                <div class="text">
                 
-                '</div>'+
+                </div>
                  
-            '</div>'+
-            '<div class="row comments"></div>';
+            </div>
+            <div class="row comments"></div>
+        `;
         document.querySelector(MP).appendChild(el);  
         this.controlPanel.place();
         this.addStaticEventListeners();
@@ -53,16 +54,17 @@ class Feedback {
         }
     }
     makeDynHTML() {
-        let exportHTML =
-            '<div class="text-block">'+
-                '<div class="title">'+
-                    '<span class="feedback-title">'+ (this.expanded? this.heading : this.cutText(this.heading, 'title')) +'</span>'+
-                '</div>'+
-                '<div class="body">'+ (this.expanded? this.body : this.cutText(this.body, 'body')) +'</div>'+
-            '</div>'+
-            '<div class="utility">'+
-                '<button class="btn btn-dark open-comments">Comments <span class="bagde badge-light counter">'+ this.commentCount +'</span></button>'+
-            '</div>';
+        let exportHTML = `
+            <div class="text-block">
+                <div class="title">
+                    <span class="feedback-title">${(this.expanded? this.heading : this.cutText(this.heading, 'title'))}</span>
+                </div>
+                <div class="body">${(this.expanded? this.body : this.cutText(this.body, 'body'))}</div>
+            </div>
+            <div class="utility">
+                <button class="btn btn-dark open-comments">Comments <span class="bagde badge-light counter">${this.commentCount}</span></button>
+            </div>
+        `;
         return exportHTML;
     }
     remove() {
@@ -120,7 +122,7 @@ class Feedback {
             votes.l,
             votes.d,
             0,
-            '#fb-' + this.id + '.col-12.' + this.className + ' .row.comments'
+            `#fb-${this.id}.col-12.${this.className} .row.comments`
         ) 
         );
     }
@@ -143,13 +145,13 @@ class Feedback {
     
     placeCommentForm() {
         if(this.expanded == true) {
-            this.commentForm = new FormAddComment('#fb-' + this.id + '.col-12.' + this.className, this.author, this.permlink);
+            this.commentForm = new FormAddComment(`#fb-${this.id}.col-12.${this.className}`, this.author, this.permlink);
             this.commentForm.place();
         }
     }
     removeCommentForm() {
         if( this.commentForm != null) {
-            this.commentForm.getThisEl().remove();
+            this.commentForm.delete();
             this.commentForm = null;
         }
         
@@ -157,13 +159,13 @@ class Feedback {
     
     /*Not Interesting*/
     cutText(text, type) {
-        if( text.length > 400 && type == 'body') text = text.slice(0, 399) + '...';
-        if( text.length > 60 && type == 'title') text = text.slice(0, 59) + '...';
+        if( text.length > 400 && type == 'body') text = `${text.slice(0, 399)}...`;
+        if( text.length > 60 && type == 'title') text = `${text.slice(0, 59)}...`;
         return text;
     }
     sendExpandFbEvent(id) {
         if( this.expanded == false) {
-            document.querySelector('.' + GFCLASS)
+            document.querySelector(`.${GFCLASS}`)
                 .dispatchEvent( new CustomEvent("expandFb", {
                     detail: {
                         id: id
@@ -171,7 +173,7 @@ class Feedback {
                 }
             ))
         } else {
-            document.querySelector('.' + GFCLASS)
+            document.querySelector(`.${GFCLASS}`)
                 .dispatchEvent( new CustomEvent("reloadFeedbacks", {
                     detail: {
                         id: id

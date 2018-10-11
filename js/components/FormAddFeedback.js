@@ -12,7 +12,7 @@ class FormAddFeedback {
     }
     
     getThisEl() {
-        return document.querySelector('.' + GFCLASS + ' .col-12.' + this.className);
+        return document.querySelector(`.${GFCLASS} .col-12.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.form-type');
@@ -23,25 +23,26 @@ class FormAddFeedback {
         if(!this.opened) {
             this.opened = true;
             let el = document.createElement('div');
-            el.className = 'col-12 ' + this.className;
-            el.innerHTML =
-                '<div class="wrapper tile">'+
-                    '<div class="form-title">'+
-                        '<span class="title">Header</span>'+
-                        '<input type="text" placeholder="My title is ..." required>'+
-                    '</div>'+
-                    '<div class="form-text">'+
-                        '<span class="title">Text</span>'+
-                        '<textarea placeholder="My feedback is ..." required rows="5" id="feedback-body"></textarea>'+
-                    '</div>'+
-                    '<div class="form-type">'+
+            el.className = `col-12 ${this.className}`;
+            el.innerHTML = `
+                <div class="wrapper tile">
+                    <div class="form-title">
+                        <span class="title">Header</span>
+                        <input type="text" placeholder="My title is ..." required>
+                    </div>
+                    <div class="form-text">
+                        <span class="title">Text</span>
+                        <textarea placeholder="My feedback is ..." required rows="5" id="feedback-body"></textarea>
+                    </div>
+                    <div class="form-type">
                         
-                    '</div>'+
-                    '<div class="utility">'+
-                        '<button class="btn btn-success button-send-form" type="button">Submit</button>'+
-                        '<button class="btn btn-danger button-cancel-form" type="button">Cancel</button>'+
-                    '</div>'+
-                '</div>';
+                    </div>
+                    <div class="utility">
+                        <button class="btn btn-success button-send-form" type="button">Submit</button>
+                        <button class="btn btn-danger button-cancel-form" type="button">Cancel</button>
+                    </div>
+                </div>
+            `;
             document.querySelector(MP).appendChild(el);
             
             this.textEditor = new TextEditor('#feedback-body');
@@ -56,16 +57,23 @@ class FormAddFeedback {
         el.innerHTML = this.makeDynHTML();
         this.addEventListeners();
     }
+    delete() {
+        if (this.opened) {
+            this.opened = false;
+            this.getThisEl().remove();
+        }
+    }
     
     makeDynHTML() {
         let exportHTML = '';
         
         for( let i = 1; i < this.tabs.length; i++) {
-            exportHTML += (
-                    '<div class="check">'+
-                        '<input type="radio" name="type" value="'+ this.tabs[i].key +'" '+ ((this.tabs[i].key == this.chosenType)? 'checked' : '') +'>'+
-                        '<span class="label">'+ this.tabs[i].name +'</span>'+
-                    '</div>');
+            exportHTML += (`
+                <div class="check">
+                    <input type="radio" name="type" value="${this.tabs[i].key}" ${((this.tabs[i].key == this.chosenType)? 'checked' : '')}>
+                    <span class="label">${this.tabs[i].name}</span>
+                </div>
+            `);
         }
         return exportHTML;
     }
@@ -80,7 +88,6 @@ class FormAddFeedback {
             return false;
         }
     }
-    
     send() {
         let parentAuthor = '';
         let parentPermlink = 'fb';
@@ -107,19 +114,13 @@ class FormAddFeedback {
                 if ( ! err) {
                     this.getTitle.value = '';
                     this.textEditor.editor.setData('');
-                    document.querySelector('.' + GFCLASS).dispatchEvent( new CustomEvent('reloadFeedbacks'));
+                    document.querySelector(`.${GFCLASS}`).dispatchEvent( new CustomEvent('reloadFeedbacks'));
                     console.log(result);
                 } else {
                     console.error(err);
                     ErrorController.showError(err.message);
                 }
             });
-    }
-    remove() {
-        if (this.opened) {
-            this.opened = false;
-            this.getThisEl().remove();
-        }
     }
     
     addEventListeners() {

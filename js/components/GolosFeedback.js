@@ -14,6 +14,8 @@ class GolosFeedback {
     
     init() {
         this.setNavigationBar();
+        //this.initLang('en');
+        //this.replaceLangButton();
         this.setFooter();
         this.navbar2.init();
         this.addEventListeners();
@@ -24,11 +26,10 @@ class GolosFeedback {
     addEventListeners() {
         let $ = this;
         this.getThisEl().addEventListener('reloadFeedbacks', function() {
-            $.formAddFb.remove();
-            $.reloadFbs();
+            $.formAddFb.delete();
         });
         this.getThisEl().addEventListener('expandFb', function(e) {
-            console.log('expanding fb with id: ' + e.detail.id);
+            console.log(`expanding fb with id: ${e.detail.id}`);
             $.expandFb(e.detail.id);
         });
         
@@ -126,18 +127,18 @@ class GolosFeedback {
     createFb(fb) {
         let votes = this.getVotes(fb.active_votes);
         this.feedbacks.push( new Feedback(
-                                fb.id,
-                                fb.permlink,
-                                JSON.parse(fb.json_metadata).tags[1],
-                                fb.title,
-                                fb.body,
-                                fb.author,
-                                fb.created,
-                                fb.children,
-                                votes.l,
-                                votes.d
-                            )
-                            );
+            fb.id,
+            fb.permlink,
+            JSON.parse(fb.json_metadata).tags[1],
+            fb.title,
+            fb.body,
+            fb.author,
+            fb.created,
+            fb.children,
+            votes.l,
+            votes.d
+            )
+        );
     }
     
     filterFb(fb) {
@@ -188,7 +189,7 @@ class GolosFeedback {
                 <div class="logo">
                     <img src="graphics/logo.png">GolosFeedback
                 </div>
-                <div class="buttons">
+                <div class="buttons" id="navbar-right">
                     <button type="button" class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>
                     <button type="button" class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
                     <button type="button" class="btn btn-primary button-about"><span class="icon-info"></span> About</button>
