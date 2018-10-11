@@ -9,11 +9,15 @@ body {
     font-family: 'Open-sans', sans-serif;
     width: 100%;
     display: flex!important;
-    justify-content: center!important;
+    flex-flow: column;
+    align-items: center!important;
     a, a:hover{
         text-decoration: none!important;
         color: inherit;
     }
+    
+    padding-top: 50px;
+    padding-bottom: 50px;
 
     .golos-feedback-container-wrapper {
         margin: 0!important;
@@ -199,28 +203,37 @@ body {
                 padding-bottom: 0;
             }
         }
-        
-        .navigation, .footer{
-            .wrapper{
-                display: flex;
-                flex-flow: row;
-                justify-content: space-between;
-                .buttons{
-                    button.btn{
-                        margin-right: @paddingStock;
-                        margin-left: @paddingStock;
-                    }
-                }
-                .copyright, .logo{
-                    img{
-                        max-width: 25px;
-                        margin: 0 @paddingStock;
-                    }
-                    display: flex;
-                    align-items: center;
+    }
+    
+    .navigation, .footer{
+        width: 100%;
+        position: fixed;
+        .wrapper{
+            padding: @paddingStock;
+            display: flex;
+            flex-flow: row;
+            justify-content: space-between;
+            .buttons{
+                button.btn{
+                    margin-right: @paddingStock;
+                    margin-left: @paddingStock;
                 }
             }
+            .copyright, .logo{
+                img{
+                    max-width: 25px;
+                    margin: 0 @paddingStock;
+                }
+                display: flex;
+                align-items: center;
+            }
         }
+    }
+    .navigation{
+        top: 0;
+    }
+    .footer{
+        bottom: 0;
     }
 }
 

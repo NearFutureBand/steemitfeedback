@@ -14,6 +14,7 @@ class GolosFeedback {
     
     init() {
         this.setNavigationBar();
+        this.setFooter();
         this.navbar2.init();
         this.addEventListeners();
         this.loadFbs();
@@ -173,25 +174,42 @@ class GolosFeedback {
     
     /*Not interesting*/
     setBootstrapStructure() {
-        this.getThisEl().innerHTML = 
-            '<div class="container golos-feedback-container-wrapper">'+
-                '<div class="row mount-place"></div>'+
-            '</div>';
+        this.getThisEl().innerHTML = `
+            <nav class="navigation"></nav>
+            <div class="container golos-feedback-container-wrapper">
+                <div class="row mount-place"></div>
+            </div>
+            <footer class="footer"></footer>
+        `;
     }
     setNavigationBar() {
-        this.getThisEl().querySelector(MP).innerHTML = 
-            '<nav class="col-12 navigation">'+
-                '<div class="wrapper tile">'+
-                    '<div class="logo">'+
-                        '<img src="graphics/logo.png">GolosFeedback'+
-                    '</div>'+
-                    '<div class="buttons">'+
-                        '<button type="button" class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>'+
-                        '<button type="button" class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>'+
-                        '<button type="button" class="btn btn-primary button-about"><span class="icon-info"></span> About</button>'+
-                    '</div>'+
-                '</div>'+
-            '</nav>';
+        this.getThisEl().querySelector(`.${GFCLASS} .navigation`).innerHTML = `
+            <div class="wrapper tile">
+                <div class="logo">
+                    <img src="graphics/logo.png">GolosFeedback
+                </div>
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>
+                    <button type="button" class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
+                    <button type="button" class="btn btn-primary button-about"><span class="icon-info"></span> About</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    setFooter() {
+        this.getThisEl().querySelector(`.${GFCLASS} .footer`).innerHTML = `
+            <div class="wrapper tile">
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary button-integration">Integration</button>
+                    <button type="button" class="btn btn-primary button-support">Support</button>
+                </div>
+                
+                <div class="copyright">
+                    GolosFeedback @ 2018
+                </div>
+            </div>
+        `;
     }
     setTestnetWebsocket() {
         golos.config.set('websocket', 'wss://ws.testnet.golos.io');
