@@ -11,7 +11,7 @@ class Feedback {
         this.author = author;
         this.commentCount = commentCount;
         this.comments = [];
-        this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, likes, dislikes, 0, 'feedback-wrapper');
+        this.controlPanel = new ControlPanel('fb-' + this.id, this.author, this.date, this.permlink, likes, dislikes, 0, 'feedback-wrapper');
         this.commentForm = null;
     }
     getThisEl() {

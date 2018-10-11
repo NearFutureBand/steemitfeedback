@@ -1,8 +1,9 @@
 class ControlPanel {
-    constructor(id, author, date, likes, dislikes, myVote, mountPlace) {
+    constructor(id, author, date, permlink, likes, dislikes, myVote, mountPlace) {
         this.id = 'cp-' + id;
         this.author = author;
         this.date = date;
+        this.permlink = permlink;
         this.likes = likes;
         this.dislikes = dislikes;
         this.myVote = myVote;
@@ -63,46 +64,52 @@ class ControlPanel {
             
             auth( () => {
                 
-                /*Отмена лайка*/
-                if( this.myVote == 1 ) {
-                    this.likes--;
-                    this.myVote = 0;
-                    //окрасить в серый 
-                    
-                /*Поставить лайк*/
-                } else {
-                    this.resetMyVote();
-                    this.likes++;
-                    this.myVote = 1;
-                    //окрасить в зеленый
-                }
-                this.restate();
-                
+                golos.broadcast.vote(wif.posting, username, this.author, this.permlink, (this.myVote == 1)? 0 : 10000, (err, result) => {
+                    console.log(err, result);
+                    if ( ! err) {
+                        if( this.myVote == 1) {
+                            this.likes--;
+                            this.myVote = 0;
+                            //окрасить в серый 
+                        } else {
+                            this.resetMyVote();
+                            this.likes++;
+                            this.myVote = 1;
+                            //окрасить в зеленый
+                        }
+                        
+                        this.restate();
+                    } else {
+                        ErrorController.showError(err.message);
+                    }
+                });
             }, ['posting']);
-            
-            
         });
+        
         this.getThisEl().querySelector('button.vote-dislike').addEventListener('click', () => {
             
             auth( () => {
                 
-                /*Отмена дизлайка*/
-                if( this.myVote == -1 ) {
-                    this.dislikes--;
-                    this.myVote = 0;
-                    //окрасить в серый
-                    
-                /*Поставить дизлайк*/
-                } else {
-                    this.resetMyVote();
-                    this.dislikes++;
-                    this.myVote = -1;
-                    //окрасить в красный
-                }
-                this.restate();
-                
+                golos.broadcast.vote(wif.posting, username, this.author, this.permlink, (this.myVote == -1)? 0 : -10000, (err, result) => {
+                    console.log(err, result);
+                    if ( ! err) {
+                        if( this.myVote == -1) {
+                            this.dislikes--;
+                            this.myVote = 0;
+                            //окрасить в серый
+                        } else {
+                            this.resetMyVote();
+                            this.dislikes++;
+                            this.myVote = -1;
+                            //окрасить в красный
+                        }
+                        
+                        this.restate();
+                    } else {
+                        ErrorController.showError(err.message);
+                    }
+                });
             }, ['posting']);
-            
         });
     }
     

@@ -8,7 +8,7 @@ class Comment {
         this.created = created;
         this.className = 'comment';
         this.mountPlace = mountPlace;
-        this.controlPanel = new ControlPanel('com-' + this.fbId + '-' + this.id, this.author, this.created, likes, dislikes, myVote, 'comment-wrapper');
+        this.controlPanel = new ControlPanel('com-' + this.fbId + '-' + this.id, this.author, this.created, this.permlink, likes, dislikes, myVote, 'comment-wrapper');
     }
     
     getThisEl() {
