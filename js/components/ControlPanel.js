@@ -8,6 +8,7 @@ class ControlPanel {
         this.myVote = myVote;
         this.mountPlace = '.' + GFCLASS + ' #' + id + ' .' + mountPlace;
         this.className = 'control-panel';
+        
     }
     getThisEl() {
         return document.querySelector('.' + GFCLASS + ' #'+ this.id + '.' + this.className);
@@ -60,7 +61,7 @@ class ControlPanel {
     addEventListeners() {
         this.getThisEl().querySelector('button.vote-like').addEventListener('click', () => {
             
-            auth(function () {
+            auth( () => {
                 
                 /*Отмена лайка*/
                 if( this.myVote == 1 ) {
@@ -75,12 +76,15 @@ class ControlPanel {
                     this.myVote = 1;
                     //окрасить в зеленый
                 }
+                this.restate();
+                
             }, ['posting']);
+            
             
         });
         this.getThisEl().querySelector('button.vote-dislike').addEventListener('click', () => {
             
-            auth(function () {
+            auth( () => {
                 
                 /*Отмена дизлайка*/
                 if( this.myVote == -1 ) {
@@ -95,6 +99,8 @@ class ControlPanel {
                     this.myVote = -1;
                     //окрасить в красный
                 }
+                this.restate();
+                
             }, ['posting']);
             
         });

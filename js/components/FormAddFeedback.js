@@ -124,7 +124,7 @@ class FormAddFeedback {
     
     addEventListeners() {
         this.getThisEl().querySelector(' .button-send-form').addEventListener('click', () => {
-            auth(function () {
+            auth( () => {
                 if( this.validate() ) this.send();
             }, ['posting']);
         });

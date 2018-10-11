@@ -7,14 +7,12 @@ class Comment {
         this.author = author;
         this.created = created;
         this.className = 'comment';
-        this.myVote = 0;
-        this.likes = 0;
-        this.dislikes;
-        this.controlPanel = new ControlPanel('com-' + this.id, this.author, this.created, this.likes, this.dislikes, this.myVote, 'comment-wrapper');
+        this.mountPlace = mountPlace;
+        this.controlPanel = new ControlPanel('com-' + this.fbId + '-' + this.id, this.author, this.created, likes, dislikes, myVote, 'comment-wrapper');
     }
     
     getThisEl() {
-        return document.querySelector('#com-' + this.fbId + '-' + this.id + '.row.' + this.className);
+        return document.querySelector('#com-' + this.fbId + '-' + this.id + '.col-lg-10.offset-lg-1.col-md-10.offset-md-1.' + this.className);
     }
     place() {
         let el = document.createElement('div');
@@ -32,9 +30,8 @@ class Comment {
             '</div>';
         document.querySelector(this.mountPlace).appendChild(el);
         this.controlPanel.place();
-        this.restate();
     }
-    remove() {
+    delete() {
         this.getThisEl().remove();
     }
     addEventListeners() {

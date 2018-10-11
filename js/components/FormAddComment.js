@@ -33,14 +33,16 @@ class FormAddComment {
         this.textEditor = new TextEditor('#comment-body');
         this.textEditor.place();
     
-        this.addEventListeners();
-        //clearJsonMetadata();
+        this.addStaticEventListeners();
     }
     
-    addEventListeners() {
+    addStaticEventListeners() {
         this.getThisEl().querySelector('.send-comment-form').addEventListener('click', () => {
-            auth(function () {
-                if( this.validate() ) this.send();
+            auth( () => {
+                if( this.validate() ) {
+                    this.send();
+                    this.jsonMetadata = {};
+                } 
             }, ['posting']);
         });
     }
@@ -48,7 +50,7 @@ class FormAddComment {
         if( this.textEditor.editor.getData().length < this.maxCommentSymbols ) {
             return true;
         } else {
-            console.log('something wrong');
+            ErrorController.showError('Form is not valid');
             return false;
         }
     }
@@ -63,15 +65,13 @@ class FormAddComment {
         
         
         golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, JSON.stringify(this.jsonMetadata), (err, result) => {
-            //console.log(err, result);
+            console.log(err, result);
             if (!err) {
-                console.log('comment', result);
                 this.textEditor.editor.setData('');
+                this.jsonMetadata = {};
                 
-                //restate feedback
-                
+                document.querySelector(this.mountPlace).dispatchEvent(new CustomEvent('reloadFeedback'));
             } else {
-                console.error(err);
                 ErrorController.showError(err.message);
             }
         }); 

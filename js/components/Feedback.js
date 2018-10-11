@@ -35,16 +35,22 @@ class Feedback {
             '<div class="row comments"></div>';
         document.querySelector(MP).appendChild(el);  
         this.controlPanel.place();
+        this.addStaticEventListeners();
         this.restate();
     }
     restate() {
         let el = this.getDynBlock();
         if( el.innerHTML != '') el.innerHTML = '';
-        
         el.innerHTML = this.makeDynHTML();
-        this.addEventListeners();
-        this.placeComments();
-        this.placeCommentForm();
+        
+        this.addDynEventListeners();
+        
+        if(this.expanded) {
+            
+            this.removeComments();
+            this.removeCommentForm();
+            this.getComments();
+        }
     }
     makeDynHTML() {
         let exportHTML =
@@ -64,11 +70,27 @@ class Feedback {
     }
     expand() {
         this.expanded = true;
-        //getContentReplies - get comments entities to show them
-        //update commentCount variable
-        //this.restate();
-        //this.place();
         this.restate();
+    }
+    
+    addDynEventListeners() {
+        
+        //Comments button down
+        this.getThisEl().querySelector('.open-comments').addEventListener('click', () => {
+            this.sendExpandFbEvent(this.id);
+        });
+        
+        //Click on the feedback's header
+        this.getThisEl().querySelector('.feedback-title').addEventListener('click', () => {
+           this.sendExpandFbEvent(this.id);
+        });
+        
+    }
+    addStaticEventListeners() {
+        this.getThisEl().addEventListener('reloadFeedback', () => {
+            console.log(this.expanded);
+            this.restate();
+        });
     }
     
     getComments() {
@@ -78,8 +100,10 @@ class Feedback {
                 result.forEach( (item) => {
                     this.createComment(item);
                 });
+                this.commentCount = this.comments.length;
+                this.placeComments();
+                this.placeCommentForm();
             } else {
-                console.error(err);
                 ErrorController.showError(err.message);
             }
         });
@@ -93,40 +117,28 @@ class Feedback {
             data.body, 
             data.author, 
             data.created, 
-            votes.likes, 
-            votes.dislikes, 
+            votes.l,
+            votes.d,
             0,
-            '#fb-' + this.id + '.col-12.' + this.className + '.row.comments'
-            ) 
-            );
+            '#fb-' + this.id + '.col-12.' + this.className + ' .row.comments'
+        ) 
+        );
     }
     placeComments() {
         if(this.comments.length != 0) {
             this.comments.forEach( (com) => {
-                com.place();    
+                com.place();
             });
         }
     }
     removeComments() {
+        
         if(this.comments.length != 0) {
-            this.comments.forEach( function(com) {
-                com.remove();
+            this.comments.forEach( (com) => {
+                com.delete();
             });
             this.comments = [];
         }
-    }
-    
-    addEventListeners() {
-        let $ = this;
-        //Comments button down
-        this.getThisEl().querySelector('.open-comments').addEventListener('click', function() {
-            $.sendExpandFbEvent($.id);
-        });
-        
-        //Click on the feedback's header
-        this.getThisEl().querySelector('.feedback-title').addEventListener('click', function() {
-           $.sendExpandFbEvent($.id);
-        });
     }
     
     placeCommentForm() {
@@ -137,7 +149,7 @@ class Feedback {
     }
     removeCommentForm() {
         if( this.commentForm != null) {
-            this.commentForm().getThisEl().remove();
+            this.commentForm.getThisEl().remove();
             this.commentForm = null;
         }
         
