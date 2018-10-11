@@ -34,7 +34,7 @@ class Feedback {
             </div>
             <div class="row comments"></div>
         `;
-        document.querySelector(MP).appendChild(el);  
+        document.querySelector(MP).appendChild(el);
         this.controlPanel.place();
         this.addStaticEventListeners();
         this.restate();
@@ -90,7 +90,6 @@ class Feedback {
     }
     addStaticEventListeners() {
         this.getThisEl().addEventListener('reloadFeedback', () => {
-            console.log(this.expanded);
             this.restate();
         });
     }

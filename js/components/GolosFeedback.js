@@ -18,30 +18,59 @@ class GolosFeedback {
         //this.replaceLangButton();
         this.setFooter();
         this.navbar2.init();
-        this.addEventListeners();
+        this.addStaticEventListeners();
         this.loadFbs();
     }
     
     
-    addEventListeners() {
-        let $ = this;
-        this.getThisEl().addEventListener('reloadFeedbacks', function() {
-            $.formAddFb.delete();
-        });
-        this.getThisEl().addEventListener('expandFb', function(e) {
-            console.log(`expanding fb with id: ${e.detail.id}`);
-            $.expandFb(e.detail.id);
+    addStaticEventListeners() {
+        
+        this.getThisEl().addEventListener('reloadFeedbacks', () => {
+            this.formAddFb.delete();
+            this.reloadFbs();
         });
         
-        document.querySelector('.button-get-my-feedbacks').addEventListener('click', function() {
-            auth(function () {
-                $.removeFbs();
-                $.loadFbs('test3');
+        this.getThisEl().addEventListener('expandFb', (e) => {
+            console.log(`expanding fb with id: ${e.detail.id}`);
+            this.expandFb(e.detail.id);
+        });
+        
+        document.querySelector('.button-about').addEventListener('click', () => {
+            swal({
+                title: `About!`,
+                html: `<p class="float-left text-left">
+	                       GolosFeedback - is a microservice on the blockchain <a target="_blank" href="https://golos.io">Golos</a> that allows you to manage all the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).
+	                   </p>
+	                   <ul class="float-left text-left">
+	                       We use:
+	                       <li><a target="_blank"  href="https://github.com/GolosChain/golos-js">Golos.js</a> - the JavaScript API for Golos blockchain;</li>
+	                       <li><a target="_blank" href="https://github.com/twbs/bootstrap">Bootstrap</a> - the most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web;</li>
+	                       <li><a target="_blank" href="http://www.dropzonejs.com">Dropzone</a> - DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews;</li>
+	                       <li><a target="_blank" href="https://github.com/lipis/flag-icon-css">Flag-icon-css</a> - a collection of all country flags in SVG;</li>
+	                       <li><a target="_blank" href="https://github.com/padolsey/findAndReplaceDOMText">FindAndReplaceDOMText</a> - searches for regular expression matches in a given DOM node and replaces or wraps each match with a node or piece of text that you can specify;</li>
+	                       <li><a target="_blank" href="https://www.i18next.com">I18next</a> - is an internationalization-framework written in and for JavaScript;</li>
+	                       <li><a target="_blank" href="https://github.com/ipfs/js-ipfs-api">Js-ipfs-api</a> - a client library for the IPFS HTTP API, implemented in JavaScript;</li>
+	                       <li><a target="_blank" href="https://github.com/limonte/sweetalert2">SweetAlert2</a> - a beautiful, responsive, customizable, accessible replacement for JavaScript's popup boxes.</li>
+	                   </ul>`,
+                type: 'info',
+                buttonsStyling: false,
+                confirmButtonClass: 'btn btn-success btn-lg',
+                confirmButtonText: 'Cool!',
+                position: 'top',
+                showCloseButton: true
+            });    
+        });
+        
+        document.querySelector('.button-get-my-feedbacks').addEventListener('click', () => {
+            auth( () => {
+                this.removeFbs();
+                this.loadFbs('test3');
             }, ['posting']);
         });
-        document.querySelector('.button-add-feedback').addEventListener('click', function() {
-            $.removeFbs();
-            $.formAddFb.place();
+        
+        document.querySelector('.button-add-feedback').addEventListener('click', () => {
+            this.removeFbs();
+            this.formAddFb.place();
         });
     }
     
@@ -192,7 +221,7 @@ class GolosFeedback {
                 <div class="buttons" id="navbar-right">
                     <button type="button" class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>
                     <button type="button" class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
-                    <button type="button" class="btn btn-primary button-about"><span class="icon-info"></span> About</button>
+                    <button type="button" class="btn btn-primary button-about" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
                 </div>
             </div>
         `;

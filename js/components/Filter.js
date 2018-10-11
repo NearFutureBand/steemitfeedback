@@ -42,17 +42,16 @@ class Filter {
         
         this.setCounterAll();
         el.innerHTML = this.makeDynHTML();
-        this.addEvntClk();
+        this.addDynEventListeners();
     }
     
     /*Events*/
-    addEvntClk() {
-        let $ = this;
+    addDynEventListeners() {
         for( let i = 0; i < this.tabs.length; i++) {
-            this.tabs[i].getThisEl().addEventListener('click', function() {
-                $.makeTabActive(i);
-                console.log($.currentFbSelector);
-                $.restate();
+            this.tabs[i].getThisEl().addEventListener('click', () => {
+                this.makeTabActive(i);
+                console.log(this.currentFbSelector);
+                this.restate();
                 
                 document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
             });

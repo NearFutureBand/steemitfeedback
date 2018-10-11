@@ -19,6 +19,8 @@ class ControlPanel {
     }
     
     place() {
+        
+        
         let el = document.createElement('div');
         el.className = this.className;
         el.id = this.id;
@@ -57,8 +59,8 @@ class ControlPanel {
         `;
         return exportHTML;
     }
-    remove() {
-        this.getThisEl().remove();
+    delete() {
+        if(this.getThisEl() != null ) this.getThisEl().remove();
     }
     
     addEventListeners() {

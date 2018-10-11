@@ -131,8 +131,8 @@ class FormAddFeedback {
         });
         
         this.getThisEl().querySelector(' .button-cancel-form').addEventListener('click', () => {
-            this.remove();
-            document.querySelector('.' + GFCLASS).dispatchEvent(new CustomEvent('reloadFeedbacks'));
+            this.delete();
+            document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
         });
         
         Array.from( this.getThisEl().querySelectorAll('.form-type input[type="radio"]')).forEach( (inp) => {
