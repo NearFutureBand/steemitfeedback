@@ -44,7 +44,7 @@ class ControlPanel {
         if( el.innerHTML != '') el.innerHTML = '';
         
         el.innerHTML = this.makeDynHTML();
-        this.addEventListeners();
+        this.addDynEventListeners();
     }
     makeDynHTML() {
         let exportHTML = `
@@ -63,7 +63,7 @@ class ControlPanel {
         if(this.getThisEl() != null ) this.getThisEl().remove();
     }
     
-    addEventListeners() {
+    addDynEventListeners() {
         this.getThisEl().querySelector('button.vote-like').addEventListener('click', () => {
             
             auth( () => {

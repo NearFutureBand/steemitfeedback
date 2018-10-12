@@ -12,14 +12,11 @@ class Comment {
     }
     
     getThisEl() {
-        //return document.querySelector('#com-' + this.fbId + '-' + this.id + '.col-lg-10.offset-lg-1.col-md-10.offset-md-1.' + this.className);
         return document.querySelector(`#com-${this.fbId}-${this.id}.col-lg-10.offset-lg-1.col-md-10.offset-md-1.${this.className}`);
     }
     place() {
         let el = document.createElement('div');
-        //el.className = 'col-lg-10 offset-lg-1 col-md-10 offset-md-1 ' + this.className;
         el.className = `col-lg-10 offset-lg-1 col-md-10 offset-md-1 ${this.className}`;
-        //el.setAttribute('id', 'com-' + this.fbId + '-' + this.id);
         el.setAttribute('id', `com-${this.fbId}-${this.id}`);
         
         el.innerHTML = `
@@ -37,8 +34,5 @@ class Comment {
     }
     delete() {
         this.getThisEl().remove();
-    }
-    addEventListeners() {
-        
     }
 }

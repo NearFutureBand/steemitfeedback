@@ -14,12 +14,14 @@ class Feedback {
         this.controlPanel = new ControlPanel(`fb-${this.id}`, this.author, this.date, this.permlink, likes, dislikes, 0, 'feedback-wrapper');
         this.commentForm = null;
     }
+    
     getThisEl() {
         return document.querySelector(`#fb-${this.id}.col-12.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.text');
     }
+    
     place() {
         let el = document.createElement('div');
         el.className = `col-12 ${this.className}`;
@@ -67,12 +69,8 @@ class Feedback {
         `;
         return exportHTML;
     }
-    remove() {
+    delete() {
         this.getThisEl().remove();
-    }
-    expand() {
-        this.expanded = true;
-        this.restate();
     }
     
     addDynEventListeners() {
@@ -143,7 +141,7 @@ class Feedback {
     }
     
     placeCommentForm() {
-        if(this.expanded == true) {
+        if(this.expanded) {
             this.commentForm = new FormAddComment(`#fb-${this.id}.col-12.${this.className}`, this.author, this.permlink);
             this.commentForm.place();
         }
@@ -157,13 +155,17 @@ class Feedback {
     }
     
     /*Not Interesting*/
+    expand() {
+        this.expanded = true;
+        this.restate();
+    }
     cutText(text, type) {
         if( text.length > 400 && type == 'body') text = `${text.slice(0, 399)}...`;
         if( text.length > 60 && type == 'title') text = `${text.slice(0, 59)}...`;
         return text;
     }
     sendExpandFbEvent(id) {
-        if( this.expanded == false) {
+        if( ! this.expanded) {
             document.querySelector(`.${GFCLASS}`)
                 .dispatchEvent( new CustomEvent("expandFb", {
                     detail: {
@@ -184,7 +186,7 @@ class Feedback {
     getVotes(votesArray) {
         let likes = 0;
         let dislikes = 0;
-        votesArray.forEach( function( item ) {
+        votesArray.forEach( ( item ) => {
             if(item.percent > 0) likes++;
             else if(item.percent < 0) dislikes++;
         });

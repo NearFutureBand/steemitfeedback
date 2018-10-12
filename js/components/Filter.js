@@ -20,13 +20,8 @@ class Filter {
     getDynBlock() {
         return this.getThisEl().querySelector('.wrapper.tile');
     }
-    makeDynHTML() {
-        let exportHTML = '';
-        this.tabs.forEach( function(tab) {
-            exportHTML += ( tab.makeHTML() );
-        });
-        return exportHTML;
-    }
+    
+    
     
     place() {
         let el = document.createElement('div');
@@ -35,7 +30,6 @@ class Filter {
         document.querySelector(MP).appendChild(el);
         this.restate();
     }
-    
     restate() {
         let el = this.getDynBlock();
         if( el.innerHTML != '') el.innerHTML = '';
@@ -44,13 +38,19 @@ class Filter {
         el.innerHTML = this.makeDynHTML();
         this.addDynEventListeners();
     }
+    makeDynHTML() {
+        let exportHTML = '';
+        this.tabs.forEach( (tab) => {
+            exportHTML += ( tab.makeHTML() );
+        });
+        return exportHTML;
+    }
     
     /*Events*/
     addDynEventListeners() {
         for( let i = 0; i < this.tabs.length; i++) {
             this.tabs[i].getThisEl().addEventListener('click', () => {
                 this.makeTabActive(i);
-                console.log(this.currentFbSelector);
                 this.restate();
                 
                 document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
@@ -67,32 +67,33 @@ class Filter {
         this.tabs.push( new FilterTab('Thanks', 'thank', 'icon-gift'));
     }
     makeTabActive(index) {
-        for(let i = 0; i < this.tabs.length; i++) {
-            this.tabs[i].active = false;
-        }
+        this.tabs.forEach( (tab) => {
+            tab.active = false; 
+        });
         this.activeTab = index;
         this.currentFbSelector[0] = this.tabs[index].click();
         this.hashController.setHash(this.currentFbSelector[0]);
-        
     }
     incCounter(key) {
         this.getTabByKey(key).counter++;
     }    
     getTabByKey(key) {
-        for(let i=0; i<this.tabs.length; i++) {
-            if( this.tabs[i].key == key) return this.tabs[i];
-        }
+        this.tabs.forEach( (tab) => {
+            if( tab.key == key) return tab;
+        });
     }
     setCounterAll() {
         let sum = 0;
-        for(let i=1; i<this.tabs.length; i++) {
-            sum += this.tabs[i].counter;
-        }
+        
+        this.tabs.forEach( (tab) => {
+            sum += tab.counter;
+        });
+        
         this.tabs[0].counter = sum;
     }
     resetCounters() {
-        for(let i=1; i<this.tabs.length; i++) {
-            this.tabs[i].counter = 0;
-        }
+        this.tabs.forEach( (tab) => {
+            tab.counter = 0;
+        });
     }
 }

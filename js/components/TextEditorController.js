@@ -21,11 +21,16 @@ class TextEditor {
                 but.id = "upload";
                 but.type = "button";
                 document.querySelector('div.ck.ck-toolbar').appendChild(but);
+            
                 //addEventForBtnUploadImg();
             } )
             .catch( err => {
                 console.error( err.stack );
-                //showError(err.message);
+                ErrorController.showError(err.message);
             } );
+    }
+    
+    addStaticEventListeners() {
+        //
     }
 }

@@ -16,7 +16,6 @@ class GolosFeedback {
         this.setNavigationBar();
         
         //this.initLang('en');
-        //this.replaceLangButton();
         this.setFooter();
         this.setPaddingsForFeedbackContainer();
         this.navbar2.init();
@@ -24,6 +23,9 @@ class GolosFeedback {
         this.loadFbs();
     }
     
+    getThisEl() {
+        return document.querySelector(`.${this.className}`);
+    }
     
     addStaticEventListeners() {
         
@@ -33,7 +35,6 @@ class GolosFeedback {
         });
         
         this.getThisEl().addEventListener('expandFb', (e) => {
-            console.log(`expanding fb with id: ${e.detail.id}`);
             this.expandFb(e.detail.id);
         });
         
@@ -66,7 +67,7 @@ class GolosFeedback {
         document.querySelector(`.${this.className} .button-get-my-feedbacks`).addEventListener('click', () => {
             auth( () => {
                 this.removeFbs();
-                this.loadFbs('test3');
+                this.loadFbs(username);
             }, ['posting']);
         });
         
@@ -125,13 +126,8 @@ var gFeedbackOptions = {
                                                                                           
     }
     
-    getThisEl() {
-        return document.querySelector('.' + this.className);
-    }
-    
     loadFbs(customUsername) {
         this.navbar2.resetCounters();
-        let $ = this;
         
         var query = {
             select_tags: ['fb', this.domain ],
@@ -143,31 +139,27 @@ var gFeedbackOptions = {
             query.select_authors = [customUsername];
         }
         
-        golos.api.getDiscussionsByBlog(query, function(err, result) {
+        golos.api.getDiscussionsByBlog(query, (err, result) => {
             console.log(err, result);
             
             if ( ! err) {
                 if( result.length != 0) {
-                    result.forEach( function(fb) {
-                        if( $.filterFb(fb) ) {
-                            $.createFb(fb);
+                    result.forEach( fb => {
+                        if( this.filterFb(fb) ) {
+                            this.createFb(fb);
                         }
                     });
                     
-                    if($.feedbacks.length == 0) {
-                        //create empty fb
-                        console.log('Create empty fb');
-                    } else {
-                        $.placeFbs();
-                    }
+                    if($.feedbacks.length == 0) this.createEmptyFb();
                 } else {
-                    //create empty fb
-                    console.log('Create empty fb');
+                    this.createEmptyFb();
                 }
+                this.placeFbs();
             } else {
                 console.error(err);
-                //showError(err.message);
+                ErrorController.showError(err.message);
             }
+            
             VFX.hideVFX();
         });
         
@@ -176,30 +168,47 @@ var gFeedbackOptions = {
         this.removeFbs();
         this.loadFbs();
     }
-    getOneFb() {
-        //getContent()
-        //this.feedbacks.push( new Feedback() );
+    getOneFb(feedback) {
+        
+        golos.api.getContent(
+            feedback.author,
+            feedback.permlink,
+            1000,
+            (err, result) => {
+                console.log(err, result);
+                if ( ! err) {
+                    this.createFb(result[0]);
+                    this.placeFbs();
+                    this.feedbacks[0].expand();
+                } else {
+                    console.error(err);
+                    ErrorController.showError(err.message);
+                }
+            }
+        );
     }
     
     placeFbs() {
-        this.feedbacks.forEach( function(fb) {
-            fb.place();
-        });
+        if(this.feedbacks.length != 0) {
+            this.feedbacks.forEach( fb => {
+                fb.place();
+            });
+        }
         this.navbar2.restate();
     }
     removeFbs() {
-        this.feedbacks.forEach( function(fb) {
-            fb.remove();
+        this.feedbacks.forEach( fb => {
+            fb.delete();
         });
         this.feedbacks = [];
     }
     expandFb(id) {
         let targetFeedback = this.getFeedbackById(id);
         this.removeFbs();
-        this.feedbacks.push(targetFeedback);
-        this.placeFbs();
-        targetFeedback.expand();
-        
+        this.getOneFb(targetFeedback);
+        //this.feedbacks.push(targetFeedback);
+        //this.placeFbs();
+        //targetFeedback.expand();
     }
     createFb(fb) {
         let votes = this.getVotes(fb.active_votes);
@@ -213,9 +222,22 @@ var gFeedbackOptions = {
             fb.created,
             fb.children,
             votes.l,
-            votes.d
-            )
-        );
+            votes.d    
+        ));
+    }
+    createEmptyFb() {
+        this.feedbacks.push( new Feedback(
+            -1,
+            'empty-feedback-on-the-golos-feedback-microservice',
+            this.navbar2.currentFbSelector[0],
+            'There is nothing here',
+            'There\'s no feedbacks in this category yet. You can add the first one!',
+            'Nobody',
+            'right now',
+            '0',
+            0,
+            0   
+        ));
     }
     
     filterFb(fb) {
@@ -331,14 +353,14 @@ var gFeedbackOptions = {
         golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
     }
     getFeedbackById(id) {
-        for( let i = 0; i < this.feedbacks.length; i++) {
-            if( this.feedbacks[i].id == id ) return this.feedbacks[i];
-        }
+        this.feedbacks.forEach( fb => {
+            if( fb.id == id ) return fb;
+        });
     }
     getVotes(votesArray) {
         let likes = 0;
         let dislikes = 0;
-        votesArray.forEach( function( item ) {
+        votesArray.forEach( item => {
             if(item.percent > 0) likes++;
             else if(item.percent < 0) dislikes++;
         });

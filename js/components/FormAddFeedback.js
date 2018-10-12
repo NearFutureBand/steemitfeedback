@@ -19,8 +19,7 @@ class FormAddFeedback {
     }
     
     place() {
-        let $ = this;
-        if(!this.opened) {
+        if( ! this.opened) {
             this.opened = true;
             let el = document.createElement('div');
             el.className = `col-12 ${this.className}`;
@@ -44,6 +43,7 @@ class FormAddFeedback {
                 </div>
             `;
             document.querySelector(MP).appendChild(el);
+            this.addStaticEventListeners();
             
             this.textEditor = new TextEditor('#feedback-body');
             this.textEditor.place();
@@ -55,7 +55,7 @@ class FormAddFeedback {
         if( el.innerHTML != '') el.innerHTML = '';
         
         el.innerHTML = this.makeDynHTML();
-        this.addEventListeners();
+        this.addDynEventListeners();
     }
     delete() {
         if (this.opened) {
@@ -67,14 +67,17 @@ class FormAddFeedback {
     makeDynHTML() {
         let exportHTML = '';
         
-        for( let i = 1; i < this.tabs.length; i++) {
-            exportHTML += (`
-                <div class="check">
-                    <input type="radio" name="type" value="${this.tabs[i].key}" ${((this.tabs[i].key == this.chosenType)? 'checked' : '')}>
-                    <span class="label">${this.tabs[i].name}</span>
-                </div>
-            `);
-        }
+        this.tabs.forEach( (tab, i) => {
+            if( i > 0) {
+                exportHTML += (`
+                    <div class="check">
+                        <input type="radio" name="type" value="${tab.key}" ${((tab.key == this.chosenType)? 'checked' : '')}>
+                        <span class="label">${tab.name}</span>
+                    </div>
+                `);
+            }
+        });
+        
         return exportHTML;
     }
     
@@ -123,7 +126,7 @@ class FormAddFeedback {
             });
     }
     
-    addEventListeners() {
+    addStaticEventListeners() {
         this.getThisEl().querySelector(' .button-send-form').addEventListener('click', () => {
             auth( () => {
                 if( this.validate() ) this.send();
@@ -135,12 +138,15 @@ class FormAddFeedback {
             document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
         });
         
+    }
+    addDynEventListeners() {
         Array.from( this.getThisEl().querySelectorAll('.form-type input[type="radio"]')).forEach( (inp) => {
             inp.addEventListener('click', () => {
                 this.chosenType = inp.value;
             });
         })
     }
+    
     getTitle() {
         return this.getThisEl().querySelector('.form-title>input');
     }

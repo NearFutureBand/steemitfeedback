@@ -7,6 +7,10 @@ class FilterTab {
         this.active = false;
     }
     
+    getThisEl() {
+        return document.querySelector(`.${GFCLASS} a.tab[data-target="${this.key}"]`);
+    }
+    
     makeHTML() {
         return `
             <a class="tab ${(this.active ? 'active' : '')}" href="#${this.key}" data-target="${this.key}">
@@ -16,16 +20,9 @@ class FilterTab {
         `;
     }
     
-    getThisEl() {
-        return document.querySelector('.' + GFCLASS + ' a.tab[data-target="'+ this.key +'"]');
-    }
-    
     /*Events*/
     click() {
         this.active = true;
         return this.key;
     }
-    
-    
-    /*Not Interesting*/
 }

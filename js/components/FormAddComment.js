@@ -10,7 +10,7 @@ class FormAddComment {
     }
     
     getThisEl() {
-        return document.querySelector('.row.' + this.className);
+        return document.querySelector(`.row.${this.className}`);
     }
     
     place() {
@@ -47,6 +47,7 @@ class FormAddComment {
             }, ['posting']);
         });
     }
+    
     validate() {
         if( this.textEditor.editor.getData().length < this.maxCommentSymbols ) {
             return true;
@@ -65,17 +66,29 @@ class FormAddComment {
         let body = this.textEditor.editor.getData();
         
         
-        golos.broadcast.comment(wif.posting, parentAuthor, parentPermlink, author, permlink, title, body, JSON.stringify(this.jsonMetadata), (err, result) => {
-            console.log(err, result);
-            if (!err) {
-                this.textEditor.editor.setData('');
-                this.jsonMetadata = {};
+        golos.broadcast.comment(
+            wif.posting,
+            parentAuthor,
+            parentPermlink,
+            author,
+            permlink,
+            title,
+            body,
+            JSON.stringify(this.jsonMetadata),
+            (err, result) => {
                 
-                document.querySelector(this.mountPlace).dispatchEvent(new CustomEvent('reloadFeedback'));
-            } else {
-                ErrorController.showError(err.message);
+                console.log(err, result);
+                if ( ! err) {
+                    this.textEditor.editor.setData('');
+                    this.jsonMetadata = {};
+                
+                    document.querySelector(this.mountPlace).dispatchEvent(new CustomEvent('reloadFeedback'));
+                } else {
+                    ErrorController.showError(err.message);
+                }
+                
             }
-        }); 
+        ); 
     }
     
     delete() {
