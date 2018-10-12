@@ -291,9 +291,21 @@ var gFeedbackOptions = {
                     <img src="graphics/logo.png">GolosFeedback
                 </div>
                 <div class="buttons" id="navbar-right">
-                    <button type="button" class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>
-                    <button type="button" class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
-                    <button type="button" class="btn btn-primary button-about" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
+                    <li class="nav-item">
+                        <button class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary button-about" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary button-language">Language</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary button-log-out">Log out</button>
+                    </li>
                 </div>
                 <a href="https://github.com/NearFutureBand/golosfeedback" class="github-corner" tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="80px" height="80px" viewBox="0 0 250 250" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"  xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -337,8 +349,8 @@ var gFeedbackOptions = {
         this.getThisEl().querySelector(`.${GFCLASS} .footer`).innerHTML = `
             <div class="wrapper tile">
                 <div class="buttons">
-                    <button type="button" class="btn btn-primary button-integration">Integration</button>
-                    <button type="button" class="btn btn-primary button-support">Support</button>
+                    <button type="button" class="btn btn-primary button-integration"><span class="icon-new-tab"> Integration</button>
+                    <button type="button" class="btn btn-primary button-support"><span class="icon-wrench"> Support</button>
                 </div>
                 
                 <div class="copyright">
