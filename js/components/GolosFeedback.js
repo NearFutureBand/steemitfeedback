@@ -67,7 +67,8 @@ class GolosFeedback {
         document.querySelector(`.${this.className} .button-get-my-feedbacks`).addEventListener('click', () => {
             auth( () => {
                 this.removeFbs();
-                this.loadFbs(username);
+                this.customUsername = username;
+                this.loadFbs();
             }, ['posting']);
         });
         
@@ -126,7 +127,7 @@ var gFeedbackOptions = {
                                                                                           
     }
     
-    loadFbs(customUsername) {
+    loadFbs() {
         this.navbar2.resetCounters();
         
         var query = {
@@ -135,8 +136,8 @@ var gFeedbackOptions = {
             limit: 100
         };
         
-        if(customUsername != undefined) {
-            query.select_authors = [customUsername];
+        if(this.customUsername != undefined) {
+            query.select_authors = [this.customUsername];
         }
         
         golos.api.getDiscussionsByBlog(query, (err, result) => {
@@ -150,7 +151,7 @@ var gFeedbackOptions = {
                         }
                     });
                     
-                    if($.feedbacks.length == 0) this.createEmptyFb();
+                    if(this.feedbacks.length == 0) this.createEmptyFb();
                 } else {
                     this.createEmptyFb();
                 }
@@ -177,7 +178,7 @@ var gFeedbackOptions = {
             (err, result) => {
                 console.log(err, result);
                 if ( ! err) {
-                    this.createFb(result[0]);
+                    this.createFb(result);
                     this.placeFbs();
                     this.feedbacks[0].expand();
                 } else {
@@ -241,12 +242,12 @@ var gFeedbackOptions = {
     }
     
     filterFb(fb) {
-        let $ = this;
+        
         if(fb.parent_permlink != 'fb') {
             return false;
         } else {
             let json = JSON.parse(fb.json_metadata);
-            if(json.tags[0] != $.domain) {
+            if( json.tags[0] != this.domain ) {
                 return false;
             } else {
                 /*//переменная отсеит кривые фидбеки, если они не относятся ни к одному из существующих типов
@@ -263,9 +264,9 @@ var gFeedbackOptions = {
                     }
                 }*/
                 
-                $.navbar2.incCounter( json.tags[1] );
+                this.navbar2.incCounter( json.tags[1] );
                 
-                if( (json.tags[1] == $.navbar2.currentFbSelector[0] || $.navbar2.currentFbSelector[0] == 'all') ) {
+                if( (json.tags[1] == this.navbar2.currentFbSelector[0] || this.navbar2.currentFbSelector[0] == 'all') ) {
                     return true;
                 }
             }
@@ -290,9 +291,9 @@ var gFeedbackOptions = {
                 <div class="logo">
                     <img src="graphics/logo.png">GolosFeedback
                 </div>
-                <div class="buttons" id="navbar-right">
+                <ul class="buttons" id="navbar-right">
                     <li class="nav-item">
-                        <button class="btn btn-primary button-get-my-feedbacks"><span class="icon-box-add"></span> Get my feedbacks</button>
+                        <button class="btn btn-primary button-get-my-feedbacks"><span class="icon-download"></span> Get my feedbacks</button>
                     </li>
                     <li class="nav-item">
                         <button class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
@@ -300,13 +301,7 @@ var gFeedbackOptions = {
                     <li class="nav-item">
                         <button class="btn btn-primary button-about" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary button-language">Language</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary button-log-out">Log out</button>
-                    </li>
-                </div>
+                </ul>
                 <a href="https://github.com/NearFutureBand/golosfeedback" class="github-corner" tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="80px" height="80px" viewBox="0 0 250 250" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"  xmlns:xlink="http://www.w3.org/1999/xlink">
                         <defs>
@@ -348,10 +343,14 @@ var gFeedbackOptions = {
     setFooter() {
         this.getThisEl().querySelector(`.${GFCLASS} .footer`).innerHTML = `
             <div class="wrapper tile">
-                <div class="buttons">
-                    <button type="button" class="btn btn-primary button-integration"><span class="icon-new-tab"> Integration</button>
-                    <button type="button" class="btn btn-primary button-support"><span class="icon-wrench"> Support</button>
-                </div>
+                <ul class="buttons">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary button-integration"><span class="icon-embed2"> Integration</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary button-support"><span class="icon-wrench"> Support</button>
+                    </li>
+                </ul>
                 
                 <div class="copyright">
                     GolosFeedback @ 2018
@@ -365,9 +364,9 @@ var gFeedbackOptions = {
         golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
     }
     getFeedbackById(id) {
-        this.feedbacks.forEach( fb => {
-            if( fb.id == id ) return fb;
-        });
+        for(let i = 0; i < this.feedbacks.length; i++) {
+            if( this.feedbacks[i].id == id ) return this.feedbacks[i];
+        }
     }
     getVotes(votesArray) {
         let likes = 0;

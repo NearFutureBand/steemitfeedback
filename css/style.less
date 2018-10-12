@@ -15,6 +15,9 @@ body {
         text-decoration: none!important;
         color: inherit;
     }
+    button, input, textarea {
+        font-family: 'Open-sans', sans-serif;
+    }
 
     .golos-feedback-container-wrapper {
         margin: 0!important;
@@ -63,6 +66,11 @@ body {
 
                     .utility {
                         padding-top: @paddingStock;
+                        .open-comments{
+                            span.badge{
+                                padding: 0.25em 1rem;
+                            }
+                        }
                     }
                 }
 
@@ -172,7 +180,8 @@ body {
                 input, textarea {
                     padding: @paddingStock/4;
                 }
-                div.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline{
+                div.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline,
+                div.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-focused.ck-editor__editable_inline{
                     height: 20vh;
                 }
             }
@@ -213,10 +222,21 @@ body {
             flex-flow: row;
             justify-content: space-between;
             .buttons{
-                button.btn{
-                    margin-right: @paddingStock;
-                    margin-left: @paddingStock;
+                display: flex;
+                flex-flow: row;
+                list-style: none;
+                list-style-type: none;
+                margin: 0;
+                li.nav-item{
+                    padding: 0!important;
+                    margin: 0!important;
+                    button.btn{
+                        font-family: inherit;
+                        margin-right: @paddingStock;
+                        margin-left: @paddingStock;
+                    }
                 }
+                
             }
             .copyright, .logo{
                 img{
@@ -333,11 +353,12 @@ body {
 }
     
 @font-face {
-    font-family: 'icomoon';
-    src:  url('../fonts/icomoon.eot?brrfj4#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?brrfj4') format('truetype'),
-    url('../fonts/icomoon.woff?brrfj4') format('woff'),
-    url('../fonts/icomoon.svg?brrfj4#icomoon') format('svg');
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?4vrrxz');
+  src:  url('../fonts/icomoon.eot?4vrrxz#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?4vrrxz') format('truetype'),
+    url('../fonts/icomoon.woff?4vrrxz') format('woff'),
+    url('../fonts/icomoon.svg?4vrrxz#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -358,25 +379,19 @@ body {
 }
 
 .icon-thumbs-down:before {
-  content: "\e901";
-}
-.icon-thumbs-up:before {
-  content: "\e902";
-}
-.icon-info:before {
-  content: "\ea0c";
-}
-.icon-message-square:before {
   content: "\e900";
 }
-.icon-image:before {
-  content: "\e90d";
+.icon-thumbs-up:before {
+  content: "\e901";
 }
-.icon-box-add:before {
-  content: "\e95e";
+.icon-download:before {
+  content: "\e960";
 }
 .icon-forward:before {
   content: "\e969";
+}
+.icon-bubbles2:before {
+  content: "\e96d";
 }
 .icon-wrench:before {
   content: "\e991";
@@ -393,15 +408,15 @@ body {
 .icon-question:before {
   content: "\ea09";
 }
-.icon-cross:before {
-  content: "\ea0f";
-}
-.icon-checkmark:before {
-  content: "\ea10";
-}
-.icon-arrow-left:before {
-  content: "\ea38";
+.icon-info:before {
+  content: "\ea0c";
 }
 .icon-radio-unchecked:before {
   content: "\ea56";
+}
+.icon-embed2:before {
+  content: "\ea80";
+}
+.icon-undo:before {
+  content: "\e965";
 }

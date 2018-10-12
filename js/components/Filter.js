@@ -76,11 +76,13 @@ class Filter {
     }
     incCounter(key) {
         this.getTabByKey(key).counter++;
-    }    
+    }
     getTabByKey(key) {
-        this.tabs.forEach( (tab) => {
-            if( tab.key == key) return tab;
-        });
+        for(let i = 0; i < this.tabs.length; i++) {
+            if( this.tabs[i].key == key) {
+                return this.tabs[i];
+            }
+        }
     }
     setCounterAll() {
         let sum = 0;
