@@ -10,6 +10,7 @@ class GolosFeedback {
         this.formAddFb = new FormAddFeedback(this.navbar2.tabs, this.domain);
         this.hashController = new HashController(this.navbar2.tabs);
         this.feedbacks = [];
+        this.customUsername = null;
     }
     
     init() {
@@ -64,10 +65,19 @@ class GolosFeedback {
             });    
         });
         
-        document.querySelector(`.${this.className} .button-get-my-feedbacks`).addEventListener('click', () => {
+        let buttonMyFeedbacks = document.querySelector(`.${this.className} .button-get-my-feedbacks`);
+        buttonMyFeedbacks.addEventListener('click', () => {
             auth( () => {
                 this.removeFbs();
-                this.customUsername = username;
+                if( buttonMyFeedbacks.getAttribute('data-mode') == 'my') {
+                    this.customUsername = username;
+                    buttonMyFeedbacks.setAttribute('data-mode', 'all');
+                    buttonMyFeedbacks.querySelector('span.label').innerHTML = 'Get all feedbacks';
+                } else {
+                    this.customUsername = null;
+                    buttonMyFeedbacks.setAttribute('data-mode', 'my');
+                    buttonMyFeedbacks.querySelector('span.label').innerHTML = 'Get my feedbacks';
+                }
                 this.loadFbs();
             }, ['posting']);
         });
@@ -136,7 +146,7 @@ var gFeedbackOptions = {
             limit: 100
         };
         
-        if(this.customUsername != undefined) {
+        if(this.customUsername != null) {
             query.select_authors = [this.customUsername];
         }
         
@@ -275,13 +285,21 @@ var gFeedbackOptions = {
     
     /*Not interesting*/
     setBootstrapStructure() {
+        this.getThisEl().classList.add('container-fluid');
         this.getThisEl().innerHTML = `
-            <nav class="navigation"></nav>
-            <div class="container golos-feedback-container-wrapper">
-                <div class="row mount-place"></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+            
+                        <nav class="navigation"></nav>
+                        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 offset-lg-1 golos-feedback-container-wrapper">
+                            <div class="row mount-place"></div>
+                        </div>
+                        <footer class="footer"></footer>
+                        <div class="utility"></div>
+                    </div>
+                </div>
             </div>
-            <footer class="footer"></footer>
-            <div class="utility"></div>
         `;
         this.setLoadVFXHTML();
     }
@@ -293,7 +311,7 @@ var gFeedbackOptions = {
                 </div>
                 <ul class="buttons" id="navbar-right">
                     <li class="nav-item">
-                        <button class="btn btn-primary button-get-my-feedbacks"><span class="icon-download"></span> Get my feedbacks</button>
+                        <button class="btn btn-primary button-get-my-feedbacks" data-mode="my"><span class="icon-download"></span> <span class="label">Get my feedbacks</span></button>
                     </li>
                     <li class="nav-item">
                         <button class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>

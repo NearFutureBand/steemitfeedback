@@ -35,6 +35,7 @@ class Feedback {
                  
             </div>
             <div class="row comments"></div>
+            ${ ((this.permlink == 'empty-feedback-on-the-golos-feedback-microservice')? '<div class="empty-feedback-cover"></div>' : '')}
         `;
         document.querySelector(MP).appendChild(el);
         this.controlPanel.place();
@@ -64,7 +65,7 @@ class Feedback {
                 <div class="body">${(this.expanded? this.body : this.cutText(this.body, 'body'))}</div>
             </div>
             <div class="utility">
-                <button class="btn btn-dark open-comments"><span class="icon-bubbles2"> <span class="badge badge-light counter">${this.commentCount}</span></button>
+                <button class="btn btn-dark open-comments"><span class="icon-bubbles2"></span> <span class="badge badge-light counter">${this.commentCount}</span></button>
             </div>
         `;
         return exportHTML;
