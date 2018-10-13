@@ -239,7 +239,8 @@ var gFeedbackOptions = {
             fb.created,
             fb.children,
             votes.l,
-            votes.d    
+            votes.d,
+            votes.m
         ));
     }
     createEmptyFb() {
@@ -396,11 +397,20 @@ var gFeedbackOptions = {
     getVotes(votesArray) {
         let likes = 0;
         let dislikes = 0;
+        let myVote = 0;
+        
         votesArray.forEach( item => {
+            if(item.voter == username) {
+                if(item.percent > 0) myVote = 1;
+                else if(item.percent < 0) myVote = -1;
+            }
+               
             if(item.percent > 0) likes++;
             else if(item.percent < 0) dislikes++;
+            
         });
-        return {l: likes, d: dislikes};
+        
+        return {l: likes, d: dislikes, m: myVote};
     }
     setPaddingsForFeedbackContainer() {
         

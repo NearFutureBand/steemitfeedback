@@ -1,5 +1,5 @@
 class Feedback {
-    constructor(id, permlink, type, heading, body, author, date, commentCount, likes, dislikes) {
+    constructor(id, permlink, type, heading, body, author, date, commentCount, likes, dislikes, myVote) {
         this.className = 'feedback';
         this.expanded = false;
         this.id = id;
@@ -11,7 +11,7 @@ class Feedback {
         this.author = author;
         this.commentCount = commentCount;
         this.comments = [];
-        this.controlPanel = new ControlPanel(`fb-${this.id}`, this.author, this.date, this.permlink, likes, dislikes, 0, 'feedback-wrapper');
+        this.controlPanel = new ControlPanel(`fb-${this.id}`, this.author, this.date, this.permlink, likes, dislikes, myVote, 'feedback-wrapper');
         this.commentForm = null;
     }
     
@@ -66,8 +66,8 @@ class Feedback {
             </div>
             <div class="utility">
                 <button class="btn btn-dark open-comments"><span class="icon-bubbles2"></span> <span class="badge badge-light counter">${this.commentCount}</span></button>
-                <button class="btn btn-dark type">
-                    <span class="badge badge-light">${this.type}</span>
+                <button class="btn btn-light type">
+                    <span class="badge badge-dark">${this.type}</span>
                 </button>
             </div>
         `;
@@ -122,7 +122,7 @@ class Feedback {
             data.created, 
             votes.l,
             votes.d,
-            0,
+            votes.m,
             `#fb-${this.id}.col-12.${this.className} .row.comments`
         ) 
         );
@@ -190,10 +190,18 @@ class Feedback {
     getVotes(votesArray) {
         let likes = 0;
         let dislikes = 0;
-        votesArray.forEach( ( item ) => {
+        let myVote = 0;
+        
+        votesArray.forEach( item => {
+            if(item.voter == username) {
+                if(item.percent > 0) myVote = 1;
+                else if(item.percent < 0) myVote = -1;
+            }
+            
+            
             if(item.percent > 0) likes++;
             else if(item.percent < 0) dislikes++;
         });
-        return {l: likes, d: dislikes};
+        return {l: likes, d: dislikes, m: myVote};
     }
 }

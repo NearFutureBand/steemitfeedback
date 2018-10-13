@@ -9,7 +9,6 @@ class ControlPanel {
         this.myVote = myVote;
         this.mountPlace = `.${GFCLASS} #${id} .${mountPlace}`;
         this.className = 'control-panel';
-        
     }
     getThisEl() {
         return document.querySelector(`.${GFCLASS} #${this.id}.${this.className}`);
@@ -19,8 +18,6 @@ class ControlPanel {
     }
     
     place() {
-        
-        
         let el = document.createElement('div');
         el.className = this.className;
         el.id = this.id;
@@ -50,11 +47,11 @@ class ControlPanel {
     }
     makeDynHTML() {
         let exportHTML = `
-            <button class="btn btn-light vote-like">
+            <button class="btn ${( (this.myVote == 1) ? 'btn-success' : 'btn-light')} vote-like">
                 <span class="icon-thumbs-up"></span>
                 <span class="badge badge-dark counter">${this.likes}</span>
             </button>
-            <button class="btn btn-light vote-dislike">
+            <button class="btn ${( (this.myVote == -1) ? 'btn-danger' : 'btn-light')} vote-dislike">
                 <span class="icon-thumbs-down"></span>
                 <span class="badge badge-dark counter">${this.dislikes}</span>
             </button>
@@ -76,12 +73,10 @@ class ControlPanel {
                         if( this.myVote == 1) {
                             this.likes--;
                             this.myVote = 0;
-                            //окрасить в серый 
                         } else {
                             this.resetMyVote();
                             this.likes++;
                             this.myVote = 1;
-                            //окрасить в зеленый
                         }
                         
                         this.restate();
@@ -101,13 +96,11 @@ class ControlPanel {
                     if ( ! err) {
                         if( this.myVote == -1) {
                             this.dislikes--;
-                            this.myVote = 0;
-                            //окрасить в серый
+                            this.myVote = 0;                           
                         } else {
                             this.resetMyVote();
                             this.dislikes++;
                             this.myVote = -1;
-                            //окрасить в красный
                         }
                         
                         this.restate();
@@ -122,5 +115,18 @@ class ControlPanel {
     resetMyVote() {
         if( this.myVote == -1) this.dislikes--;
         if( this.myVote == 1) this.likes--;
+    }
+    makeRed(button) {
+        let type = button.classList[2];
+        button.className = `btn btn-danger ${type}`;
+        console.log('sadsd');
+    }
+    makeGreen(button) {
+        let type = button.classList[2];
+        button.className = `btn btn-success ${type}`;
+    }
+    makeGrey(button) {
+        let type = button.classList[2];
+        button.className = `btn btn-light ${type}`;
     }
 }
