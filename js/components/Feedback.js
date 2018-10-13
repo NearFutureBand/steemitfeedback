@@ -66,6 +66,9 @@ class Feedback {
             </div>
             <div class="utility">
                 <button class="btn btn-dark open-comments"><span class="icon-bubbles2"></span> <span class="badge badge-light counter">${this.commentCount}</span></button>
+                <button class="btn btn-dark type">
+                    <span class="badge badge-light">${this.type}</span>
+                </button>
             </div>
         `;
         return exportHTML;

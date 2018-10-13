@@ -26,11 +26,13 @@ class ControlPanel {
         el.id = this.id;
         el.innerHTML = `
             <div class="control-panel-wrapper">
-                <div class="author">${this.author}</div>
+                <div class="author-and-date">
+                    <span class="author">${this.author}</span>
+                    <span class="created">${this.date}</span>
+                </div>
                 <div class="avatar">
                     <div class="avatar-holder" style="background-image: url(\'http://www.xn--80aefdbw1bleoa1d.xn--p1ai//plugins/uit/mychat/assets/img/no_avatar.jpg\')"></div>
                 </div>
-                <div class="created">${this.date}</div>
                 <div class="vote-buttons">
                         
                 </div>

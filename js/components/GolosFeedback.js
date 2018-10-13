@@ -134,7 +134,13 @@ var gFeedbackOptions = {
                 type: 'question'
             })
         });
-                                                                                          
+        
+        document.querySelector(`.${this.className} .navigation .toggler`).addEventListener('click', () => {
+            let buttonsBlock = document.querySelector(`.${this.className} .navigation .buttons`);
+            if( buttonsBlock.style.display == 'block') buttonsBlock.style.display = 'none';
+            else buttonsBlock.style.display = 'block';
+            
+        });
     }
     
     loadFbs() {
@@ -306,10 +312,11 @@ var gFeedbackOptions = {
     setNavigationBar() {
         this.getThisEl().querySelector(`.${GFCLASS} .navigation`).innerHTML = `
             <div class="wrapper tile">
+                <div class="toggler"><span class="icon-menu"></span></div>
                 <div class="logo">
                     <img src="graphics/logo.png">GolosFeedback
                 </div>
-                <ul class="buttons" id="navbar-right">
+                <ul class="buttons" id="navbar-right" class="collapse navbar-collapse">
                     <li class="nav-item">
                         <button class="btn btn-primary button-get-my-feedbacks" data-mode="my"><span class="icon-download"></span> <span class="label">Get my feedbacks</span></button>
                     </li>
