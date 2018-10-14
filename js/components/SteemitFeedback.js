@@ -1,4 +1,4 @@
-class GolosFeedback {
+class SteemitFeedback {
     constructor() {
         this.className = GFCLASS;
         this.setBootstrapStructure();
@@ -223,9 +223,6 @@ var gFeedbackOptions = {
         let targetFeedback = this.getFeedbackById(id);
         this.removeFbs();
         this.getOneFb(targetFeedback);
-        //this.feedbacks.push(targetFeedback);
-        //this.placeFbs();
-        //targetFeedback.expand();
     }
     createFb(fb) {
         let votes = this.getVotes(fb.active_votes);
@@ -315,7 +312,7 @@ var gFeedbackOptions = {
             <div class="wrapper tile">
                 <div class="toggler"><span class="icon-menu"></span></div>
                 <div class="logo">
-                    <img src="graphics/logo.png">GolosFeedback
+                    <img src="graphics/logo.png">SteemitFeedback
                 </div>
                 <ul class="buttons" id="navbar-right" class="collapse navbar-collapse">
                     <li class="nav-item">
@@ -379,7 +376,7 @@ var gFeedbackOptions = {
                 </ul>
                 
                 <div class="copyright">
-                    GolosFeedback @ 2018
+                    SteemitFeedback @ 2018
                 </div>
             </div>
         `;

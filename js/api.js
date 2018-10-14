@@ -7,5 +7,5 @@
 */
 
 
-var GF = new GolosFeedback();
-GF.init();
+var SF = new SteemitFeedback();
+SF.init();
