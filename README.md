@@ -1,8 +1,8 @@
-# Golos Feedback
+# Steemit Feedback
 
-GolosFeedback is a microservise on the blockchain Golos that allows you to manage all the messages with ideas, offers and problems from your users. It can be inserted in any webpage into a modal window so it can work everywhere.
+SteemitFeedback is a microservise on the blockchain Steemit that allows you to manage all the messages with ideas, offers and problems from your users. It can be inserted in any webpage into a modal window so it can work everywhere.
 
-## [golosfeedback.com](https://golosfeedback.com/)
+## [steemitfeedback.com](https://steemitfeedback.com/)
 
 
 ## Getting started
@@ -10,17 +10,17 @@ GolosFeedback is a microservise on the blockchain Golos that allows you to manag
 
 ### Installing
 
-To inject GolosFeedback to your webpage you need to make only three simple steps:
+To inject SteemitFeedback to your webpage you need to make only three simple steps:
 1. Add JavaScript in your HTML-page: 
 ```
-<script src="https://golosfeedback.com/js/inject.js"></script>
+<script src="https://steemitfeedback.com/js/inject.js"></script>
 ```
-2. Script adds all necessary resources to deploy GolosFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with GolosFeedback.
+2. Script adds all necessary resources to deploy SteemitFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with SteemitFeedback.
 
-3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'gFeedbackOptions'. Check out this example:
+3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'sFeedbackOptions'. Check out this example:
 ```
 <script>
-var gFeedbackOptions = {
+var sFeedbackOptions = {
     corner: 'right',
     buttonTextColor: '#fff',
     buttonBackgroundColor: '#0079a1',
@@ -28,14 +28,14 @@ var gFeedbackOptions = {
     zIndex: 7
 }
 </script>
-<script src="https://golosfeedback.com/js/inject.js"></script>
+<script src="https://steemitfeedback.com/js/inject.js"></script>
 ```
-This instruction you also can see on the full version of [GolosFeedback](https://golosfeedback.com/) by pressing the button *integration*
+This instruction you also can see on the full version of [SteemitFeedback](https://steemitfeedback.com/) by pressing the button *integration*
 
 
 ## Deployment
 
-Once you set up the modal window with the microservice all your clients, users, advisers and you can start using GolosFeedback. There is no need to download something to your storage or activate any licenses or email boxes.
+Once you set up the modal window with the microservice all your clients, users, advisers and you can start using SteemitFeedback. There is no need to download something to your storage or activate any licenses or email boxes.
 
 ## Capabilities
 
@@ -53,7 +53,7 @@ Any feedback or comment could be voted by pressing like/dislike buttons in the r
 
 ## Built With
 
-* [Golos.js](https://github.com/GolosChain/golos-js) - the JavaScript API for Golos blockchain;
+
 * [Bootstrap](https://github.com/twbs/bootstrap) - the most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web;
 * [SweetAlert2](https://github.com/limonte/sweetalert2) - a beautiful, responsive, customizable, accessible replacement for JavaScript's popup boxes.
 * [Moment.js](https://momentjs.com/) - Parse, validate, manipulate, and display dates and times in JavaScript.
