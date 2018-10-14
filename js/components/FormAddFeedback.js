@@ -5,7 +5,7 @@ class FormAddFeedback {
         this.opened = false;
         this.chosenType = 'idea';
         this.textEditor = null;
-        this.jsonMetadata = {};
+        this.jsonMetadata = {tags: [], images: []};
         this.maxFeedbackSymbols = 5000;
         this.maxTitleSymbols = 400;
         this.domain = domain;
@@ -24,28 +24,28 @@ class FormAddFeedback {
             let el = document.createElement('div');
             el.className = `col-12 ${this.className}`;
             el.innerHTML = `
-                <div class="wrapper tile">
+                <form class="wrapper tile">
                     <div class="form-title">
                         <span class="title">Header</span>
                         <input type="text" placeholder="My title is ..." required>
                     </div>
                     <div class="form-text">
                         <span class="title">Text</span>
-                        <textarea placeholder="My feedback is ..." required rows="5" id="feedback-body"></textarea>
+                        <textarea placeholder="My feedback is ..." rows="5" id="feedback-body"></textarea>
                     </div>
                     <div class="form-type">
                         
                     </div>
                     <div class="utility">
-                        <button class="btn btn-success button-send-form" type="button">Submit</button>
+                        <button class="btn btn-success button-send-form" type="submit">Submit</button>
                         <button class="btn btn-danger button-cancel-form" type="button">Cancel</button>
                     </div>
-                </div>
+                </form>
             `;
             document.querySelector(MP).appendChild(el);
             this.addStaticEventListeners();
             
-            this.textEditor = new TextEditor('#feedback-body');
+            this.textEditor = new TextEditor('#feedback-body', this.jsonMetadata);
             this.textEditor.place();
             this.restate();
         }
@@ -72,7 +72,7 @@ class FormAddFeedback {
                 exportHTML += (`
                     <div class="check">
                         <input type="radio" name="type" value="${tab.key}" ${((tab.key == this.chosenType)? 'checked' : '')}>
-                        <span class="label">${tab.name}</span>
+                        <span class="label">${tab.key}</span>
                     </div>
                 `);
             }
@@ -99,6 +99,7 @@ class FormAddFeedback {
         let permlink = this.urlLit( title, 0 ) + '-' + Date.now().toString();
         let body = this.textEditor.editor.getData();
         this.jsonMetadata.tags = [this.domain, this.chosenType];
+        this.jsonMetadata.images = TextEditor.attachedImages;
         
         console.log(this.jsonMetadata);
         console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+ JSON.stringify(this.jsonMetadata));
@@ -117,6 +118,7 @@ class FormAddFeedback {
                 if ( ! err) {
                     this.getTitle.value = '';
                     this.textEditor.editor.setData('');
+                    this.jsonMetadata = {tags: [], images: []};
                     document.querySelector(`.${GFCLASS}`).dispatchEvent( new CustomEvent('reloadFeedbacks'));
                     console.log(result);
                 } else {
@@ -127,10 +129,12 @@ class FormAddFeedback {
     }
     
     addStaticEventListeners() {
-        this.getThisEl().querySelector(' .button-send-form').addEventListener('click', () => {
+        this.getThisEl().querySelector(' form.wrapper').addEventListener('submit', (e) => {
+            e.preventDefault();
             auth( () => {
                 if( this.validate() ) this.send();
             }, ['posting']);
+            return false;
         });
         
         this.getThisEl().querySelector(' .button-cancel-form').addEventListener('click', () => {

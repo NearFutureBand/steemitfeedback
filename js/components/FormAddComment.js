@@ -5,7 +5,7 @@ class FormAddComment {
         this.mountPlace = mountPlace;
         this.parentAuthor = parentAuthor;
         this.parentPermlink = parentPermlink;
-        this.jsonMetadata = {};
+        this.jsonMetadata = {tags: [], images: []};
         this.maxCommentSymbols = 2000;
     }
     
@@ -18,33 +18,35 @@ class FormAddComment {
         el.className = `row ${this.className}`;
         el.innerHTML = `
             <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">
-                <div class="wrapper tile">
+                <form class="wrapper tile">
                     <div class="form-text">
                         <span class="title">Text</span>
-                        <textarea placeholder="My comment is ..." required rows="5" id="comment-body"></textarea>
+                        <textarea placeholder="My comment is ..." rows="5" id="comment-body"></textarea>
                     </div>
                     <div class="utility">
-                        '<button class="btn btn-success send-comment-form" type="button">Submit</button>
+                        '<button class="btn btn-success send-comment-form" type="submit">Submit</button>
                     </div>
-                </div>
+                </form>
             </div>
         `;
         document.querySelector(this.mountPlace).appendChild(el);
         
-        this.textEditor = new TextEditor('#comment-body');
+        this.textEditor = new TextEditor('#comment-body', this.jsonMetadata);
         this.textEditor.place();
     
         this.addStaticEventListeners();
     }
     
     addStaticEventListeners() {
-        this.getThisEl().querySelector('.send-comment-form').addEventListener('click', () => {
+        this.getThisEl().querySelector('form.wrapper').addEventListener('submit', (e) => {
+            e.preventDefault();
             auth( () => {
+                
                 if( this.validate() ) {
                     this.send();
-                    this.jsonMetadata = {};
-                } 
+                }
             }, ['posting']);
+            return false;
         });
     }
     
@@ -64,7 +66,7 @@ class FormAddComment {
         let permlink = `re-${parentAuthor}-${parentPermlink}-${Date.now()}`;
         let title = '';
         let body = this.textEditor.editor.getData();
-        
+        this.jsonMetadata.images = this.textEditor.attachedImages;
         
         golos.broadcast.comment(
             wif.posting,
@@ -80,8 +82,8 @@ class FormAddComment {
                 console.log(err, result);
                 if ( ! err) {
                     this.textEditor.editor.setData('');
-                    this.jsonMetadata = {};
-                
+                    this.jsonMetadata = {tags: [], images: []};
+                    
                     document.querySelector(this.mountPlace).dispatchEvent(new CustomEvent('reloadFeedback'));
                 } else {
                     ErrorController.showError(err.message);
