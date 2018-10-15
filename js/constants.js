@@ -1,2 +1,2 @@
-const GFCLASS = 'golos-feedback-container';
-const MP = ('.' + GFCLASS + ' .mount-place');
+const SFCLASS = 'steemit-feedback-container';
+const MP = ('.' + SFCLASS + ' .mount-place');

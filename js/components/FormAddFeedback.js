@@ -12,7 +12,7 @@ class FormAddFeedback {
     }
     
     getThisEl() {
-        return document.querySelector(`.${GFCLASS} .col-12.${this.className}`);
+        return document.querySelector(`.${SFCLASS} .col-12.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.form-type');
@@ -105,7 +105,7 @@ class FormAddFeedback {
         console.log('title: '+title+' body: '+body+' tags: '+parentPermlink+' permlink: '+permlink+' json: '+ JSON.stringify(this.jsonMetadata));
         console.log(window.wif);
         
-        golos.broadcast.comment(
+        steem.broadcast.comment(
             wif.posting,
             '', /*parentAuthor*/
             'fb', /*parentPermlink*/
@@ -119,7 +119,7 @@ class FormAddFeedback {
                     this.getTitle.value = '';
                     this.textEditor.editor.setData('');
                     this.jsonMetadata = {tags: [], images: []};
-                    document.querySelector(`.${GFCLASS}`).dispatchEvent( new CustomEvent('reloadFeedbacks'));
+                    document.querySelector(`.${SFCLASS}`).dispatchEvent( new CustomEvent('reloadFeedbacks'));
                     console.log(result);
                 } else {
                     console.error(err);
@@ -139,7 +139,7 @@ class FormAddFeedback {
         
         this.getThisEl().querySelector(' .button-cancel-form').addEventListener('click', () => {
             this.delete();
-            document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
+            document.querySelector(`.${SFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
         });
         
     }

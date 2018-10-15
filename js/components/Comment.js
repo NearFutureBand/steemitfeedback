@@ -12,7 +12,7 @@ class Comment {
     }
     
     getThisEl() {
-        return document.querySelector(`#com-${this.fbId}-${this.id}.col-lg-10.offset-lg-1.col-md-10.offset-md-1.${this.className}`);
+        return document.querySelector(`.${SFCLASS} #com-${this.fbId}-${this.id}.col-lg-10.offset-lg-1.col-md-10.offset-md-1.${this.className}`);
     }
     place() {
         let el = document.createElement('div');

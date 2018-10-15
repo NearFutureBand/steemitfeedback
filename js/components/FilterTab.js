@@ -8,7 +8,7 @@ class FilterTab {
     }
     
     getThisEl() {
-        return document.querySelector(`.${GFCLASS} a.tab[data-target="${this.key}"]`);
+        return document.querySelector(`.${SFCLASS} a.tab[data-target="${this.key}"]`);
     }
     
     makeHTML() {

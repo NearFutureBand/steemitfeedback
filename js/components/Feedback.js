@@ -16,7 +16,7 @@ class Feedback {
     }
     
     getThisEl() {
-        return document.querySelector(`#fb-${this.id}.col-12.${this.className}`);
+        return document.querySelector(`.${SFCLASS} #fb-${this.id}.col-12.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.text');
@@ -35,7 +35,7 @@ class Feedback {
                  
             </div>
             <div class="row comments"></div>
-            ${ ((this.permlink == 'empty-feedback-on-the-golos-feedback-microservice')? '<div class="empty-feedback-cover"></div>' : '')}
+            ${ ((this.permlink == 'empty-feedback-on-the-steemit-feedback-microservice')? '<div class="empty-feedback-cover"></div>' : '')}
         `;
         document.querySelector(MP).appendChild(el);
         this.controlPanel.place();
@@ -97,7 +97,7 @@ class Feedback {
     }
     
     getComments() {
-        golos.api.getContentReplies(this.author, this.permlink, 1000, (err, result) => {
+        steem.api.getContentReplies(this.author, this.permlink, 1000, (err, result) => {
             console.log(err, result);
             if ( ! err) {
                 result.forEach( (item) => {
@@ -123,7 +123,7 @@ class Feedback {
             votes.l,
             votes.d,
             votes.m,
-            `#fb-${this.id}.col-12.${this.className} .row.comments`
+            `.${SFCLASS} #fb-${this.id}.col-12.${this.className} .row.comments`
         ) 
         );
     }
@@ -146,7 +146,7 @@ class Feedback {
     
     placeCommentForm() {
         if(this.expanded) {
-            this.commentForm = new FormAddComment(`#fb-${this.id}.col-12.${this.className}`, this.author, this.permlink);
+            this.commentForm = new FormAddComment(`${SFCLASS} #fb-${this.id}.col-12.${this.className}`, this.author, this.permlink);
             this.commentForm.place();
         }
     }
@@ -170,7 +170,7 @@ class Feedback {
     }
     sendExpandFbEvent(id) {
         if( ! this.expanded) {
-            document.querySelector(`.${GFCLASS}`)
+            document.querySelector(`.${SFCLASS}`)
                 .dispatchEvent( new CustomEvent("expandFb", {
                     detail: {
                         id: id
@@ -178,7 +178,7 @@ class Feedback {
                 }
             ))
         } else {
-            document.querySelector(`.${GFCLASS}`)
+            document.querySelector(`.${SFCLASS}`)
                 .dispatchEvent( new CustomEvent("reloadFeedbacks", {
                     detail: {
                         id: id
@@ -197,7 +197,6 @@ class Feedback {
                 if(item.percent > 0) myVote = 1;
                 else if(item.percent < 0) myVote = -1;
             }
-            
             
             if(item.percent > 0) likes++;
             else if(item.percent < 0) dislikes++;

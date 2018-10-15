@@ -1,6 +1,6 @@
 class SteemitFeedback {
     constructor() {
-        this.className = GFCLASS;
+        this.className = SFCLASS;
         this.setBootstrapStructure();
         this.domain = (location.hostname == "")? 'localhost' : location.hostname;
         this.setTestnetWebsocket();
@@ -43,11 +43,11 @@ class SteemitFeedback {
             swal({
                 title: `About!`,
                 html: `<p class="float-left text-left">
-	                       GolosFeedback - is a microservice on the blockchain <a target="_blank" href="https://golos.io">Golos</a> that allows you to manage all the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).
+	                       SteemitFeedback - is a microservice on the blockchain <a target="_blank" href="https://steemit.com">Steemit</a> that allows you to manage all the messages with ideas, offers and problems from your clients or users. This platform is a thin client, that works without a backend (only frontend and blockchain) directly on the GitHub Pages (through CloudFlare).
 	                   </p>
 	                   <ul class="float-left text-left">
 	                       We use:
-	                       <li><a target="_blank"  href="https://github.com/GolosChain/golos-js">Golos.js</a> - the JavaScript API for Golos blockchain;</li>
+	                       <li><a target="_blank"  href="https://github.com/steemit/steem-js">Steem.js</a> - the JavaScript API for Steemit blockchain;</li>
 	                       <li><a target="_blank" href="https://github.com/twbs/bootstrap">Bootstrap</a> - the most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web;</li>
 	                       <li><a target="_blank" href="http://www.dropzonejs.com">Dropzone</a> - DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews;</li>
 	                       <li><a target="_blank" href="https://github.com/lipis/flag-icon-css">Flag-icon-css</a> - a collection of all country flags in SVG;</li>
@@ -93,12 +93,12 @@ class SteemitFeedback {
                 html: `
                     <div class="text-left">
                     1. Add JavaScript in your HTML-page: 
-                    <pre><code>&lt;script src=&quot;https://golosfeedback.com/js/inject.js&quot;&gt;&lt;/script&gt;</code></pre>
-                    2. Script adds all the necessary resources to deploy GolosFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with GolosFeedback.<br>
-                    3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'gFeedbackOptions'. Check out this example: 
+                    <pre><code>&lt;script src=&quot;https://steemitfeedback.com/js/inject.js&quot;&gt;&lt;/script&gt;</code></pre>
+                    2. Script adds all the necessary resources to deploy SteemitFeedback to your website or applicaion. All the interface of our service will be placed into a modal window with special button-toggler. The button will be added to your page above all content so everybody always be able to interact with SteemitFeedback.<br>
+                    3. You can set different options of the microservice by passing some additional parameters. All that you need is to create special variable with the name of 'sFeedbackOptions'. Check out this example: 
                     <div class="text-left"><pre><code>
 &lt;script&gt;
-var gFeedbackOptions = {
+var sFeedbackOptions = {
     corner: 'right',
     buttonTextColor: '#fff',
     buttonBackgroundColor: '#0079a1',
@@ -106,7 +106,7 @@ var gFeedbackOptions = {
     zIndex: 7
 }
 &lt;/script&gt;
-&lt;script src="https://golosfeedback.com/js/inject.js"&gt;&lt;/script&gt;
+&lt;script src="https://steemitfeedback.com/js/inject.js"&gt;&lt;/script&gt;
                     </code></pre>
                     </div>
                     4. Visit this <a style="color:lightblue" href="integration_example.html">integration example</a> to see how it works!
@@ -126,8 +126,8 @@ var gFeedbackOptions = {
                 html: `
                     <div class="text-left"><h3><strong>If you have any ideas / problems / questions, you can report it:</strong></h3></div>
                     <div class="text-left">
-                        <p>1. On GitHub in Issues: <strong><a href="https://github.com/NearFutureBand/golosfeedback/issues" target="_blank"> https://github.com/NearFutureBand/golosfeedback/issues</a></strong></p>
-                        <p>2. On e-mail:<strong><a href="info@golosfeedback.com" target="_blank"> info@golosfeedback.com</a></strong></p>
+                        <p>1. On GitHub in Issues: <strong><a href="https://github.com/NearFutureBand/steemitfeedback/issues" target="_blank"> https://github.com/NearFutureBand/steemitfeedback/issues</a></strong></p>
+                        <p>2. On e-mail:<strong><a href="info@steemitfeedback.com" target="_blank"> info@steemitfeedback.com</a></strong></p>
                     </div>`,
                 showCloseButton: true,
                 width: 600,
@@ -156,7 +156,7 @@ var gFeedbackOptions = {
             query.select_authors = [this.customUsername];
         }
         
-        golos.api.getDiscussionsByBlog(query, (err, result) => {
+        steem.api.getDiscussionsByHot(query, (err, result) => {
             console.log(err, result);
             
             if ( ! err) {
@@ -179,7 +179,6 @@ var gFeedbackOptions = {
             
             VFX.hideVFX();
         });
-        
     }
     reloadFbs() {
         this.removeFbs();
@@ -187,7 +186,7 @@ var gFeedbackOptions = {
     }
     getOneFb(feedback) {
         
-        golos.api.getContent(
+        steem.api.getContent(
             feedback.author,
             feedback.permlink,
             1000,
@@ -243,7 +242,7 @@ var gFeedbackOptions = {
     createEmptyFb() {
         this.feedbacks.push( new Feedback(
             -1,
-            'empty-feedback-on-the-golos-feedback-microservice',
+            'empty-feedback-on-the-steemit-feedback-microservice',
             this.navbar2.currentFbSelector[0],
             'There is nothing here',
             'There\'s no feedbacks in this category yet. You can add the first one!',
@@ -296,7 +295,7 @@ var gFeedbackOptions = {
                     <div class="row">
             
                         <nav class="navigation"></nav>
-                        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 offset-lg-1 golos-feedback-container-wrapper">
+                        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 offset-lg-1 steemit-feedback-container-wrapper">
                             <div class="row mount-place"></div>
                         </div>
                         <footer class="footer"></footer>
@@ -308,7 +307,7 @@ var gFeedbackOptions = {
         this.setLoadVFXHTML();
     }
     setNavigationBar() {
-        this.getThisEl().querySelector(`.${GFCLASS} .navigation`).innerHTML = `
+        this.getThisEl().querySelector(`.${SFCLASS} .navigation`).innerHTML = `
             <div class="wrapper tile">
                 <div class="toggler"><span class="icon-menu"></span></div>
                 <div class="logo">
@@ -322,10 +321,10 @@ var gFeedbackOptions = {
                         <button class="btn btn-primary button-add-feedback"><span class="icon-forward"></span> Add feedback</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-primary button-about" id="aboutGolosFeedbackCallBtn"><span class="icon-info"></span> About</button>
+                        <button class="btn btn-primary button-about" id="aboutSteemitFeedbackCallBtn"><span class="icon-info"></span> About</button>
                     </li>
                 </ul>
-                <a href="https://github.com/NearFutureBand/golosfeedback" class="github-corner" tabindex="-1">
+                <a href="https://github.com/NearFutureBand/steemitfeedback" class="github-corner" tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="80px" height="80px" viewBox="0 0 250 250" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"  xmlns:xlink="http://www.w3.org/1999/xlink">
                         <defs>
                            <style type="text/css">
@@ -364,7 +363,7 @@ var gFeedbackOptions = {
         `;
     }
     setFooter() {
-        this.getThisEl().querySelector(`.${GFCLASS} .footer`).innerHTML = `
+        this.getThisEl().querySelector(`.${SFCLASS} .footer`).innerHTML = `
             <div class="wrapper tile">
                 <ul class="buttons">
                     <li class="nav-item">
@@ -382,9 +381,9 @@ var gFeedbackOptions = {
         `;
     }
     setTestnetWebsocket() {
-        golos.config.set('websocket', 'wss://ws.testnet.golos.io');
-        golos.config.set('address_prefix', 'GLS');
-        golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+        steem.config.set('websocket','wss://testnet.steem.vc')
+        steem.config.set('address_prefix', 'STX')
+        steem.config.set('chain_id', '79276aea5d4877d9a25892eaa01b0adf019d3e5cb12a97478df3298ccdd01673')
     }
     getFeedbackById(id) {
         for(let i = 0; i < this.feedbacks.length; i++) {
@@ -412,7 +411,7 @@ var gFeedbackOptions = {
     setPaddingsForFeedbackContainer() {
         
         let calcPadding = () => {
-            let container = document.querySelector(`.${this.className} .golos-feedback-container-wrapper`);
+            let container = document.querySelector(`.${this.className} .steemit-feedback-container-wrapper`);
             container.style.paddingTop = parseInt( getComputedStyle( document.querySelector(`.${this.className} .navigation`)).height ) + 10 + 'px';
             container.style.paddingBottom = parseInt( getComputedStyle( document.querySelector(`.${this.className} .footer`)).height ) + 10 + 'px';
         };
@@ -437,6 +436,6 @@ var gFeedbackOptions = {
                 </div>
             </div>
         `;
-        document.querySelector(`.${GFCLASS} .utility`).appendChild(el);
+        document.querySelector(`.${SFCLASS} .utility`).appendChild(el);
     }
 }

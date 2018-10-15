@@ -32,7 +32,7 @@ class TextEditor {
     }
     
     addStaticEventListeners() {
-        document.querySelector(`.${GFCLASS} #upload-images`).addEventListener('click', () => {
+        document.querySelector(`.${SFCLASS} #upload-images`).addEventListener('click', () => {
         
         uploadImageToIpfs( (err, files ) => {
             if ( ! err) {

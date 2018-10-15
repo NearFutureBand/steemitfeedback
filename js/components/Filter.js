@@ -15,13 +15,11 @@ class Filter {
     }
     
     getThisEl() {
-        return document.querySelector(`.${GFCLASS} .col-12.${this.className}`);
+        return document.querySelector(`.${SFCLASS} .col-12.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.wrapper.tile');
     }
-    
-    
     
     place() {
         let el = document.createElement('div');
@@ -53,7 +51,7 @@ class Filter {
                 this.makeTabActive(i);
                 this.restate();
                 
-                document.querySelector(`.${GFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
+                document.querySelector(`.${SFCLASS}`).dispatchEvent(new CustomEvent('reloadFeedbacks'));
             });
         }
     }

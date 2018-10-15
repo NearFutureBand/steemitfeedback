@@ -10,7 +10,7 @@ class FormAddComment {
     }
     
     getThisEl() {
-        return document.querySelector(`.row.${this.className}`);
+        return document.querySelector(`${SFCLASS} .row.${this.className}`);
     }
     
     place() {
@@ -68,7 +68,7 @@ class FormAddComment {
         let body = this.textEditor.editor.getData();
         this.jsonMetadata.images = this.textEditor.attachedImages;
         
-        golos.broadcast.comment(
+        steem.broadcast.comment(
             wif.posting,
             parentAuthor,
             parentPermlink,

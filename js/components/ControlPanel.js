@@ -7,11 +7,11 @@ class ControlPanel {
         this.likes = likes;
         this.dislikes = dislikes;
         this.myVote = myVote;
-        this.mountPlace = `.${GFCLASS} #${id} .${mountPlace}`;
+        this.mountPlace = `.${SFCLASS} #${id} .${mountPlace}`;
         this.className = 'control-panel';
     }
     getThisEl() {
-        return document.querySelector(`.${GFCLASS} #${this.id}.${this.className}`);
+        return document.querySelector(`.${SFCLASS} #${this.id}.${this.className}`);
     }
     getDynBlock() {
         return this.getThisEl().querySelector('.vote-buttons');
@@ -67,7 +67,7 @@ class ControlPanel {
             
             auth( () => {
                 
-                golos.broadcast.vote(wif.posting, username, this.author, this.permlink, (this.myVote == 1)? 0 : 10000, (err, result) => {
+                steem.broadcast.vote(wif.posting, username, this.author, this.permlink, (this.myVote == 1)? 0 : 10000, (err, result) => {
                     console.log(err, result);
                     if ( ! err) {
                         if( this.myVote == 1) {
@@ -91,7 +91,7 @@ class ControlPanel {
             
             auth( () => {
                 
-                golos.broadcast.vote(wif.posting, username, this.author, this.permlink, (this.myVote == -1)? 0 : -10000, (err, result) => {
+                steem.broadcast.vote(wif.posting, username, this.author, this.permlink, (this.myVote == -1)? 0 : -10000, (err, result) => {
                     console.log(err, result);
                     if ( ! err) {
                         if( this.myVote == -1) {
@@ -115,18 +115,5 @@ class ControlPanel {
     resetMyVote() {
         if( this.myVote == -1) this.dislikes--;
         if( this.myVote == 1) this.likes--;
-    }
-    makeRed(button) {
-        let type = button.classList[2];
-        button.className = `btn btn-danger ${type}`;
-        console.log('sadsd');
-    }
-    makeGreen(button) {
-        let type = button.classList[2];
-        button.className = `btn btn-success ${type}`;
-    }
-    makeGrey(button) {
-        let type = button.classList[2];
-        button.className = `btn btn-light ${type}`;
     }
 }

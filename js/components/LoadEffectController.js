@@ -1,6 +1,6 @@
 var VFX = {
     getThisEl: () => {
-        return document.querySelector('.vfx');
+        return document.querySelector(`.${SFCLASS} .vfx`);
     },
     showVFX: () => {
         VFX.getThisEl().style.display = 'block';
